@@ -18,6 +18,9 @@
 
 #include <common.h>
 
+#define MAX_TOKEN_SIZE 200// token max size
+
+
 word_t expr(char *e, bool *success);
 
 #endif

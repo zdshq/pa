@@ -20,6 +20,8 @@
  */
 #include <regex.h>
 
+#include "sdb.h"
+
 enum {
   TK_NOTYPE = 256, TK_EQ, TK_NUMBER
 
@@ -46,7 +48,13 @@ static struct rule {
   {"\\)", ')'}          // right parenthesis
 };
 
+static struct token_node
+{
+  int value;
+  int token_type;
+} array[MAX_TOKEN_SIZE];
 
+int myindex = 0;
 
 #define NR_REGEX ARRLEN(rules)
 
@@ -77,11 +85,21 @@ typedef struct token {
 static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
+static int StrToInt(char *str, int len)
+{
+  int num = 0;
+  for(int i = 0; i < len; i++)
+  {
+    num *= 10;
+    num += str[i]-'0';
+  }
+  return num;
+}
+
 static bool make_token(char *e) {
   int position = 0;
   int i;
   regmatch_t pmatch;
-
   nr_token = 0;
 
   while (e[position] != '\0') {
@@ -94,7 +112,6 @@ static bool make_token(char *e) {
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
-        position += substr_len;
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
          * to record the token in the array `tokens'. For certain types
@@ -102,16 +119,38 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          case TK_EQ: break;
-          case TK_NUMBER: break;
+          case TK_EQ: 
+            array[myindex].token_type=TK_EQ;
+            array[myindex].value=0;
+            break;
+          case TK_NUMBER: 
+            array[myindex].token_type=TK_NUMBER;
+            array[myindex].value=StrToInt(substr_start,substr_len);
+            break;
           case '*': break;
-          case '+': break;     
+            array[myindex].token_type='*';
+            array[myindex].value=0;
+            break;
+          case '+': break;
+            array[myindex].token_type='+';
+            array[myindex].value=0;
+            break;         
           case TK_NOTYPE: break;
-          case '(': break;
-          case ')': break;
+            break;
+          case '(': 
+            array[myindex].token_type='(';
+            array[myindex].value=0;
+            break;    
+          case ')': 
+            array[myindex].token_type=')';
+            array[myindex].value=0;
+            break;    
 
           default: assert(0);
         }
+        position += substr_len;
+        if(rules[i].token_type != TK_NOTYPE)
+          myindex++;
         break;
       }
     }
@@ -165,7 +204,9 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
-
+  for(int i = 0; i < myindex; i++)
+  {
+    printf("%d",array[i].token_type);
+  }
   return 0;
 }
