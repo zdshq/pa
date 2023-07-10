@@ -250,6 +250,8 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
+  for(int i = 0; i < myindex; i++)
+    printf("%d:%d\r\n", i, array[i].token_type);
 
   /* TODO: Insert codes to evaluate the expression. */
   printf("\r\nresult : %d\r\n", eval(0,myindex-1));
