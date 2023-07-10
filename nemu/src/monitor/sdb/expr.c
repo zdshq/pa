@@ -127,15 +127,15 @@ static bool make_token(char *e) {
             array[myindex].token_type=TK_NUMBER;
             array[myindex].value=StrToInt(substr_start,substr_len);
             break;
-          case '*': break;
-            array[myindex].token_type=2;
+          case '*': 
+            array[myindex].token_type='*';
             array[myindex].value=0;
             break;
-          case '+': break;
+          case '+':
             array[myindex].token_type=rules[i].token_type;
             array[myindex].value=0;
             break;         
-          case TK_NOTYPE: break;
+          case TK_NOTYPE:
             break;
           case '(': 
             array[myindex].token_type='(';
