@@ -206,7 +206,7 @@ word_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   for(int i = 0; i < myindex; i++)
   {
-    printf("%d",array[i].token_type);
+    printf("%d\n",array[i].token_type);
   }
   return 0;
 }
