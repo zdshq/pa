@@ -213,7 +213,7 @@ bool  check_parentheses(int p, int q){
         flag1++;
       }
     }
-    if(flag == 0 && flag1 == 1)
+    if(flag == 0)
       return true;
   }
     
