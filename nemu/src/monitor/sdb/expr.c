@@ -128,11 +128,11 @@ static bool make_token(char *e) {
             array[myindex].value=StrToInt(substr_start,substr_len);
             break;
           case '*': break;
-            array[myindex].token_type='*';
+            array[myindex].token_type=rules[i].token_type;
             array[myindex].value=0;
             break;
           case '+': break;
-            array[myindex].token_type='+';
+            array[myindex].token_type=rules[i].token_type;
             array[myindex].value=0;
             break;         
           case TK_NOTYPE: break;
@@ -145,6 +145,10 @@ static bool make_token(char *e) {
             array[myindex].token_type=')';
             array[myindex].value=0;
             break;    
+          case '-': 
+            array[myindex].token_type=rules[i].token_type;
+            array[myindex].value=0;
+            break; 
 
           default: assert(0);
         }
