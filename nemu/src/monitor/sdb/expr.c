@@ -128,7 +128,7 @@ static bool make_token(char *e) {
             array[myindex].value=StrToInt(substr_start,substr_len);
             break;
           case '*': break;
-            array[myindex].token_type=rules[i].token_type;
+            array[myindex].token_type=2;
             array[myindex].value=0;
             break;
           case '+': break;
