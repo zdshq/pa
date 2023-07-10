@@ -204,8 +204,17 @@ int find_main_operation(int p,int q){
 bool  check_parentheses(int p, int q){
   if(array[p].token_type == '(' && array[q].token_type == ')')
   {
-    printf("()%d,%d,%d,%d\r\n",array[p].token_type,array[q].token_type,p,q);
-    return true;
+    int flag = 0,flag1 = 0;
+    for(int i = q; i >= p; i--){
+      if(array[i].token_type == '(')
+        flag--;
+      else if(array[i].token_type == ')'){
+        flag++;
+        flag1++;
+      }
+    }
+    if(flag == 0 && flag1 == 1)
+      return true;
   }
     
   return false;

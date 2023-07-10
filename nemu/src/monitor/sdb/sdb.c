@@ -101,7 +101,7 @@ void sdb_mainloop() {
     cmd_c(NULL);
     return;
   }
-  char str[] = "1+2+3+6+3*(1+3)";
+  char str[] = "(1+2+3+6+3*(1+3))";
   bool e;
   expr(str,&e);
   for (char *str; (str = rl_gets()) != NULL; ) {
