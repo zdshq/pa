@@ -197,8 +197,7 @@ int find_main_operation(int p,int q){
       continue;
     if(array[i].token_type == '+' || array[i].token_type == '-')
       return i;
-  }  
-  printf("%d, %d\r\n",p, q);
+  } 
   assert(0);
 }
 
@@ -230,9 +229,9 @@ int eval(int p,int q) {
   }
   else {
     op = find_main_operation(p ,q);
+    printf("op:%d\r\n",op);
     val1 = eval(p, op - 1);
     val2 = eval(op + 1, q);
-    printf("op:%d\r\n",op);
     switch (array[op].token_type) {
       case '+': return val1 + val2;
       case '-': return val1 - val2;
