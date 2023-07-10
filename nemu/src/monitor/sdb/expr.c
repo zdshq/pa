@@ -166,7 +166,7 @@ static bool make_token(char *e) {
 
 int find_main_operation(int p,int q){
   int flag = 0;
-  printf("%d, %d",p, q);
+  printf("%d, %d\r\n",p, q);
   for(int i = q; i >= p; i--){
     if(array[i].token_type == '(')
       flag--;
@@ -198,6 +198,7 @@ int find_main_operation(int p,int q){
     if(array[i].token_type == '+' || array[i].token_type == '-')
       return i;
   }  
+  printf("%d, %d\r\n",p, q);
   assert(0);
 }
 
