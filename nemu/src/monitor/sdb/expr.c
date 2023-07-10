@@ -228,7 +228,7 @@ int eval(int p,int q) {
   }
   else {
     op = find_main_operation(p ,q);
-    printf("op:%d\r\n",op);
+    printf("op:%d;%d\r\n",op,array[op].token_type);
     val1 = eval(p, op - 1);
     val2 = eval(op + 1, q);
     switch (array[op].token_type) {
