@@ -120,33 +120,26 @@ static bool make_token(char *e) {
 
         switch (rules[i].token_type) {
           case TK_EQ: 
-            array[myindex].token_type=TK_EQ;
             array[myindex].value=0;
             break;
           case TK_NUMBER: 
-            array[myindex].token_type=TK_NUMBER;
             array[myindex].value=StrToInt(substr_start,substr_len);
             break;
           case '*': 
-            array[myindex].token_type='*';
             array[myindex].value=0;
             break;
           case '+':
-            array[myindex].token_type=rules[i].token_type;
             array[myindex].value=0;
             break;         
           case TK_NOTYPE:
             break;
           case '(': 
-            array[myindex].token_type='(';
             array[myindex].value=0;
             break;    
           case ')': 
-            array[myindex].token_type=')';
             array[myindex].value=0;
             break;    
           case '-': 
-            array[myindex].token_type=rules[i].token_type;
             array[myindex].value=0;
             break; 
 
@@ -154,7 +147,10 @@ static bool make_token(char *e) {
         }
         position += substr_len;
         if(rules[i].token_type != TK_NOTYPE)
+        {
+          array[myindex].token_type=rules[i].token_type;
           myindex++;
+        }
         break;
       }
     }
