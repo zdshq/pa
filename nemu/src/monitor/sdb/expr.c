@@ -221,6 +221,7 @@ int eval(int p,int q) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
+    printf("ads1");
     return eval(p + 1, q - 1);
   }
   else {
@@ -247,6 +248,6 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  printf("%d/\\n",eval(1,myindex-1)) ;
+  eval(0,myindex-1);
   return 0;
 }
