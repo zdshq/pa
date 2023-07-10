@@ -174,7 +174,6 @@ int find_main_operation(int p,int q){
       flag++;
     if(flag)
       continue;
-    printf("%d",array[i].token_type);
     if(array[i].token_type == TK_EQ)
       return i;
   }
