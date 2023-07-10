@@ -164,38 +164,77 @@ static bool make_token(char *e) {
   return true;
 }
 
-// char find_main_operation
+int find_main_operation(int p,int q){
+  int flag = 0;
+  for(int i = q; i >= p; i--){
+    if(array[i].token_type == '(')
+      flag--;
+    else if(array[i].token_type == ')')
+      flag++;
+    if(flag)
+      continue;
+    if(array[i].token_type == TK_EQ)
+      return i;
+  }
+  for(int i = q; i >= p; i--){
+    if(array[i].token_type == '(')
+      flag--;
+    else if(array[i].token_type == ')')
+      flag++;
+    if(flag)
+      continue;
+    if(array[i].token_type == '*' || array[i].token_type == '/')
+      return i;
+  }
+  for(int i = q; i >= p; i--){
+    if(array[i].token_type == '(')
+      flag--;
+    else if(array[i].token_type == ')')
+      flag++;
+    if(flag)
+      continue;
+    if(array[i].token_type == '+' || array[i].token_type == '-')
+      return i;
+  }  
+  assert(0);
+}
 
-// int eval(p, q) {
-//   if (p > q) {
-//     /* Bad expression */
-//   }
-//   else if (p == q) {
-//     /* Single token.
-//      * For now this token should be a number.
-//      * Return the value of the number.
-//      */
-//   }
-//   else if (check_parentheses(p, q) == true) {
-//     /* The expression is surrounded by a matched pair of parentheses.
-//      * If that is the case, just throw away the parentheses.
-//      */
-//     return eval(p + 1, q - 1);
-//   }
-//   else {
-//     op = find_main_operation();
-//     val1 = eval(p, op - 1);
-//     val2 = eval(op + 1, q);
 
-//     switch (op_type) {
-//       case '+': return val1 + val2;
-//       case '-': /* ... */
-//       case '*': /* ... */
-//       case '/': /* ... */
-//       default: assert(0);
-//     }
-//   }
-// }
+bool  check_parentheses(int p, int q){
+  if(array[p].token_type == '(' || array[q].token_type == ')')
+    return true;
+  return false;
+}
+
+int eval(int p,int q) {
+  int val1,val2,op;
+  if (p > q) {
+    return 0;
+  }
+  else if (p == q) {
+    return array[p].value;
+  }
+  else if (check_parentheses(p, q) == true) {
+    /* The expression is surrounded by a matched pair of parentheses.
+     * If that is the case, just throw away the parentheses.
+     */
+    return eval(p + 1, q - 1);
+  }
+  else {
+    op = find_main_operation(p ,q);
+    val1 = eval(p, op - 1);
+    val2 = eval(op + 1, q);
+
+    switch (array[op].token_type) {
+      case '+': return val1 + val2;
+      case '-': return val1 - val2;
+      case '*': return val1 * val2;
+      case '/': return val1 / val2;
+      case TK_EQ: return val1 == val2;
+      default: assert(0);
+    }
+  }
+}
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
@@ -204,9 +243,6 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  for(int i = 0; i < myindex; i++)
-  {
-    printf("%d\n",array[i].token_type);
-  }
+  printf("%d/\\n",eval(0,myindex-1)) ;
   return 0;
 }
