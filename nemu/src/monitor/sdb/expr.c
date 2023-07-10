@@ -247,6 +247,6 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  printf("%d/\\n",eval(0,myindex-1)) ;
+  printf("%d/\\n",eval(1,myindex-1)) ;
   return 0;
 }
