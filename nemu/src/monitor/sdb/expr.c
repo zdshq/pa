@@ -206,7 +206,7 @@ int find_main_operation(int p,int q){
 bool  check_parentheses(int p, int q){
   if(array[p].token_type == '(' && array[q].token_type == ')')
   {
-    printf("()%d,%d\r\n",array[p].token_type,array[q].token_type);
+    printf("()%d,%d,%d,%d\r\n",array[p].token_type,array[q].token_type,p,q);
     return true;
   }
     
@@ -225,7 +225,7 @@ int eval(int p,int q) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
-    printf("ads1:%d,%d",p, q);
+    printf("ads1:%d,%d\r\n",p, q);
     return eval(p + 1, q - 1);
   }
   else {
