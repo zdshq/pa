@@ -224,7 +224,7 @@ int eval(int p,int q) {
     op = find_main_operation(p ,q);
     val1 = eval(p, op - 1);
     val2 = eval(op + 1, q);
-
+    printf("%d",op);
     switch (array[op].token_type) {
       case '+': return val1 + val2;
       case '-': return val1 - val2;
