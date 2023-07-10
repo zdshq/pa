@@ -166,6 +166,7 @@ static bool make_token(char *e) {
 
 int find_main_operation(int p,int q){
   int flag = 0;
+  printf("%d, %d",p, q);
   for(int i = q; i >= p; i--){
     if(array[i].token_type == '(')
       flag--;
