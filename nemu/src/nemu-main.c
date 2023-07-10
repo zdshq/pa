@@ -27,9 +27,8 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
-
+  
   /* Start engine. */
   engine_start();
-
   return is_exit_status_bad();
 }

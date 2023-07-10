@@ -21,7 +21,7 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,
+  TK_NOTYPE = 256, TK_EQ, TK_NUMBER
 
   /* TODO: Add more token types */
 
@@ -39,7 +39,14 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
+  {"\\*", '*'},         // multiply
+  {"-", '-'},           // minus
+  {"[0-9]+", TK_NUMBER},    // number
+  {"\\(", '('},         // Left parenthesis
+  {"\\)", ')'}          // right parenthesis
 };
+
+
 
 #define NR_REGEX ARRLEN(rules)
 
@@ -95,9 +102,16 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          default: TODO();
-        }
+          case TK_EQ: break;
+          case TK_NUMBER: break;
+          case '*': break;
+          case '+': break;     
+          case TK_NOTYPE: break;
+          case '(': break;
+          case ')': break;
 
+          default: assert(0);
+        }
         break;
       }
     }
@@ -111,6 +125,38 @@ static bool make_token(char *e) {
   return true;
 }
 
+// char find_main_operation
+
+// int eval(p, q) {
+//   if (p > q) {
+//     /* Bad expression */
+//   }
+//   else if (p == q) {
+//     /* Single token.
+//      * For now this token should be a number.
+//      * Return the value of the number.
+//      */
+//   }
+//   else if (check_parentheses(p, q) == true) {
+//     /* The expression is surrounded by a matched pair of parentheses.
+//      * If that is the case, just throw away the parentheses.
+//      */
+//     return eval(p + 1, q - 1);
+//   }
+//   else {
+//     op = find_main_operation();
+//     val1 = eval(p, op - 1);
+//     val2 = eval(op + 1, q);
+
+//     switch (op_type) {
+//       case '+': return val1 + val2;
+//       case '-': /* ... */
+//       case '*': /* ... */
+//       case '/': /* ... */
+//       default: assert(0);
+//     }
+//   }
+// }
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
