@@ -184,7 +184,7 @@ int find_main_operation(int p,int q){
       flag++;
     if(flag)
       continue;
-    if(array[i].token_type == '*' || array[i].token_type == '/')
+    if(array[i].token_type == '+' || array[i].token_type == '-')
       return i;
   }
   for(int i = q; i >= p; i--){
@@ -194,7 +194,7 @@ int find_main_operation(int p,int q){
       flag++;
     if(flag)
       continue;
-    if(array[i].token_type == '+' || array[i].token_type == '-')
+    if(array[i].token_type == '*' || array[i].token_type == '/')
       return i;
   } 
   assert(0);
