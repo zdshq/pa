@@ -263,7 +263,7 @@ uint32_t find_main_operation(int p,int q){
       flag++;
     if(flag)
       continue;
-    if(array[i].token_type == TK_P)
+    if(array[i].token_type == TK_P || array[i].token_type == TK_NEG)
       return i;
   }   
   assert(0);
