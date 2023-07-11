@@ -214,17 +214,6 @@ uint32_t find_main_operation(int p,int q){
   int i;
   printf("%d, %d\r\n",p, q);
   for(i = q; i >= p; i--){
-    printf("i:%u",i);
-    if(array[i].token_type == '(')
-      flag--;
-    else if(array[i].token_type == ')')
-      flag++;
-    if(flag)
-      continue;
-    if(array[i].token_type == TK_EQ)
-      return i;
-  }
-  for(i = q; i >= p; i--){
     if(array[i].token_type == '(')
       flag--;
     else if(array[i].token_type == ')')
@@ -254,6 +243,19 @@ uint32_t find_main_operation(int p,int q){
     if(array[i].token_type == '*' || array[i].token_type == '/')
       return i;
   }   
+  for(i = q; i >= p; i--){
+    printf("i:%u",i);
+    if(array[i].token_type == '(')
+      flag--;
+    else if(array[i].token_type == ')')
+      flag++;
+    if(flag)
+      continue;
+    if(array[i].token_type == TK_EQ || array[i].token_type == TK_NEQ
+    || array[i].token_type == TK_AND)
+      return i;
+  }
+
   for(i = q; i >= p; i--){
     if(array[i].token_type == '(')
       flag--;
