@@ -22,5 +22,5 @@
 #define PMEM_READ_BLOCK_SIZE 4 // mem read one block size
 
 word_t expr(char *e, bool *success);
-uint32_t StrToInt(char *str, uint32_t len);
+int64_t StrToInt(char *str, uint32_t len);
 #endif

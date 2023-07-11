@@ -21,12 +21,19 @@
 #include <regex.h>
 
 #include "sdb.h"
+#include <memory/vaddr.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NUMBER
+  TK_NOTYPE = 256,
 
   /* TODO: Add more token types */
-
+  TK_EQ, 
+  TK_NUMBER,
+  TK_NEG_NUMBER,
+  TK_REGS,
+  TK_NEQ,
+  TK_AND,
+  TK_P
 };
 
 static struct rule {
@@ -45,12 +52,16 @@ static struct rule {
   {"-", '-'},           // minus
   {"([0-9][0-9]*)|(0[xX][0-9a-f]+)", TK_NUMBER},    // number
   {"\\(", '('},         // Left parenthesis
-  {"\\)", ')'}          // right parenthesis
+  {"\\)", ')'},          // right parenthesis
+  {"($0)|(ra)|(tp)|(sp)|(a[0-7])|(t[0-8])|(rs)|(fp)|(s[0-8])",
+  TK_REGS},
+  {"!=", TK_NEQ},
+  {"&&", TK_AND} 
 };
 
 static struct token_node
 {
-  uint32_t value;
+  int64_t value;
   uint32_t token_type;
 } array[MAX_TOKEN_SIZE];
 
@@ -93,12 +104,12 @@ uint32_t HextoInt(char c)
     return (c - 'a' + 10);
 }
 
-uint32_t StrToInt(char *str, uint32_t len)
+int64_t StrToInt(char *str, uint32_t len)
 {
-  uint32_t num = 0;
+  int64_t num = 0;
   if(*(str+1) == 'x' || *(str+1) == 'X')
   {
-    for(uint32_t i = 2; i < len; i++)
+    for(int64_t i = 2; i < len; i++)
     {
       num *=16;
       num += HextoInt(str[i]);
@@ -106,7 +117,7 @@ uint32_t StrToInt(char *str, uint32_t len)
   }
   else
   {
-    for(uint32_t i = 0; i < len; i++)
+    for(int64_t i = 0; i < len; i++)
     {
       num *= 10;
       num += str[i]-'0';
@@ -162,7 +173,21 @@ static bool make_token(char *e) {
           case '-': 
             array[myindex].value=0;
             break; 
-
+          case TK_AND:  
+            array[myindex].value=0;
+            break;
+          case TK_NEQ:
+            array[myindex].value = 0;
+            break;
+          case TK_P:
+            array[myindex].value = 0;
+            break;
+          case TK_REGS:
+            bool e;
+            array[myindex].value = isa_reg_str2val(substr_start,&e);
+            assert(e);
+            array[myindex].token_type = TK_NUMBER;
+            break;
           default: assert(0);
         }
         position += substr_len;
@@ -258,6 +283,10 @@ uint32_t eval(uint32_t p,uint32_t q) {
   }
   else {
     op = find_main_operation(p ,q);
+    if(array[op].token_type == TK_P)
+    {
+      
+    }
     printf("op:%d;%d\r\n",op,array[op].token_type);
     val1 = eval(p, op - 1);
     val2 = eval(op + 1, q);
@@ -267,6 +296,10 @@ uint32_t eval(uint32_t p,uint32_t q) {
       case '*': return val1 * val2;
       case '/': return val1 / val2;
       case TK_EQ: return val1 == val2;
+      case TK_P: return vaddr_ifetch(val2, PMEM_READ_BLOCK_SIZE);
+      case TK_AND: return val1 && val2;
+      case TK_NEQ: return !(val1 == val2);
+      case TK_NEG_NUMBER: return -val2;
       default: assert(0);
     }
   }
@@ -279,8 +312,13 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  for(uint32_t i = 0; i < myindex; i++)
-    printf("%u:%u\r\n", i, array[i].token_type);
+
+  for (int i = 0; i < myindex; i ++) {
+    if (array[i].token_type == '*' && (i == 0 || array[i - 1].token_type != TK_NUMBER 
+    || array[i - 1].token_type != ')' || array[i - 1].token_type != TK_NUMBER)) {
+      array[i].token_type = TK_P;
+    }
+  }
 
   /* TODO: Insert codes to evaluate the expression. */
   printf("\r\nresult : %u\r\n", eval(0,myindex-1));
