@@ -287,8 +287,8 @@ bool  check_parentheses(int p, int q){
   return false;
 }
 
-uint32_t eval(uint32_t p,uint32_t q) {
-  uint32_t val1,val2,op;
+int64_t eval(int p,int q) {
+  int64_t val1,val2,op;
   if (p > q) {
     return 0;
   }
@@ -304,7 +304,7 @@ uint32_t eval(uint32_t p,uint32_t q) {
   }
   else {
     op = find_main_operation(p ,q);
-    printf("op:%d;%d\r\n",op,array[op].token_type);
+    printf("op:%ld;%d\r\n",op,array[op].token_type);
     val1 = eval(p, op - 1);
     val2 = eval(op + 1, q);
     switch (array[op].token_type) {
@@ -338,6 +338,6 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  printf("\r\nresult : %u\r\n", eval(0,myindex-1));
+  printf("\r\nresult : %u\r\n", (uint32_t)eval(0,myindex-1));
   return eval(0,myindex-1);
 }
