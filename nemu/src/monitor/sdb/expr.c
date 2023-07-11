@@ -273,6 +273,7 @@ int eval(int p,int q) {
 
 word_t expr(char *e, bool *success) {
   printf("hhhhaaaa");
+  myindex = 0;
   if (!make_token(e)) {
     *success = false;
     return 0;
