@@ -188,6 +188,7 @@ uint32_t find_main_operation(uint32_t p,uint32_t q){
   uint32_t flag = 0;
   printf("%d, %d\r\n",p, q);
   for(uint32_t i = q; i >= p; i--){
+    printf("i:%d, %d\r\n",p, q);
     if(array[i].token_type == '(')
       flag--;
     else if(array[i].token_type == ')')
