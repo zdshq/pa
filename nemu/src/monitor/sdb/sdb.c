@@ -56,7 +56,10 @@ static int cmd_help(char *args);
 
 static int cmd_si(char *args) {
   long unsigned int temp;
-  assert(sscanf(args,"%lu",&temp) == 1);
+  if(args != NULL)
+    assert(sscanf(args,"%lu",&temp) == 1);
+  else 
+    temp = 1;
   cpu_exec(temp);
   return 0;
 }
