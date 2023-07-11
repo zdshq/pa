@@ -31,7 +31,7 @@ enum {
 
 static struct rule {
   const char *regex;
-  int token_type;
+  uint32_t token_type;
 } rules[] = {
 
   /* TODO: Add more rules.
@@ -50,11 +50,11 @@ static struct rule {
 
 static struct token_node
 {
-  int value;
-  int token_type;
+  uint32_t value;
+  uint32_t token_type;
 } array[MAX_TOKEN_SIZE];
 
-int myindex = 0;
+uint32_t myindex = 0;
 
 #define NR_REGEX ARRLEN(rules)
 
@@ -64,9 +64,9 @@ static regex_t re[NR_REGEX] = {};
  * Therefore we compile them only once before any usage.
  */
 void init_regex() {
-  int i;
+  uint32_t i;
   char error_msg[128];
-  int ret;
+  uint32_t ret;
 
   for (i = 0; i < NR_REGEX; i ++) {
     ret = regcomp(&re[i], rules[i].regex, REG_EXTENDED);
@@ -78,14 +78,14 @@ void init_regex() {
 }
 
 typedef struct token {
-  int type;
+  uint32_t type;
   char str[32];
 } Token;
 
 static Token tokens[32] __attribute__((used)) = {};
-static int nr_token __attribute__((used))  = 0;
+static uint32_t nr_token __attribute__((used))  = 0;
 
-static int HextoInt(char c)
+static uint32_t HextoInt(char c)
 {
   if(c >= '0' && c <= '9')
     return (c - '0');
@@ -93,12 +93,12 @@ static int HextoInt(char c)
     return (c - 'a' + 10);
 }
 
-static int StrToInt(char *str, int len)
+static uint32_t StrToInt(char *str, uint32_t len)
 {
-  int num = 0;
+  uint32_t num = 0;
   if(*(str+1) == 'x' || *(str+1) == 'X')
   {
-    for(int i = 2; i < len; i++)
+    for(uint32_t i = 2; i < len; i++)
     {
       num *=16;
       num += HextoInt(str[i]);
@@ -106,7 +106,7 @@ static int StrToInt(char *str, int len)
   }
   else
   {
-    for(int i = 0; i < len; i++)
+    for(uint32_t i = 0; i < len; i++)
     {
       num *= 10;
       num += str[i]-'0';
@@ -117,8 +117,8 @@ static int StrToInt(char *str, int len)
 }
 
 static bool make_token(char *e) {
-  int position = 0;
-  int i;
+  uint32_t position = 0;
+  uint32_t i;
   regmatch_t pmatch;
   nr_token = 0;
 
@@ -127,7 +127,7 @@ static bool make_token(char *e) {
     for (i = 0; i < NR_REGEX; i ++) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
-        int substr_len = pmatch.rm_eo;
+        uint32_t substr_len = pmatch.rm_eo;
 
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
@@ -184,10 +184,10 @@ static bool make_token(char *e) {
   return true;
 }
 
-int find_main_operation(int p,int q){
-  int flag = 0;
+uint32_t find_main_operation(uint32_t p,uint32_t q){
+  uint32_t flag = 0;
   printf("%d, %d\r\n",p, q);
-  for(int i = q; i >= p; i--){
+  for(uint32_t i = q; i >= p; i--){
     if(array[i].token_type == '(')
       flag--;
     else if(array[i].token_type == ')')
@@ -197,7 +197,7 @@ int find_main_operation(int p,int q){
     if(array[i].token_type == TK_EQ)
       return i;
   }
-  for(int i = q; i >= p; i--){
+  for(uint32_t i = q; i >= p; i--){
     if(array[i].token_type == '(')
       flag--;
     else if(array[i].token_type == ')')
@@ -207,7 +207,7 @@ int find_main_operation(int p,int q){
     if(array[i].token_type == '+' || array[i].token_type == '-')
       return i;
   }
-  for(int i = q; i >= p; i--){
+  for(uint32_t i = q; i >= p; i--){
     if(array[i].token_type == '(')
       flag--;
     else if(array[i].token_type == ')')
@@ -221,11 +221,11 @@ int find_main_operation(int p,int q){
 }
 
 
-bool  check_parentheses(int p, int q){
+bool  check_parentheses(uint32_t p, uint32_t q){
   if(array[p].token_type == '(' && array[q].token_type == ')')
   {
-    int flag = 0,flag1 = 0;
-    for(int i = q; i >= p; i--){
+    uint32_t flag = 0,flag1 = 0;
+    for(uint32_t i = q; i >= p; i--){
       if(array[i].token_type == '(')
         flag--;
       else if(array[i].token_type == ')'){
@@ -240,8 +240,8 @@ bool  check_parentheses(int p, int q){
   return false;
 }
 
-int eval(int p,int q) {
-  int val1,val2,op;
+uint32_t eval(uint32_t p,uint32_t q) {
+  uint32_t val1,val2,op;
   if (p > q) {
     return 0;
   }
@@ -278,7 +278,7 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  for(int i = 0; i < myindex; i++)
+  for(uint32_t i = 0; i < myindex; i++)
     printf("%d:%d\r\n", i, array[i].token_type);
 
   /* TODO: Insert codes to evaluate the expression. */
