@@ -221,10 +221,10 @@ uint32_t find_main_operation(uint32_t p,uint32_t q){
 }
 
 
-bool  check_parentheses(uint32_t p, uint32_t q){
+bool  check_parentheses(int p, int q){
   if(array[p].token_type == '(' && array[q].token_type == ')')
   {
-    uint32_t flag = 0,flag1 = 0;
+    int flag = 0,flag1 = 0;
     for(int i = q; i >= p; --i){
       if(array[i].token_type == '(')
         flag--;
