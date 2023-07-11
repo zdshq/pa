@@ -18,6 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include <memory/vaddr.h>
 
 static int is_batch_mode = false;
 
@@ -81,7 +82,28 @@ static int cmd_p(char *args){
   return 0;
 }
 
-// static int cmd_info()
+static void show_memery(vaddr_t s, uint32_t len)
+{
+  uint32_t temp = s + len;
+  while(s < temp)
+  {
+    uint32_t recevie = vaddr_ifetch(s,PMEM_READ_BLOCK_SIZE);
+    printf("%u:%u\r\n", s, recevie);
+    s += 4;    
+  }
+  
+
+}
+
+static int cmd_x(char *args){
+  char *a = strtok(args, " ");
+  char *str = args + strlen(a) + 1;
+  uint32_t len = StrToInt(a, strlen(a));
+  bool e;
+  uint32_t temp = expr(str,&e);
+  show_memery(temp , len);
+  return 0;
+}
 
 
 static struct {
@@ -95,7 +117,7 @@ static struct {
 
   /* TODO: Add more commands */
   {"si", "execute N step, default N = 1", cmd_si},
-//  {"x", "scan expr earn N",cmd_x},
+ {"x", "scan expr earn N", cmd_x},
   {"info", "show program status", cmd_info},
   {"p", "caculate the expr", cmd_p},
   // {"w", "show", cmd_w},

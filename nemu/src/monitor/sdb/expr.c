@@ -85,7 +85,7 @@ typedef struct token {
 static Token tokens[32] __attribute__((used)) = {};
 static uint32_t nr_token __attribute__((used))  = 0;
 
-static uint32_t HextoInt(char c)
+uint32_t HextoInt(char c)
 {
   if(c >= '0' && c <= '9')
     return (c - '0');
@@ -93,7 +93,7 @@ static uint32_t HextoInt(char c)
     return (c - 'a' + 10);
 }
 
-static uint32_t StrToInt(char *str, uint32_t len)
+uint32_t StrToInt(char *str, uint32_t len)
 {
   uint32_t num = 0;
   if(*(str+1) == 'x' || *(str+1) == 'X')
