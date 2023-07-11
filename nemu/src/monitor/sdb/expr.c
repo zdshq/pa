@@ -283,10 +283,6 @@ uint32_t eval(uint32_t p,uint32_t q) {
   }
   else {
     op = find_main_operation(p ,q);
-    if(array[op].token_type == TK_P)
-    {
-      
-    }
     printf("op:%d;%d\r\n",op,array[op].token_type);
     val1 = eval(p, op - 1);
     val2 = eval(op + 1, q);
