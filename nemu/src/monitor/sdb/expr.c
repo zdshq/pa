@@ -85,14 +85,34 @@ typedef struct token {
 static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
+static int HextoInt(char c)
+{
+  if(c >= '0' && c <= '9')
+    return (c - '0');
+  else                      // handle the digit >= 'a'
+    return (c - 'a' + 10);
+}
+
 static int StrToInt(char *str, int len)
 {
   int num = 0;
-  for(int i = 0; i < len; i++)
+  if(*(str+1) == 'x' || *(str+1) == 'X')
   {
-    num *= 10;
-    num += str[i]-'0';
+    for(int i = 2; i < len; i++)
+    {
+      num *=16;
+      num += HextoInt(str[i]);
+    }
   }
+  else
+  {
+    for(int i = 0; i < len; i++)
+    {
+      num *= 10;
+      num += str[i]-'0';
+    }    
+  }
+
   return num;
 }
 
