@@ -225,7 +225,7 @@ bool  check_parentheses(uint32_t p, uint32_t q){
   if(array[p].token_type == '(' && array[q].token_type == ')')
   {
     uint32_t flag = 0,flag1 = 0;
-    for(uint32_t i = q; i >= p; i--){
+    for(int i = q; i >= p; --i){
       if(array[i].token_type == '(')
         flag--;
       else if(array[i].token_type == ')'){
