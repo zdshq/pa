@@ -78,7 +78,7 @@ static int cmd_info(char *args) {
 
 static int cmd_p(char *args){
   bool e;
-  printf("%d\r\n",expr(args,&e));
+  printf("%u\r\n",expr(args,&e));
   return 0;
 }
 
