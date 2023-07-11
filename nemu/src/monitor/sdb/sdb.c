@@ -47,12 +47,31 @@ static int cmd_c(char *args) {
   return 0;
 }
 
-
 static int cmd_q(char *args) {
   return -1;
 }
 
 static int cmd_help(char *args);
+
+
+static int cmd_si(char *args) {
+  long unsigned int temp;
+  assert(sscanf(args,"%lu",&temp) == 1);
+  cpu_exec(temp);
+  return 0;
+}
+
+static int cmd_info(char *args) {
+  if(strcmp("r",args) == 0){
+    isa_reg_display();
+  }
+  if(strcmp("w",args) == 0){
+    isa_reg_display();
+  }
+  return 0;
+}
+
+
 
 static struct {
   const char *name;
@@ -64,6 +83,11 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
 
   /* TODO: Add more commands */
+  {"si", "execute N step, default N = 1", cmd_si},
+ // {"x", "scan expr earn N",cmd_x},
+  {"info", "show program status", cmd_info},
+  // {"w", "show", cmd_w},
+  // {"d", "delete EXPR", cmd_d}
 
 };
 
