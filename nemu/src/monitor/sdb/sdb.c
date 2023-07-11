@@ -75,7 +75,11 @@ static int cmd_info(char *args) {
   return 0;
 }
 
-// cmd_p
+static int cmd_p(char *args){
+  bool e;
+  printf("%d\r\n",expr(args,&e));
+  return 0;
+}
 
 // static int cmd_info()
 
@@ -93,7 +97,7 @@ static struct {
   {"si", "execute N step, default N = 1", cmd_si},
 //  {"x", "scan expr earn N",cmd_x},
   {"info", "show program status", cmd_info},
-  // {"p", "caculate the expr", cmd_p},
+  {"p", "caculate the expr", cmd_p},
   // {"w", "show", cmd_w},
   // {"d", "delete EXPR", cmd_d}
 
