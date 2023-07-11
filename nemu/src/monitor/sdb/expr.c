@@ -310,8 +310,8 @@ word_t expr(char *e, bool *success) {
   }
 
   for (int i = 0; i < myindex; i ++) {
-    if (array[i].token_type == '*' && (i == 0 || array[i - 1].token_type != TK_NUMBER 
-    || array[i - 1].token_type != ')' || array[i - 1].token_type != TK_NUMBER)) {
+    if (array[i].token_type == '*' && (i == 0 || (array[i - 1].token_type != TK_NUMBER 
+    && array[i - 1].token_type != ')'))) {
       array[i].token_type = TK_P;
     }
   }
