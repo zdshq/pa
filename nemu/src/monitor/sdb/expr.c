@@ -256,7 +256,7 @@ uint32_t find_main_operation(int p,int q){
       return i;
   }
 
-  for(i = q; i >= p; i--){
+  for(i = p; i <= q; i++){
     if(array[i].token_type == '(')
       flag--;
     else if(array[i].token_type == ')')
