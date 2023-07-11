@@ -29,7 +29,7 @@ enum {
   /* TODO: Add more token types */
   TK_EQ, 
   TK_NUMBER,
-  TK_NEG_NUMBER,
+  TK_NEG,
   TK_REGS,
   TK_NEQ,
   TK_AND,
@@ -318,7 +318,7 @@ int64_t eval(int p,int q) {
       case TK_P: return vaddr_ifetch(val2, PMEM_READ_BLOCK_SIZE);
       case TK_AND: return val1 && val2;
       case TK_NEQ: return !(val1 == val2);
-      case TK_NEG_NUMBER: return -val2;
+      case TK_NEG: return -val2;
       default: assert(0);
     }
   }
@@ -332,12 +332,22 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 
-  for (int i = 0; i < myindex; i ++) {
+  for (int i = 0; i < myindex; i++) {
     if (array[i].token_type == '*' && (i == 0 || (array[i - 1].token_type != TK_NUMBER 
     && array[i - 1].token_type != ')'))) {
       array[i].token_type = TK_P;
     }
   }
+  for (int i = 0; i < myindex; i++){
+    if(array[i].token_type == '-' && (i == 0 || (array[i - 1].token_type != TK_NUMBER 
+    && array[i - 1].token_type != ')'))){
+        array[i].token_type = TK_NEG;
+        while (array[++i].token_type == '-'){
+          array[i].token_type = TK_NEG;
+        }
+    }
+  }
+
 
   /* TODO: Insert codes to evaluate the expression. */
   printf("\r\nresult : %u\r\n", (uint32_t)eval(0,myindex-1));
