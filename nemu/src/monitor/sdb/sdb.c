@@ -68,12 +68,16 @@ static int cmd_info(char *args) {
   if(strcmp("r",args) == 0){
     isa_reg_display();
   }
-  if(strcmp("w",args) == 0){
+  else if(strcmp("w",args) == 0){
     isa_reg_display();
   }
+  assert(0);
   return 0;
 }
 
+// cmd_p
+
+// static int cmd_info()
 
 
 static struct {
@@ -87,8 +91,9 @@ static struct {
 
   /* TODO: Add more commands */
   {"si", "execute N step, default N = 1", cmd_si},
- // {"x", "scan expr earn N",cmd_x},
+//  {"x", "scan expr earn N",cmd_x},
   {"info", "show program status", cmd_info},
+  // {"p", "caculate the expr", cmd_p},
   // {"w", "show", cmd_w},
   // {"d", "delete EXPR", cmd_d}
 
@@ -128,7 +133,7 @@ void sdb_mainloop() {
     cmd_c(NULL);
     return;
   }
-  char str[] = "(1+2+3+6+3*(1+3))";
+  char str[] = "(0x1+2+0x3+6+3*(1+3))";
   bool e;
   expr(str,&e);
   for (char *str; (str = rl_gets()) != NULL; ) {
