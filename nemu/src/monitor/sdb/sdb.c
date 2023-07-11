@@ -88,7 +88,7 @@ static void show_memery(vaddr_t s, uint32_t len)
   while(s < temp)
   {
     uint32_t recevie = vaddr_ifetch(s,PMEM_READ_BLOCK_SIZE);
-    printf("%u:%u\r\n", s, recevie);
+    printf("%o:%o\r\n", s, recevie);
     s += 4;    
   }
   
