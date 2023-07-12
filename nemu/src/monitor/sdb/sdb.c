@@ -106,10 +106,10 @@ static int cmd_x(char *args){
 
 static int cmd_w(char *args){
   bool e;
-  uint32_t temp = expr(args, &e);
   WP *Ptemp = new_wp();
-  Ptemp->old_value = temp;
   strcpy(Ptemp->str, args);
+  uint32_t temp = expr(args, &e);
+  Ptemp->old_value = temp;
   return 0;
 }
 
