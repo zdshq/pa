@@ -43,7 +43,7 @@ static void check_watchpoint(){
     if(temp->old_value != new_value){
       nemu_state.state = NEMU_STOP;
       printf("watchpoint %d : %s\r\n",temp->NO, temp->str);
-      printf("old value = %u/r/n", temp->old_value);
+      printf("old value = %u\r\n", temp->old_value);
       printf("New value = %u\r\n", new_value);
       temp->old_value = new_value;
     }
