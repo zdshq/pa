@@ -39,7 +39,6 @@ static void check_watchpoint(){
   bool e;
   for (WP *temp = _head; temp != NULL; temp = temp->next){
     new_value = expr(temp->str, &e);
-    assert(e);
     if(temp->old_value != new_value){
       nemu_state.state = NEMU_STOP;
       printf("watchpoint %d : %s\r\n",temp->NO, temp->str);
