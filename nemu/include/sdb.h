@@ -35,5 +35,6 @@ int64_t StrToInt(char *str, uint32_t len);
 WP* new_wp();
 void free_wp(int No);
 void show_watchpoint();
+WP *get_watchpoint_head(void);
 
 #endif

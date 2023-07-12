@@ -44,6 +44,9 @@ WP* new_wp(){
   return temp;
 }
 
+WP *get_watchpoint_head(void){
+  return head;
+}
 
 void free_wp(int No){
   assert(No < NR_WP);
