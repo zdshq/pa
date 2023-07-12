@@ -184,7 +184,7 @@ static bool make_token(char *e) {
             break;
           case TK_REGS:
             bool e;
-            array[myindex].value = isa_reg_str2val(substr_start,&e);
+            array[myindex].value = isa_reg_str2val(substr_start+1,&e);
             assert(e);
             array[myindex].token_type = TK_NUMBER;
             break;
