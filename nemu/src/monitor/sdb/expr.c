@@ -53,7 +53,7 @@ static struct rule {
   {"([0-9][0-9]*)|(0[xX][0-9a-f]+)", TK_NUMBER},    // number
   {"\\(", '('},         // Left parenthesis
   {"\\)", ')'},          // right parenthesis
-  {"&((0)|(ra)|(tp)|(sp)|(a[0-7])|(t[0-8])|(rs)|(fp)|(s[0-8])|(pc))",
+  {"$((0)|(ra)|(tp)|(sp)|(a[0-7])|(t[0-8])|(rs)|(fp)|(s[0-8])|(pc))",
   TK_REGS},
   {"!=", TK_NEQ},
   {"&&", TK_AND} 
