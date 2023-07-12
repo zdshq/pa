@@ -353,6 +353,6 @@ word_t expr(char *e, bool *success) {
 
 
   /* TODO: Insert codes to evaluate the expression. */
-  printf("\r\nresult : %u\r\n", (uint32_t)eval(0,myindex-1));
+  *e = true;
   return eval(0,myindex-1);
 }
