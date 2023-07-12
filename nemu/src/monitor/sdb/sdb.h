@@ -20,7 +20,20 @@
 
 #define MAX_TOKEN_SIZE 200// token max size
 #define PMEM_READ_BLOCK_SIZE 4 // mem read one block size
+#define WATCH_STR_SIZE 100
+typedef struct watchpoint {
+  int NO;
+  struct watchpoint *next;
+
+  /* TODO: Add more members if necessary */
+  char str[WATCH_STR_SIZE];
+  uint32_t old_value; 
+} WP;
 
 word_t expr(char *e, bool *success);
 int64_t StrToInt(char *str, uint32_t len);
+WP* new_wp();
+void free_wp(int No);
+void show_watchpoint();
+
 #endif

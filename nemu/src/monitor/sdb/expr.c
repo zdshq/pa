@@ -315,7 +315,7 @@ int64_t eval(int p,int q) {
       case '*': return val1 * val2;
       case '/': return val1 / val2;
       case TK_EQ: return val1 == val2;
-      case TK_P: return vaddr_ifetch(val2, PMEM_READ_BLOCK_SIZE);
+      case TK_P: return vaddr_read(val2, PMEM_READ_BLOCK_SIZE);
       case TK_AND: return val1 && val2;
       case TK_NEQ: return !(val1 == val2);
       case TK_NEG: return -val2;

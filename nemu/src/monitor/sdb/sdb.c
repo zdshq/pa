@@ -70,9 +70,8 @@ static int cmd_info(char *args) {
     isa_reg_display();
   }
   else if(strcmp("w",args) == 0){
-    isa_reg_display();
+    show_watchpoint();
   }
-  assert(0);
   return 0;
 }
 
@@ -105,6 +104,23 @@ static int cmd_x(char *args){
   return 0;
 }
 
+static int cmd_w(char *args){
+  bool e;
+  uint32_t temp = expr(args, &e);
+  WP *Ptemp = new_wp();
+  Ptemp->old_value = temp;
+  strcpy(Ptemp->str, args);
+  return 0;
+}
+
+static int cmd_d(char *args){
+  bool e;
+  uint32_t temp = expr(args, &e);
+  free_wp(temp);
+  return 0;
+}
+
+
 
 static struct {
   const char *name;
@@ -120,8 +136,8 @@ static struct {
  {"x", "scan expr earn N", cmd_x},
   {"info", "show program status", cmd_info},
   {"p", "caculate the expr", cmd_p},
-  // {"w", "show", cmd_w},
-  // {"d", "delete EXPR", cmd_d}
+  {"w", "watch variable", cmd_w},
+  {"d", "delete watchpoint", cmd_d}
 
 };
 
