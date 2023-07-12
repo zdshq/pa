@@ -133,7 +133,7 @@ static struct {
 
   /* TODO: Add more commands */
   {"si", "execute N step, default N = 1", cmd_si},
- {"x", "scan expr earn N", cmd_x},
+  {"x", "scan expr earn N", cmd_x},
   {"info", "show program status", cmd_info},
   {"p", "caculate the expr", cmd_p},
   {"w", "watch variable", cmd_w},
