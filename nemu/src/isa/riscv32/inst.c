@@ -73,8 +73,8 @@ static int decode_exec(Decode *s) {
   INSTPAT_END();
 
   R(0) = 0; // reset $zero to 0
-  printf("inst.c:76 : %u",PC);
-  printf("inst.c:77 : %u",s->dnpc);
+  printf("inst.c:76 : %x\r\n",PC);
+  printf("inst.c:77 : %x\r\n",s->dnpc);
   return 0;
 }
 
