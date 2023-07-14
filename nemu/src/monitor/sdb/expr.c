@@ -140,8 +140,8 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         uint32_t substr_len = pmatch.rm_eo;
 
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        // Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+        //     i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -215,7 +215,6 @@ static bool make_token(char *e) {
 uint32_t find_main_operation(int p,int q){
   int flag = 0;
   int i;
-  printf("%d, %d\r\n",p, q);
   for(i = q; i >= p; i--){
     if(array[i].token_type == '(')
       flag--;
@@ -247,7 +246,6 @@ uint32_t find_main_operation(int p,int q){
       return i;
   }   
   for(i = q; i >= p; i--){
-    printf("i:%u",i);
     if(array[i].token_type == '(')
       flag--;
     else if(array[i].token_type == ')')
@@ -304,12 +302,10 @@ int64_t eval(int p,int q) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
-    printf("ads1:%d,%d\r\n",p, q);
     return eval(p + 1, q - 1);
   }
   else {
     op = find_main_operation(p ,q);
-    printf("op:%ld;%d\r\n",op,array[op].token_type);
     val1 = eval(p, op - 1);
     val2 = eval(op + 1, q);
     switch (array[op].token_type) {
@@ -328,7 +324,6 @@ int64_t eval(int p,int q) {
 }
 
 word_t expr(char *e, bool *success) {
-  printf("hhhhaaaa");
   myindex = 0;
   if (!make_token(e)) {
     *success = false;
