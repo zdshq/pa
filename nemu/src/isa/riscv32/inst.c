@@ -147,7 +147,6 @@ static int decode_exec(Decode *s) {
 
   R(0) = 0; // reset $zero to 0
   printf("inst.c:76 : %x\r\n",PC);
-  printf("inst.c:77 : %x\r\n",s->dnpc);
   return 0;
 }
 
