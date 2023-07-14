@@ -40,13 +40,13 @@ enum {
 
 #define handle_bne          \
 {                           \
-  if((int32_t)src1 != (int32_t)src2)          \
+  if(src1 != src2)          \
     s->dnpc = PC + imm;     \
 }
 
 #define handle_beqz          \
 {                           \
-  if((int32_t)src1 == (int32_t)src2)          \
+  if(src1 == src2)          \
     s->dnpc = PC + imm;     \
 }
 
