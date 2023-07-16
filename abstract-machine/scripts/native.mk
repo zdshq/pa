@@ -21,6 +21,7 @@ image:
 	@g++ -pie -o $(IMAGE) -Wl,--whole-archive $(LINKAGE) -Wl,-no-whole-archive $(LDFLAGS_CXX) -lSDL2 -ldl
 
 run: image
+    @echo $(IMAGE)
 	$(IMAGE)
 
 gdb: image
