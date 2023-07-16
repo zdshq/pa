@@ -9,7 +9,6 @@ html:
 
 ### Default to create a bare-metal kernel image
 ifeq ($(MAKECMDGOALS),)
-  @echo \# Creating image [$(MAKECMDGOALS)]
   MAKECMDGOALS  = image
   .DEFAULT_GOAL = image
 endif
