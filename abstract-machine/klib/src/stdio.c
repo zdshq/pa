@@ -54,8 +54,7 @@ escape_type find_escape(const char *fmt, int *seek){
 }
 
 int myitoa(int a, char* out){
-    int len = 0, int_temp;
-    int_temp = a;
+    int len = 0, int_temp = a;
     do{
         len++;
         int_temp /= 10;
