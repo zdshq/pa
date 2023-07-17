@@ -139,7 +139,7 @@ static int decode_exec(Decode* s) {
 
   if(s->dnpc == 0x0000000080001280)
   {
-    // printf("a::%lu\r\n",s->pc)
+    Log("a::%lu\r\n",s->pc);
     assert(0);    
   }
 
