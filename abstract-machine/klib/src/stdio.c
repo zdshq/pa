@@ -2,6 +2,7 @@
 #include <klib.h>
 #include <klib-macros.h>
 #include <stdarg.h>
+#include <string.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
@@ -16,6 +17,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 enum{
     INT_TYPE = 0,
     STR_TYPE,
+    LF_TYPE,
     TYPE_END
 };
 
@@ -30,11 +32,12 @@ escape_type find_escape(const char *fmt, int *seek){
     escape_type type_table[TYPE_END + 1] = {
         {INT_TYPE, "%d"},
         {STR_TYPE, "%s"},
-        {TYPE_END, ""},
+        {LF_TYPE, "\n"},
+        {TYPE_END, ""}
     };
     int i;
     for(i = *seek; fmt[i] != '\0'; i++){
-        if(fmt[i] == '%'){
+        if(fmt[i] == '%' || fmt[i] == '\n'){
             for(int j = 0; j != TYPE_END; j++){
                 int len = strlen(type_table[j].str);
                 if(strncmp(fmt + i, type_table[j].str, len) == 0)
@@ -58,7 +61,7 @@ int myitoa(int a, char* out){
         int_temp /= 10;
     }while(int_temp);
     for(int i = 0; i < len; i++){
-        out[i] = a % 10 + '0';
+        out[len - 1 - i] = a % 10  + '0';
         a /= 10;
     }
     return len;
@@ -68,13 +71,15 @@ int sprintf(char *out, const char *fmt,...)
 {
     va_list ap;
     escape_type temp;
+    memset(out,0,strlen(out));
+    int i;
+    int count = 0;
     int index = 0;
-    int count = 0;;
     int last_i = 0;
     int int_temp;
     char *str_temp;
     va_start(ap, fmt);
-    for (int i = 0; fmt[i] != '\0'; ++i) {
+    for (i = 0; fmt[i] != '\0'; ++i) {
         temp = find_escape(fmt, &i);
         if (temp.type == TYPE_END)
         {
@@ -95,11 +100,17 @@ int sprintf(char *out, const char *fmt,...)
             strncpy(out+index, str_temp, strlen(str_temp));   
             index += strlen(str_temp);             
             break;    
+        case LF_TYPE:
+            strncpy(out+index, "\n", 2);
+            index += 2;    
+            count--; 
+            break;   
         default:
             break;
         }
-        count++;
         last_i = i;
+        i--;
+        count++;
     }
     va_end(ap);
     out[index] = '\0';

@@ -42,6 +42,8 @@ char *strcat(char *dst, const char *src) {
   return dst;
 }
 
+
+
 int strcmp(const char *s1, const char *s2) {
   int i,j,len;
   for(i = 0; s1[i] != '\0'; i++);
