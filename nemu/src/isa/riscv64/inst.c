@@ -14,6 +14,7 @@
 ***************************************************************************************/
 
 #include "local-include/reg.h"
+#include <stdio.h>
 #include <cpu/cpu.h>
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
@@ -135,6 +136,12 @@ static int decode_exec(Decode* s) {
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));
   INSTPAT_END();
   R(0) = 0; // reset $zero to 0
+
+  if(s->dnpc == 0x0000000080001280)
+  {
+    // printf("a::%lu\r\n",s->pc)
+    assert(0);    
+  }
 
   return 0;
 }
