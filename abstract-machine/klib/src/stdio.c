@@ -88,19 +88,19 @@ int sprintf(char *out, const char *fmt,...)
         {
         case INT_TYPE:
             int_temp = va_arg(ap, int);
-            strncpy(out + index, fmt + last_i, i - (strlen(temp.str)) - last_i);
+            memcpy(out + index, fmt + last_i, i - (strlen(temp.str)) - last_i);
             index += i - last_i -strlen(temp.str);
             index += myitoa(int_temp, out+index);
             break;
         case STR_TYPE:
             str_temp = va_arg(ap, char *);
-            strncpy(out + index, fmt + last_i, i - (strlen(temp.str)) - last_i);
+            memcpy(out + index, fmt + last_i, i - (strlen(temp.str)) - last_i);
             index += i - last_i -strlen(temp.str);
-            strncpy(out+index, str_temp, strlen(str_temp));   
+            memcpy(out+index, str_temp, strlen(str_temp));   
             index += strlen(str_temp);             
             break;    
         case LF_TYPE:
-            strncpy(out+index, "\n", 2);
+            memcpy(out+index, "\n", 2);
             index += 2;    
             count--; 
             break;   
