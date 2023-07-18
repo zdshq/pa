@@ -2,88 +2,126 @@
 #include <klib.h>
 #include <klib-macros.h>
 #include <stdarg.h>
+#include <string.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-int vsprintf(char* buf, const char* fmt, va_list args) {
-  char* buf_p = buf;
-  static char str_temp[64];
-  while (*fmt != '\0') {
-    if (*fmt != '%') {
-      *buf_p++ = *fmt++; // 普通字符，直接复制
-    }
-    else {
-      // 先加 1 ，跳过 %
-      switch (*(++fmt)) {
-      case 'c':
-        char ch = va_arg(args, int);
-        *buf_p++ = ch;
-        break;
-      case 's':
-        char* str = va_arg(args, char*);
-        size_t len_s = strlen(str);
-        strcpy(buf_p, str);
-        buf_p += len_s;
-        break;
-      case 'd':
-        int num_d = va_arg(args, int);
-        char* num_d2str = itoa(num_d, (char*)&str_temp, 10);
-        strcpy(buf_p, num_d2str);
-        size_t len_d = strlen(num_d2str);
-        buf_p += len_d;
-        break;
-      case 'p':
-        int num_p = va_arg(args, int);
-        char* num_p2str = itoa(num_p, (char*)&str_temp, 16);
-        strcpy(buf_p, num_p2str);
-        size_t len_p = strlen(num_p2str);
-        buf_p += len_p;
-        break;
-      default:
-        break;
-      }
-      fmt++;
-    }
-  }
-  *buf_p++ = '\0';
-  return buf_p - buf;
-}
-
-int snprintf(char* out, size_t n, const char* fmt, ...) {
+int printf(const char *fmt, ...) {
   panic("Not implemented");
 }
 
-int vsnprintf(char* out, size_t n, const char* fmt, va_list ap) {
+int vsprintf(char *out, const char *fmt, va_list ap) {
   panic("Not implemented");
 }
 
-int sprintf(char* buf, const char* fmt, ...) {
-  va_list args;
-  int i;
+enum{
+    INT_TYPE = 0,
+    STR_TYPE,
+    LF_TYPE,
+    TYPE_END
+};
 
-  va_start(args, fmt);
-  i = vsprintf(buf, fmt, args);
-  va_end(args);
-  return i;
+typedef struct t_escape_type
+{
+    int type;
+    char str[4];
+}escape_type;
+
+
+escape_type find_escape(const char *fmt, int *seek){
+    escape_type type_table[TYPE_END + 1] = {
+        {INT_TYPE, "%d"},
+        {STR_TYPE, "%s"},
+        {LF_TYPE, "\n"},
+        {TYPE_END, ""}
+    };
+    int i;
+    for(i = *seek; fmt[i] != '\0'; i++){
+        if(fmt[i] == '%' || fmt[i] == '\n'){
+            for(int j = 0; j != TYPE_END; j++){
+                int len = strlen(type_table[j].str);
+                if(strncmp(fmt + i, type_table[j].str, len) == 0)
+                {
+                    *seek = i + strlen(type_table[j].str);
+                    return type_table[j];
+                }
+                    
+            }
+        }
+    }
+    *seek = i;
+    return type_table[TYPE_END];
 }
 
-void puts(const char* str) {
-  while (*str)
-    putch(*str++);
+int myitoa(int a, char* out){
+    int len = 0, int_temp = a;
+    do{
+        len++;
+        int_temp /= 10;
+    }while(int_temp);
+    for(int i = 0; i < len; i++){
+        out[len - 1 - i] = a % 10  + '0';
+        a /= 10;
+    }
+    return len;
 }
 
-static char printf_buf[2048];
-int printf(const char* fmt, ...) {
-  va_list args;
-  int ret;
-  va_start(args, fmt);
-  ret = vsprintf(printf_buf, fmt, args);
-  va_end(args);
-
-  puts(printf_buf);
-
-  return ret;
+int sprintf(char *out, const char *fmt,...)
+{
+    va_list ap;
+    escape_type temp;
+    memset(out,0,strlen(out));
+    int i;
+    int count = 0;
+    int index = 0;
+    int last_i = 0;
+    int int_temp;
+    char *str_temp;
+    va_start(ap, fmt);
+    for (i = 0; fmt[i] != '\0'; ++i) {
+        temp = find_escape(fmt, &i);
+        if (temp.type == TYPE_END)
+        {
+            continue;
+        }
+        switch (temp.type)
+        {
+        case INT_TYPE:
+            int_temp = va_arg(ap, int);
+            memcpy(out + index, fmt + last_i, i - (strlen(temp.str)) - last_i);
+            index += i - last_i -strlen(temp.str);
+            index += myitoa(int_temp, out+index);
+            break;
+        case STR_TYPE:
+            str_temp = va_arg(ap, char *);
+            memcpy(out + index, fmt + last_i, i - (strlen(temp.str)) - last_i);
+            index += i - last_i -strlen(temp.str);
+            memcpy(out+index, str_temp, strlen(str_temp));   
+            index += strlen(str_temp);             
+            break;    
+        case LF_TYPE:
+            memcpy(out+index, "\n", 2);
+            index += 2;    
+            count--; 
+            break;   
+        default:
+            break;
+        }
+        last_i = i;
+        i--;
+        count++;
+    }
+    va_end(ap);
+    out[index] = '\0';
+    return count;
 }
 
+int snprintf(char *out, size_t n, const char *fmt, ...) {
+  panic("Not implemented");
+}
+
+int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
+  panic("Not implemented");
+}
 
 #endif
