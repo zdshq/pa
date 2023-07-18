@@ -116,7 +116,7 @@ static void execute(uint64_t n) {
     trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING) 
     {
-      if (nemu_state.state == NEMU_ABORT)
+      if (nemu_state.halt_ret != 0)
         show(&s);
       break;
     }
