@@ -53,8 +53,9 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
 #endif
-  printf("hhh,zds\r\n");
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
+  strcpy(_this->ringbuf[_this->count++], _this->logbuf);
+  _this->count %= 50;
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
   check_watchpoint();
 }
@@ -90,13 +91,32 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #endif
 }
 
+void show(Decode *_this){
+  for(int i = 0; i < 50; i++){
+    if(_this->ringbuf[i][0] != 0){
+      if ((_this->count+50 - 1) % 50 == i){
+        printf("-->");
+      }
+      else 
+        printf("   ");
+      printf("%s\n", _this->ringbuf[i]);      
+    }
+
+  }
+}
+
 static void execute(uint64_t n) {
   Decode s;
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
     trace_and_difftest(&s, cpu.pc);
-    if (nemu_state.state != NEMU_RUNNING) break;
+    if (nemu_state.state != NEMU_RUNNING) 
+    {
+      // if (nemu_state.state != NEMU_ABORT)
+      show(&s);
+      break;
+    }
     IFDEF(CONFIG_DEVICE, device_update());
   }
 }
