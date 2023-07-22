@@ -34,7 +34,7 @@ void init_mem_log(const char *mem_file) {
   if (mem_file != NULL) {
     FILE *fp = fopen(mem_file, "w");
     Assert(fp, "Can not open '%s'", mem_file);
-    log_fp = fp;
+    mem_fp = fp;
   }
   Log("Log is written to %s", mem_file ? mem_file : "stdout");
 }
