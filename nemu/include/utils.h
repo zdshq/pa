@@ -67,6 +67,14 @@ uint64_t get_time();
   } while (0) \
 )
 
+#define log_mem_write(...) IFDEF(CONFIG_TARGET_NATIVE_ELF, \
+  do { \
+    extern FILE* mem_fp; \
+    fprintf(mem_fp, __VA_ARGS__); \
+    fflush(mem_fp); \
+  } while (0) \
+)
+
 #define _Log(...) \
   do { \
     printf(__VA_ARGS__); \
