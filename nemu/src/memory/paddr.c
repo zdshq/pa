@@ -57,14 +57,26 @@ void init_mem() {
 }
 
 word_t paddr_read(paddr_t addr, int len) {
-  if (likely(in_pmem(addr))) return pmem_read(addr, len);
+  char log_buf[100];
+  if (likely(in_pmem(addr))) 
+  {
+    sprintf(log_buf,"%lx:\t type:read  value:%lx\n", cpu.pc, pmem_read(addr, len));
+    log_mem_write("%s",log_buf);
+    return pmem_read(addr, len);
+  }
+  
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
   out_of_bound(addr);
   return 0;
 }
 
 void paddr_write(paddr_t addr, int len, word_t data) {
-  if (likely(in_pmem(addr))) { pmem_write(addr, len, data); return; }
+  char log_buf[100];
+  if (likely(in_pmem(addr))) { 
+    sprintf(log_buf,"%lx:\t type:write  oldvalue:%lx\t newvalue:%lx\n", cpu.pc, pmem_read(addr, len), data);
+    log_mem_write("%s",log_buf);
+    pmem_write(addr, len, data); 
+  return; }
   IFDEF(CONFIG_DEVICE, mmio_write(addr, len, data); return);
   out_of_bound(addr);
 }
