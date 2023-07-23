@@ -19,6 +19,11 @@
 #include <common.h>
 
 typedef struct {
+  char func_name[50];
+  word_t start;
+  size_t size;
+}t_func_info;
+typedef struct {
   word_t gpr[32];
   vaddr_t pc;
 } riscv64_CPU_state;

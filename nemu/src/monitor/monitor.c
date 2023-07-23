@@ -17,6 +17,7 @@
 #include <memory/paddr.h>
 #include <stdio.h>
 
+
 void init_rand();
 void init_log(const char *log_file);
 void init_mem_log(const char *mem_file);
@@ -49,6 +50,8 @@ static char *elf_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
+t_func_info func_info[100];
+int64_t func_index = 0;
 
 static long load_img() {
   if (img_file == NULL) {
@@ -73,6 +76,7 @@ static long load_img() {
 }
 #include <elf.h>
 
+
 void init_elf(const char *elf_file){
     if(elf_file == NULL)
       return;
@@ -95,7 +99,11 @@ void init_elf(const char *elf_file){
         }
     }
     for(int i = 0; sym[i].st_info < 127; i++){
-        printf("%d : %s\r\n", i, buffer+sym[i].st_name);
+        if(ELF64_ST_TYPE(sym[i].st_info) == STT_FUNC){
+          strcpy(func_info[func_index].func_name, buffer+sym[i].st_name);
+          func_info[func_index].start = sym[i].st_value;
+          func_info[func_index++].size = sym[i].st_size;
+        }
     }
 }
 
