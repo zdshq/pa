@@ -15,6 +15,7 @@
 
 #include <isa.h>
 #include <memory/paddr.h>
+#include <stdio.h>
 
 void init_rand();
 void init_log(const char *log_file);
@@ -44,6 +45,7 @@ void sdb_set_batch_mode();
 
 static char *log_file = NULL;
 static char *mem_file = NULL;
+static char *elf_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
@@ -69,6 +71,33 @@ static long load_img() {
   fclose(fp);
   return size;
 }
+#include <elf.h>
+
+void init_elf(const char *elf_file){
+    if(elf_file == NULL)
+      return;
+    FILE* fp = fopen(elf_file, "rb");
+    Elf64_Ehdr ehdr;
+    assert(fread(&ehdr, sizeof(Elf64_Ehdr), 1, fp) == 1);
+    Elf64_Shdr shdr[ehdr.e_shnum];
+    fseek(fp, ehdr.e_shoff, SEEK_SET);
+    assert(fread(shdr, sizeof(Elf64_Shdr), ehdr.e_shnum, fp) == ehdr.e_shnum);
+    Elf64_Sym sym[1000];
+    char buffer[1024*4];
+    memset(sym, 0x7f, sizeof(sym));
+    // int count = 0;;
+    for(int i = 0; i < ehdr.e_shnum; i++){
+        if(shdr[i].sh_type == SHT_SYMTAB){
+            fseek(fp, shdr[i].sh_offset, SEEK_SET);
+            assert(fread(sym, sizeof(Elf64_Sym), (shdr[i+1].sh_offset - shdr[i].sh_offset) / sizeof(Elf64_Sym), fp) == (shdr[i+1].sh_offset - shdr[i].sh_offset) / sizeof(Elf64_Sym));
+            fseek(fp, shdr[i+1].sh_offset, SEEK_SET);
+            assert(fread(buffer, sizeof(char), shdr[i+1].sh_size, fp) == shdr[i+1].sh_size);
+        }
+    }
+    for(int i = 0; sym[i].st_info < 127; i++){
+        printf("%d : %s\r\n", i, buffer+sym[i].st_name);
+    }
+}
 
 static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
@@ -78,16 +107,18 @@ static int parse_args(int argc, char *argv[]) {
     {"port"     , required_argument, NULL, 'p'},
     {"help"     , no_argument      , NULL, 'h'},
     {"mem"      , required_argument, NULL, 'm'},
+    {"elf"      , required_argument, NULL, 'e'},
     {0          , 0                , NULL,  0 },
   };
   int o;
-  while ( (o = getopt_long(argc, argv, "-bhl:d:p:m:mem", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-bhl:d:p:m:e:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'm': mem_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
+      case 'e': elf_file = optarg; break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
@@ -119,6 +150,9 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Initialize memory. */
   init_mem();
+
+  /* Initialize elf infomation*/
+  init_elf(elf_file);
 
   /* Initialize devices. */
   IFDEF(CONFIG_DEVICE, init_device());
