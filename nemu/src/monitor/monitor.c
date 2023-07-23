@@ -105,6 +105,7 @@ void init_elf(const char *elf_file){
           func_info[func_index++].size = sym[i].st_size;
         }
     }
+    printf("funcindex : %ld\r\n", func_index);
 }
 
 static int parse_args(int argc, char *argv[]) {
