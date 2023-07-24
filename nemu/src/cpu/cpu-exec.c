@@ -64,23 +64,26 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   // func_log_write(_this->logbuf);
   // if(find_str)
   if (find_str(_this->logbuf, "jal") || find_str(_this->logbuf, "jalr") ){
-    for(int i = 0; i < func_index; i++){
-      if(_this->dnpc >= func_info[i].start && _this->dnpc < (func_info[i].start + func_info[i].size)){
-        char str[100];
-        sprintf(str,"pc:%lx\t%ld:call func:%s\n", _this->pc, func_index, func_info[i].func_name);
-        printf("%s", str);
-      }
-    }    
-  }
-  else if(find_str(_this->logbuf, "ret") == 1){
-    printf("myret\n");
-    for(int i = 0; i < func_index; i++){
-      if(_this->pc >= func_info[i].start && _this->pc < (func_info[i].start + func_info[i].size)){
-        char str[100];
-        sprintf(str,"pc:%lx\t%ld:ret func:%s\n", _this->pc, func_index,func_info[i].func_name);
-        printf("%s", str);
+    if(_this->pc == 0x00008067){
+      printf("myret\n");
+      for(int i = 0; i < func_index; i++){
+        if(_this->pc >= func_info[i].start && _this->pc < (func_info[i].start + func_info[i].size)){
+          char str[100];
+          sprintf(str,"pc:%lx\t%ld:ret func:%s\n", _this->pc, func_index,func_info[i].func_name);
+          printf("%s", str);
+        }
       }
     }
+    else{
+      for(int i = 0; i < func_index; i++){
+        if(_this->dnpc >= func_info[i].start && _this->dnpc < (func_info[i].start + func_info[i].size)){
+          char str[100];
+          sprintf(str,"pc:%lx\t%ld:call func:%s\n", _this->pc, func_index, func_info[i].func_name);
+          printf("%s", str);
+        }
+      }         
+    }
+ 
   }
 
 #endif
