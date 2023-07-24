@@ -56,8 +56,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 // #ifdef CONFIG_MTRACE_COND
 //    log_mem_write("%s\n", _this->logbuf); 
 // #endif
-// #ifdef CONFIG_ITRACE_COND
-//   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
+// #ifdef CONFIG_FTRACE_COND
+  
 // #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   strcpy(_this->ringbuf[_this->count++], _this->logbuf);
