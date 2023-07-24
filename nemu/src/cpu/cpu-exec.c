@@ -30,7 +30,7 @@ CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
-extern t_func_info func_info[100];
+extern t_func_info func_info[50];
 extern int64_t func_index;
 
 void device_update();
