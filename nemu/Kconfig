@@ -163,6 +163,11 @@ config MTRACE_COND
   string "Only trace memory when the condition is true"
   default "true"
 
+config FTRACE_COND
+  depends on TRACE
+  string "Only trace memory when the condition is true"
+  default "true"
+
 choice
   prompt "Reference design"
   default DIFFTEST_REF_SPIKE if ISA_riscv64 || ISA_riscv32

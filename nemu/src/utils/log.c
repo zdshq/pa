@@ -72,7 +72,7 @@ void init_elf(const char *elf_file, const char *func_file){
         }
     }
     func_fp = fp1;
-    Log("Elflog is written to %s", func_file ? func_file : "stdout");
+    Log("Elflog is written to %s", func_file);
 }
 
 bool log_enable() {
