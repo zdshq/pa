@@ -1,4 +1,3 @@
-#include <common.h>
 #include <utils.h>
 
 uint32_t HextoInt(char c)
@@ -31,3 +30,15 @@ int64_t StrToInt(char *str, uint32_t len)
 
   return num;
 }
+
+int find_str(const char *s1, const char *s2){
+  for(int i = 0; i < strlen(s1); i++)
+  {
+    if (s1[i] == s2[0]){
+      if(strncmp(s1+i, s2, strlen(s2)) == 0)
+        return 1;
+    }
+  }
+  return 0;
+}
+

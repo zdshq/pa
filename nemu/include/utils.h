@@ -84,5 +84,5 @@ uint64_t get_time();
 
 uint32_t HextoInt(char c);
 int64_t StrToInt(char *str, uint32_t len);
-
+int find_str(const char *s1, const char *s2);
 #endif

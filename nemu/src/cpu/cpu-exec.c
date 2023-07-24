@@ -49,16 +49,6 @@ static void check_watchpoint(){
   }
 }
 
-// static int find_str(const char *s1, const char *s2){
-//   for(int i = 0; i < strlen(s1); i++)
-//   {
-//     if (s1[i] == s2[0]){
-//       if(strncmp(s1+i, s2, strlen(s2)) == 0)
-//         return 1;
-//     }
-//   }
-//   return 0;
-// }
 
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
