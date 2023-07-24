@@ -49,16 +49,17 @@ static void check_watchpoint(){
   }
 }
 
-static int find_str(const char *s1, const char *s2){
-  for(int i = 0; i < strlen(s1); i++)
-  {
-    if (s1[i] == s2[0]){
-      if(strncmp(s1+i, s2, strlen(s2)) == 0)
-        return 1;
-    }
-  }
-  return 0;
-}
+// static int find_str(const char *s1, const char *s2){
+//   for(int i = 0; i < strlen(s1); i++)
+//   {
+//     if (s1[i] == s2[0]){
+//       if(strncmp(s1+i, s2, strlen(s2)) == 0)
+//         return 1;
+//     }
+//   }
+//   return 0;
+// }
+
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -68,9 +69,9 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 //    log_mem_write("%s\n", _this->logbuf); 
 // #endif
 #ifdef CONFIG_FTRACE_COND
-  if(find_str(_this->logbuf, "call")){
-    // for()
-  }
+  // if(find_str(_this->logbuf, "call")){
+  //   for()
+  // }
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   strcpy(_this->ringbuf[_this->count++], _this->logbuf);

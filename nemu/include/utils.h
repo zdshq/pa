@@ -82,4 +82,7 @@ uint64_t get_time();
   } while (0)
 
 
+uint32_t HextoInt(char c);
+int64_t StrToInt(char *str, uint32_t len);
+
 #endif
