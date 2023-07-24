@@ -138,7 +138,7 @@ void show(Decode *_this){
 
 static void execute(uint64_t n) {
   Decode s;
-  for(int i = 0; i < 50; i++)
+  for(int i = 0; i < 51; i++)
     memset(s.ringbuf[i], 0, 128);
   
   for (;n > 0; n --) {
