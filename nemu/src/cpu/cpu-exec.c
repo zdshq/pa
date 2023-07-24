@@ -60,30 +60,30 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 // #ifdef CONFIG_MTRACE_COND
 //    log_mem_write("%s\n", _this->logbuf); 
 // #endif
-// #ifdef CONFIG_FTRACE_COND
+#ifdef CONFIG_FTRACE_COND
   // func_log_write(_this->logbuf);
   // if(find_str)
-  // if (find_str(_this->logbuf, "jal") || find_str(_this->logbuf, "jalr") ){
-  //   for(int i = 0; i < func_index; i++){
-  //     if(_this->dnpc >= func_info[i].start && _this->dnpc < (func_info[i].start + func_info[i].size)){
-  //       char str[100];
-  //       sprintf(str,"pc:%lu\t%ld:call func:%s\n", _this->pc, func_index, func_info[i].func_name);
-  //       printf("%s", str);
-  //     }
-  //   }    
-  // }
-  // else if(find_str(_this->logbuf, "ret")){
-  //   uint64_t temp = StrToInt(_this->logbuf, 18);
-  //   for(int i = 0; i < func_index; i++){
-  //     if(temp >= func_info[i].start && temp < (func_info[i].start + func_info[i].size)){
-  //       char str[100];
-  //       sprintf(str,"pc:%lu\t%ld:ret func:%s\n", _this->pc, func_index,func_info[i].func_name);
-  //       printf("%s", str);
-  //     }
-  //   }
-  // }
+  if (find_str(_this->logbuf, "jal") || find_str(_this->logbuf, "jalr") ){
+    for(int i = 0; i < func_index; i++){
+      if(_this->dnpc >= func_info[i].start && _this->dnpc < (func_info[i].start + func_info[i].size)){
+        char str[100];
+        sprintf(str,"pc:%lu\t%ld:call func:%s\n", _this->pc, func_index, func_info[i].func_name);
+        printf("%s", str);
+      }
+    }    
+  }
+  else if(find_str(_this->logbuf, "ret") == 1){
+    uint64_t temp = StrToInt(_this->logbuf, 18);
+    for(int i = 0; i < func_index; i++){
+      if(temp >= func_info[i].start && temp < (func_info[i].start + func_info[i].size)){
+        char str[100];
+        sprintf(str,"pc:%lu\t%ld:ret func:%s\n", _this->pc, func_index,func_info[i].func_name);
+        printf("%s", str);
+      }
+    }
+  }
 
-// #endif
+#endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   memcpy(_this->ringbuf[_this->count], _this->logbuf, 128);
   _this->count++;
