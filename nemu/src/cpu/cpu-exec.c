@@ -85,7 +85,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
-  strcpy(_this->ringbuf[_this->count++], _this->logbuf);
+  strncpy(_this->ringbuf[_this->count++], _this->logbuf, 128);
   _this->count %= 50;
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
   check_watchpoint();
@@ -147,7 +147,7 @@ static void execute(uint64_t n) {
     trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING) 
     {
-      // if (nemu_state.halt_ret != 0)
+      if (nemu_state.halt_ret != 0)
         show(&s);
       break;
     }
