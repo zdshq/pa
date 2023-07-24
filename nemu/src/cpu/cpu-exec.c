@@ -60,7 +60,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 // #ifdef CONFIG_MTRACE_COND
 //    log_mem_write("%s\n", _this->logbuf); 
 // #endif
-#ifdef CONFIG_FTRACE_COND
+// #ifdef CONFIG_FTRACE_COND
   // func_log_write(_this->logbuf);
   // if(find_str)
   // if (find_str(_this->logbuf, "jal") || find_str(_this->logbuf, "jalr") ){
@@ -83,7 +83,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   //   }
   // }
 
-#endif
+// #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   memcpy(_this->ringbuf[_this->count++], _this->logbuf, 128);
   _this->count %= 50;
