@@ -30,6 +30,8 @@ CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
+extern t_func_info func_info[100];
+extern int64_t func_index;
 
 void device_update();
 
@@ -59,9 +61,18 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 //    log_mem_write("%s\n", _this->logbuf); 
 // #endif
 #ifdef CONFIG_FTRACE_COND
-  // if(find_str(_this->logbuf, "call")){
-  //   for()
-  // }
+  // func_log_write(_this->logbuf);
+  // if(find_str)
+  if(find_str(_this->logbuf, "ret")){
+    uint64_t temp = StrToInt(_this->logbuf, 18);
+    for(int i = 0; i < func_index; i++){
+      if(temp >= func_info[i].start && temp < (func_info[i].start + func_info[i].size)){
+        char str[100];
+        sprintf(str,"%ld:ret func:%s", func_index ,func_info[i].func_name);
+      }
+    }
+  }
+
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   strcpy(_this->ringbuf[_this->count++], _this->logbuf);
