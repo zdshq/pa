@@ -73,9 +73,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     }    
   }
   else if(find_str(_this->logbuf, "ret") == 1){
-    uint64_t temp = StrToInt(_this->logbuf, 18);
     for(int i = 0; i < func_index; i++){
-      if(temp >= func_info[i].start && temp < (func_info[i].start + func_info[i].size)){
+      if(_this->pc >= func_info[i].start && _this->pc < (func_info[i].start + func_info[i].size)){
         char str[100];
         sprintf(str,"pc:%lu\t%ld:ret func:%s\n", _this->pc, func_index,func_info[i].func_name);
         printf("%s", str);
