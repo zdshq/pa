@@ -26,7 +26,7 @@ void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
 void init_sdb();
 void init_disasm(const char *triple);
-
+void init_elf(const char *elf_file, const char *func_file);
 static void welcome() {
   Log("Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
   IFDEF(CONFIG_TRACE, Log("If trace is enabled, a log file will be generated "
@@ -47,6 +47,7 @@ void sdb_set_batch_mode();
 static char *log_file = NULL;
 static char *mem_file = NULL;
 static char *elf_file = NULL;
+static char *func_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
@@ -74,39 +75,6 @@ static long load_img() {
   fclose(fp);
   return size;
 }
-#include <elf.h>
-
-
-void init_elf(const char *elf_file){
-    if(elf_file == NULL)
-      return;
-    FILE* fp = fopen(elf_file, "rb");
-    Elf64_Ehdr ehdr;
-    assert(fread(&ehdr, sizeof(Elf64_Ehdr), 1, fp) == 1);
-    Elf64_Shdr shdr[ehdr.e_shnum];
-    fseek(fp, ehdr.e_shoff, SEEK_SET);
-    assert(fread(shdr, sizeof(Elf64_Shdr), ehdr.e_shnum, fp) == ehdr.e_shnum);
-    Elf64_Sym sym[1000];
-    char buffer[1024*4];
-    memset(sym, 0x7f, sizeof(sym));
-    // int count = 0;;
-    for(int i = 0; i < ehdr.e_shnum; i++){
-        if(shdr[i].sh_type == SHT_SYMTAB){
-            fseek(fp, shdr[i].sh_offset, SEEK_SET);
-            assert(fread(sym, sizeof(Elf64_Sym), (shdr[i+1].sh_offset - shdr[i].sh_offset) / sizeof(Elf64_Sym), fp) == (shdr[i+1].sh_offset - shdr[i].sh_offset) / sizeof(Elf64_Sym));
-            fseek(fp, shdr[i+1].sh_offset, SEEK_SET);
-            assert(fread(buffer, sizeof(char), shdr[i+1].sh_size, fp) == shdr[i+1].sh_size);
-        }
-    }
-    for(int i = 0; sym[i].st_info < 127; i++){
-        if(ELF64_ST_TYPE(sym[i].st_info) == STT_FUNC){
-          strcpy(func_info[func_index].func_name, buffer+sym[i].st_name);
-          func_info[func_index].start = sym[i].st_value;
-          func_info[func_index++].size = sym[i].st_size;
-        }
-    }
-    printf("funcindex : %ld\r\n", func_index);
-}
 
 static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
@@ -117,6 +85,7 @@ static int parse_args(int argc, char *argv[]) {
     {"help"     , no_argument      , NULL, 'h'},
     {"mem"      , required_argument, NULL, 'm'},
     {"elf"      , required_argument, NULL, 'e'},
+    {"func"      , required_argument, NULL, 'f'},
     {0          , 0                , NULL,  0 },
   };
   int o;
@@ -128,6 +97,7 @@ static int parse_args(int argc, char *argv[]) {
       case 'm': mem_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
       case 'e': elf_file = optarg; break;
+      case 'f': func_file = optarg; break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
@@ -161,7 +131,7 @@ void init_monitor(int argc, char *argv[]) {
   init_mem();
 
   /* Initialize elf infomation*/
-  init_elf(elf_file);
+  init_elf(elf_file, func_file);
 
   /* Initialize devices. */
   IFDEF(CONFIG_DEVICE, init_device());
