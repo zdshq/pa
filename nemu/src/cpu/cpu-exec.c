@@ -64,7 +64,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   // func_log_write(_this->logbuf);
   // if(find_str)
   if (find_str(_this->logbuf, "jal") || find_str(_this->logbuf, "jalr") ){
-    if(_this->pc == 0x00008067){
+    if(_this->isa.inst.val == 0x00008067){
       printf("myret\n");
       for(int i = 0; i < func_index; i++){
         if(_this->pc >= func_info[i].start && _this->pc < (func_info[i].start + func_info[i].size)){
