@@ -160,7 +160,7 @@ config DIFFTEST
 
 config MTRACE_COND
   depends on TRACE
-  string "Only trace memory when the condition is true"
+  string "Only trace function when the condition is true"
   default "true"
 
 config FTRACE_COND
