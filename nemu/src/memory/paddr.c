@@ -57,10 +57,10 @@ void init_mem() {
 }
 
 word_t paddr_read(paddr_t addr, int len) {
-  char log_buf[100];
   if (likely(in_pmem(addr))) 
   {
     #ifdef CONFIG_MTRACE_COND
+      char log_buf[100];
       sprintf(log_buf,"%lx:\t type:read  value:%lx\n", cpu.pc, pmem_read(addr, len));
       log_mem_write("%s",log_buf);
     #endif
@@ -73,9 +73,9 @@ word_t paddr_read(paddr_t addr, int len) {
 }
 
 void paddr_write(paddr_t addr, int len, word_t data) {
-  char log_buf[100];
   if (likely(in_pmem(addr))) { 
     #ifdef CONFIG_MTRACE_COND
+      char log_buf[100];
       sprintf(log_buf,"%lx:\t type:write  oldvalue:%lx\t newvalue:%lx\n", cpu.pc, pmem_read(addr, len), data);
       log_mem_write("%s",log_buf);
     #endif
