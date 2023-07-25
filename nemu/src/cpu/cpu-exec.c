@@ -36,21 +36,21 @@ extern int64_t call_index;
 
 void device_update();
 
-static void check_watchpoint(){
-  uint32_t new_value;
-  WP *_head = get_watchpoint_head();
-  bool e;
-  for (WP *temp = _head; temp != NULL; temp = temp->next){
-    new_value = expr(temp->str, &e);
-    if(temp->old_value != new_value){
-      nemu_state.state = NEMU_STOP;
-      printf("watchpoint %d : %s\r\n",temp->NO, temp->str);
-      printf("old value = %u\r\n", temp->old_value);
-      printf("New value = %u\r\n", new_value);
-      temp->old_value = new_value;
-    }
-  }
-}
+// static void check_watchpoint(){
+//   uint32_t new_value;
+//   WP *_head = get_watchpoint_head();
+//   bool e;
+//   for (WP *temp = _head; temp != NULL; temp = temp->next){
+//     new_value = expr(temp->str, &e);
+//     if(temp->old_value != new_value){
+//       nemu_state.state = NEMU_STOP;
+//       printf("watchpoint %d : %s\r\n",temp->NO, temp->str);
+//       printf("old value = %u\r\n", temp->old_value);
+//       printf("New value = %u\r\n", new_value);
+//       temp->old_value = new_value;
+//     }
+//   }
+// }
 
 
 
@@ -93,7 +93,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   // _this->count++;
   // _this->count %= 50;
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
-  check_watchpoint();
+  // check_watchpoint();
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
