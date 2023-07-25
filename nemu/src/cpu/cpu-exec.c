@@ -153,7 +153,7 @@ static void execute(uint64_t n) {
     if (nemu_state.state != NEMU_RUNNING) 
     {
       if (nemu_state.halt_ret != 0)
-        show(&s);
+        // show(&s);
       break;
     }
     IFDEF(CONFIG_DEVICE, device_update());
