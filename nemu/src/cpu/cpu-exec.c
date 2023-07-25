@@ -36,21 +36,21 @@ extern int64_t call_index;
 
 void device_update();
 
-// static void check_watchpoint(){
-//   uint32_t new_value;
-//   WP *_head = get_watchpoint_head();
-//   bool e;
-//   for (WP *temp = _head; temp != NULL; temp = temp->next){
-//     new_value = expr(temp->str, &e);
-//     if(temp->old_value != new_value){
-//       nemu_state.state = NEMU_STOP;
-//       printf("watchpoint %d : %s\r\n",temp->NO, temp->str);
-//       printf("old value = %u\r\n", temp->old_value);
-//       printf("New value = %u\r\n", new_value);
-//       temp->old_value = new_value;
-//     }
-//   }
-// }
+static void check_watchpoint(){
+  uint32_t new_value;
+  WP *_head = get_watchpoint_head();
+  bool e;
+  for (WP *temp = _head; temp != NULL; temp = temp->next){
+    new_value = expr(temp->str, &e);
+    if(temp->old_value != new_value){
+      nemu_state.state = NEMU_STOP;
+      printf("watchpoint %d : %s\r\n",temp->NO, temp->str);
+      printf("old value = %u\r\n", temp->old_value);
+      printf("New value = %u\r\n", new_value);
+      temp->old_value = new_value;
+    }
+  }
+}
 
 
 
@@ -89,11 +89,11 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
-  // memcpy(_this->ringbuf[_this->count], _this->logbuf, 128);
-  // _this->count++;
-  // _this->count %= 50;
+  memcpy(_this->ringbuf[_this->count], _this->logbuf, 128);
+  _this->count++;
+  _this->count %= 50;
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
-  // check_watchpoint();
+  check_watchpoint();
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
@@ -143,8 +143,8 @@ void show(Decode *_this){
 
 static void execute(uint64_t n) {
   Decode s;
-  // for(int i = 0; i < 51; i++)
-  //   memset(s.ringbuf[i], 0, 128);
+  for(int i = 0; i < 51; i++)
+    memset(s.ringbuf[i], 0, 128);
   
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
@@ -153,7 +153,7 @@ static void execute(uint64_t n) {
     if (nemu_state.state != NEMU_RUNNING) 
     {
       if (nemu_state.halt_ret != 0)
-        // show(&s);
+        show(&s);
       break;
     }
     IFDEF(CONFIG_DEVICE, device_update());
