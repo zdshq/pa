@@ -23,9 +23,9 @@ typedef struct Decode {
   vaddr_t snpc; // static next pc
   vaddr_t dnpc; // dynamic next pc
   ISADecodeInfo isa;
-  char logbuf[128];
-  char ringbuf[51][128];
-  uint8_t count;
+  // char logbuf[128];
+  // char ringbuf[51][128];
+  // uint8_t count;
 } Decode;
 
 // --- pattern matching mechanism ---
