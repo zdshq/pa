@@ -18,6 +18,8 @@
 #include "../local-include/reg.h"
 
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
+  if ((memcmp(ref_r->gpr, cpu.gpr, sizeof(word_t) * 32) == 0) && (ref_r->pc == pc))
+    return true;
   return false;
 }
 
