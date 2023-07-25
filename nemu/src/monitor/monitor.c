@@ -53,6 +53,7 @@ static char *img_file = NULL;
 static int difftest_port = 1234;
 t_func_info func_info[100];
 int64_t func_index = 0;
+int64_t call_index = 0;
 
 static long load_img() {
   if (img_file == NULL) {

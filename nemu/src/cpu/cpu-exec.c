@@ -32,6 +32,7 @@ static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 extern t_func_info func_info[50];
 extern int64_t func_index;
+extern int64_t call_index;
 
 void device_update();
 
@@ -69,7 +70,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       for(int i = 0; i < func_index; i++){
         if(_this->pc >= func_info[i].start && _this->pc < (func_info[i].start + func_info[i].size)){
           char str[100];
-          sprintf(str,"pc:%lx\t%ld:ret func:%s\n", _this->pc, func_index,func_info[i].func_name);
+          sprintf(str,"pc:%lx\t%ld:ret func:%s\n", _this->pc, call_index--, func_info[i].func_name);
           printf("%s", str);
         }
       }
@@ -78,7 +79,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       for(int i = 0; i < func_index; i++){
         if(_this->dnpc >= func_info[i].start && _this->dnpc < (func_info[i].start + func_info[i].size)){
           char str[100];
-          sprintf(str,"pc:%lx\t%ld:call func:%s\n", _this->pc, func_index, func_info[i].func_name);
+          sprintf(str,"pc:%lx\t%ld:call func:%s\n", _this->pc, call_index++, func_info[i].func_name);
           printf("%s", str);
         }
       }         
