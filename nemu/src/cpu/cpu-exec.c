@@ -70,7 +70,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       for(int i = 0; i < func_index; i++){
         if(_this->pc >= func_info[i].start && _this->pc < (func_info[i].start + func_info[i].size)){
           char str[100];
-          sprintf(str,"pc:%lx\t%ld:ret func:%s\n", _this->pc, --call_index, func_info[i].func_name);
+          sprintf(str,"pc:%lx\t%ld:ret func:%s\n", _this->pc, ++call_index, func_info[i].func_name);
           printf("%s", str);
         }
       }
@@ -89,9 +89,9 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
-  memcpy(_this->ringbuf[_this->count], _this->logbuf, 128);
-  _this->count++;
-  _this->count %= 50;
+  // memcpy(_this->ringbuf[_this->count], _this->logbuf, 128);
+  // _this->count++;
+  // _this->count %= 50;
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
   check_watchpoint();
 }
@@ -143,8 +143,8 @@ void show(Decode *_this){
 
 static void execute(uint64_t n) {
   Decode s;
-  for(int i = 0; i < 51; i++)
-    memset(s.ringbuf[i], 0, 128);
+  // for(int i = 0; i < 51; i++)
+  //   memset(s.ringbuf[i], 0, 128);
   
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
@@ -153,7 +153,7 @@ static void execute(uint64_t n) {
     if (nemu_state.state != NEMU_RUNNING) 
     {
       if (nemu_state.halt_ret != 0)
-        show(&s);
+        // show(&s);
       break;
     }
     IFDEF(CONFIG_DEVICE, device_update());
