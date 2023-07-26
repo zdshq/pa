@@ -1,6 +1,6 @@
 #include <am.h>
 #include <nemu.h>
-
+#include <stdio.h>
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
 void __am_gpu_init() {
@@ -18,6 +18,7 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
     .width = 10, .height = 10,
     .vmemsz = 1100
   };
+  printf("wolaiguohh\r\n");
 }
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
