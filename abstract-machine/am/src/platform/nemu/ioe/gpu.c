@@ -26,6 +26,15 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
     printf("hhh");
     outl(SYNC_ADDR, 1);
   }
+
+  // int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;
+  // if (w == 0 || h == 0) return;
+  // feclearexcept(-1);
+  // SDL_Surface *s = SDL_CreateRGBSurfaceFrom(ctl->pixels, w, h, 32, w * sizeof(uint32_t),
+  //     RMASK, GMASK, BMASK, AMASK);
+  // SDL_Rect rect = { .x = x, .y = y };
+  // SDL_BlitSurface(s, NULL, surface, &rect);
+  // SDL_FreeSurface(s);
 }
 
 void __am_gpu_status(AM_GPU_STATUS_T *status) {
