@@ -15,8 +15,8 @@ void __am_gpu_init() {
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
   *cfg = (AM_GPU_CONFIG_T) {
     .present = true, .has_accel = false,
-    .width = 10, .height = 10,
-    .vmemsz = 1100
+    .width = inl(VGACTL_ADDR) >> 16, .height = inl(VGACTL_ADDR) & 0xffff,
+    .vmemsz = inl(VGACTL_ADDR) >> 16 * inl(VGACTL_ADDR) & 0xffff
   };
   printf("wolaiguohh\r\n");
 }
