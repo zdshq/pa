@@ -29,11 +29,11 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
         outl(FB_ADDR + (j * (inl(VGACTL_ADDR) >> 16) + i)*sizeof(uint32_t), p[j*ctl->w+i]);
       }
     }    
-    printf("break");
+    printf("break\r\n");
   }
   else{
     if (ctl->sync) {
-      printf("hhh");
+      printf("hhhaaaaaaaaaaaaaaa\r\n");
       outl(SYNC_ADDR, 1);
     }    
   }
