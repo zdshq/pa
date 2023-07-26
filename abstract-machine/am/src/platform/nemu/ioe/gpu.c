@@ -18,7 +18,7 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
     .width = inl(VGACTL_ADDR) >> 16, .height = inl(VGACTL_ADDR) & 0xffff,
     .vmemsz = inl(VGACTL_ADDR) >> 16 * inl(VGACTL_ADDR) & 0xffff
   };
-  printf("wolaiguohh\r\n");
+  printf("width:%d height:%d\r\n",cfg->width,cfg->height);
 }
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
