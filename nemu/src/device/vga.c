@@ -76,7 +76,7 @@ void vga_update_screen() {
   static uint8_t color = 0;
   if(vgactl_port_base[1])
   {
-    memset(vmem, color++ % 0xff, screen_size());
+    memset(vmem, color++ % 0xff, screen_size()/4);
     update_screen();
     vgactl_port_base[1] = 0;    
   }
