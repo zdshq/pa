@@ -32,7 +32,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
     printf("break\r\n");
   }
   else{
-    if (ctl->sync) {
+    if (ctl->sync) {      
       printf("hhhaaaaaaaaaaaaaaa\r\n");
       outl(SYNC_ADDR, 1);
     }    
