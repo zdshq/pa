@@ -27,6 +27,7 @@ void init_device();
 void init_sdb();
 void init_disasm(const char *triple);
 void init_elf(const char *elf_file, const char *func_file);
+void init_device_log(const char *dtrace_file);
 static void welcome() {
   Log("Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
   IFDEF(CONFIG_TRACE, Log("If trace is enabled, a log file will be generated "
@@ -50,6 +51,7 @@ static char *elf_file = NULL;
 static char *func_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
+static char *dtrace_file = NULL;
 static int difftest_port = 1234;
 t_func_info func_info[100];
 int64_t func_index = 0;
@@ -87,10 +89,11 @@ static int parse_args(int argc, char *argv[]) {
     {"mem"      , required_argument, NULL, 'm'},
     {"elf"      , required_argument, NULL, 'e'},
     {"func"      , required_argument, NULL, 'f'},
+    {"device"      , required_argument, NULL, 'v'},
     {0          , 0                , NULL,  0 },
   };
   int o;
-  while ( (o = getopt_long(argc, argv, "-bhl:d:p:m:e:", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-bhl:d:p:m:e:v:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
@@ -99,6 +102,7 @@ static int parse_args(int argc, char *argv[]) {
       case 'd': diff_so_file = optarg; break;
       case 'e': elf_file = optarg; break;
       case 'f': func_file = optarg; break;
+      case 'v': dtrace_file = optarg; break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
@@ -130,6 +134,8 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Initialize memory. */
   init_mem();
+
+  IFDEF(CONFIG_DTRACE_COND, init_device_log(dtrace_file));
 
   /* Initialize elf infomation*/
   init_elf(elf_file, func_file);

@@ -20,6 +20,7 @@ extern uint64_t g_nr_guest_inst;
 FILE *log_fp = NULL;
 FILE *mem_fp = NULL;
 FILE *func_fp = NULL;
+FILE *device_fp = NULL;
 extern t_func_info func_info[100];
 extern int64_t func_index;
 void init_log(const char *log_file) {
@@ -40,6 +41,16 @@ void init_mem_log(const char *mem_file) {
     mem_fp = fp;
   }
   Log("Memlog is written to %s", mem_file ? mem_file : "stdout");
+}
+
+void init_device_log(const char *dtrace_file){
+  device_fp = stdout;
+  if (dtrace_file != NULL) {
+    FILE *fp = fopen(dtrace_file, "w");
+    Assert(fp, "Can not open '%s'", dtrace_file);
+    device_fp = fp;
+  }
+  Log("Memlog is written to %s", dtrace_file ? dtrace_file : "stdout");
 }
 
 void init_elf(const char *elf_file, const char *func_file){
