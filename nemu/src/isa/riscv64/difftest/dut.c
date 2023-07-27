@@ -20,16 +20,16 @@
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   if ((memcmp(ref_r->gpr, cpu.gpr, sizeof(word_t) * 33) == 0))
     return true;
-  printf("---------------------------dut------------------------------\n");
-  for (size_t i = 0; i < 16; i++) {
-    printf("%s:%16p\t\t%s:%16p\n", reg_name(i, 64), (void*)cpu.gpr[i], reg_name(i + 16, 64), (void*)cpu.gpr[i + 16]);
-  }
-  printf("\tpc:%16p\n", (void*)cpu.pc);
-  printf("---------------------------ref------------------------------\n");
-  for (size_t i = 0; i < 16; i++) {
-    printf("%s:%16p\t\t%s:%16p\n", reg_name(i, 64), (void*)ref_r->gpr[i], reg_name(i + 16, 64), (void*)ref_r->gpr[i + 16]);
-  }
-  printf("\tpc:%16p\n", (void*)ref_r->pc);
+  // printf("---------------------------dut------------------------------\n");
+//   for (size_t i = 0; i < 16; i++) {
+//     printf("%s:%16p\t\t%s:%16p\n", reg_name(i, 64), (void*)cpu.gpr[i], reg_name(i + 16, 64), (void*)cpu.gpr[i + 16]);
+//   }
+//   printf("\tpc:%16p\n", (void*)cpu.pc);
+//   printf("---------------------------ref------------------------------\n");
+//   for (size_t i = 0; i < 16; i++) {
+//     printf("%s:%16p\t\t%s:%16p\n", reg_name(i, 64), (void*)ref_r->gpr[i], reg_name(i + 16, 64), (void*)ref_r->gpr[i + 16]);
+//   }
+//   printf("\tpc:%16p\n", (void*)ref_r->pc);
   return false;
 }
 
