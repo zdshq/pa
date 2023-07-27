@@ -23,9 +23,15 @@ typedef struct {
   word_t start;
   size_t size;
 }t_func_info;
+
+enum {
+  mtvec, mepc, mstatus, mcause,
+  csr_end
+};
 typedef struct {
   word_t gpr[32];
   vaddr_t pc; 
+  word_t csr[csr_end];
 } riscv64_CPU_state;
 
 // decode

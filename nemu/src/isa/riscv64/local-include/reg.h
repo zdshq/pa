@@ -23,6 +23,19 @@ static inline int check_reg_idx(int idx) {
   return idx;
 }
 
+// csr 地址映射
+static inline int check_csr_idx(int idx) {
+  switch (idx) {
+  case 0x305: return 0;break; // mtvec
+  case 0x341: return 1;break; // mepc
+  case 0x300: return 2;break; // mstatus
+  case 0x342: return 3;break; // mcause
+  default:  panic("csr error, addr 0x%x", idx); break;
+  }
+}
+
+#define csr(idx) (cpu.csr[check_csr_idx(idx)])
+
 #define gpr(idx) (cpu.gpr[check_reg_idx(idx)])
 
 static inline const char* reg_name(int idx, int width) {
