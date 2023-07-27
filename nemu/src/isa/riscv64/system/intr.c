@@ -20,6 +20,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    * Then return the address of the interrupt/exception vector.
    */
   printf("\nisa_raise_intr ok  NO:%ld \n", NO);
+  isa_reg_display();
   cpu.csr[mepc] = epc;
   cpu.csr[mcause] = NO;
   cpu.csr[mstatus] |= 0x1800;
