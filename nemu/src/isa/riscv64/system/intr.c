@@ -19,12 +19,14 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * Then return the address of the interrupt/exception vector.
    */
-  printf("\nisa_raise_intr ok  NO:%ld \n", NO);
-  isa_reg_display();
+  #ifdef CONFIG_ETRACE_COND
+    char buf[100];
+    sprintf(buf, "pc:0x%lx\t No;%ld\n", epc, NO);
+    log_exec_write("%s",buf);
+  #endif
   cpu.csr[mepc] = epc;
   cpu.csr[mcause] = NO;
-  // cpu.csr[mstatus] |= 0x1800;
-  // cpu.csr[] |= 0x1800;
+  cpu.csr[mstatus] |= 0x1800;
   return cpu.csr[mtvec];
 }
 

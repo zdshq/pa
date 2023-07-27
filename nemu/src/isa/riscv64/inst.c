@@ -182,7 +182,7 @@ static int decode_exec(Decode* s) {
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, I, word_t t = csr(src2); csr(src2) = src1; R(dest) = t);
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, I, word_t t = csr(src2); csr(src2) = src1; R(dest) = t);
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, I, s->dnpc = isa_raise_intr(R(17), s->pc)); //  trap 操作 
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret, R, s->dnpc = cpu.csr[mepc]+4); //软件实现 +4 操作,区分异常和中断
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret, R, s->dnpc = cpu.csr[mepc]+4;cpu.csr[mstatus] &= (~0x1800)); //软件实现 +4 操作,区分异常和中断
 
   // INSTPAT("0000000 00000 00000 001 00000 00011 11", fencei , I, );     // nop
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0

@@ -15,6 +15,7 @@ NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt
 NEMUFLAGS += -b
 NEMUFLAGS += -v $(IMAGE)-dev.txt
 NEMUFLAGS += -m $(IMAGE)-mem.txt
+NEMUFLAGS += -x $(IMAGE)-exec.txt
 NEMUFLAGS += -e $(IMAGE).elf
 
 CFLAGS += -DMAINARGS=\"$(mainargs)\"

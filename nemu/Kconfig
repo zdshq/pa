@@ -168,6 +168,11 @@ config FTRACE_COND
   bool "Enable FTRACE_COND"
   default n
 
+config ETRACE_COND
+  depends on TRACE
+  bool "Enable ETRACE_COND"
+  default n
+
   config DTRACE_COND
   depends on TRACE
   bool "Enable DTRACE_COND"
