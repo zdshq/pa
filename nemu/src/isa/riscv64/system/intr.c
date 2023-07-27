@@ -22,7 +22,6 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   printf("\nisa_raise_intr ok \n");
   cpu.csr[mepc] = epc;
   cpu.csr[mcause] = NO;
-  cpu.csr[mcause] = 11;
   cpu.csr[mstatus] |= 0x1800;
   return cpu.csr[mtvec];
 }
