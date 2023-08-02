@@ -18,11 +18,26 @@ void show_ehdr(Elf64_Ehdr e){
   printf("--------------------------ehdr end--------------------------\n");
 }
 
+void show_phdr(Elf64_Phdr p){
+  printf("--------------------------ehdr info-------------------------\n");
+  printf("p_offset : %d\t",(uint32_t)p.p_offset);
+  printf("p_vaddr : %d\t",(uint32_t)p.p_vaddr);
+  printf("p_paddr : %d\n",(uint32_t)p.p_paddr);
+  printf("p_filesz : %d\t",(uint32_t)p.p_filesz);
+  printf("p_memsz : %d\t",(uint32_t)p.p_memsz);
+  printf("p_flags : %d\t",(uint32_t)p.p_flags);
+  printf("p_align : %d\n",(uint32_t)p.p_align);
+  printf("--------------------------ehdr end--------------------------\n");
+}
+
 static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("1111\n");
   Elf64_Ehdr ehdr;
+  Elf64_Phdr phdr;
   ramdisk_read(&ehdr, 0, sizeof(Elf64_Ehdr));
   show_ehdr(ehdr);
+  ramdisk_read(&phdr, ehdr.e_phoff, sizeof(Elf64_Phdr));
+  show_phdr(phdr);
   printf("\n%s\n",ehdr.e_ident);
   return 0;
 }
