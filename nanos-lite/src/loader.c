@@ -13,7 +13,7 @@ size_t ramdisk_read(void *buf, size_t offset, size_t len);
 
 void show_ehdr(Elf64_Ehdr e){
   printf("--------------------------ehdr info-------------------------\n");
-  printf("e_phoff : %ld\n",e.e_phoff);
+  printf("e_phoff : %d\n",(uint32_t)e.e_phoff);
   printf("e_phnum : %d\n",e.e_phnum);
   printf("--------------------------ehdr end--------------------------\n");
 }
