@@ -66,7 +66,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     load_phdr(phdr);
     show_phdr(phdr);
   }
-  printf("\n%s\n",ehdr.e_ident);
+  // printf("\n%s\n",ehdr.e_ident);
   return ehdr.e_entry;
 }
 
