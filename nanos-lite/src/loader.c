@@ -19,7 +19,7 @@ void show_ehdr(Elf64_Ehdr e){
 }
 
 void show_phdr(Elf64_Phdr p){
-  printf("--------------------------ehdr info-------------------------\n");
+  printf("--------------------------phdr info-------------------------\n");
   printf("p_offset : %d\t",(uint32_t)p.p_offset);
   printf("p_vaddr : %d\t",(uint32_t)p.p_vaddr);
   printf("p_paddr : %d\n",(uint32_t)p.p_paddr);
@@ -27,7 +27,7 @@ void show_phdr(Elf64_Phdr p){
   printf("p_memsz : %d\t",(uint32_t)p.p_memsz);
   printf("p_flags : %d\t",(uint32_t)p.p_flags);
   printf("p_align : %d\n",(uint32_t)p.p_align);
-  printf("--------------------------ehdr end--------------------------\n");
+  printf("--------------------------phdr end--------------------------\n");
 }
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
