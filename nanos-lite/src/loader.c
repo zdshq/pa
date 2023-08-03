@@ -15,7 +15,6 @@ void show_ehdr(Elf64_Ehdr e){
   printf("--------------------------ehdr info-------------------------\n");
   printf("e_phoff : %d\n",(uint32_t)e.e_phoff);
   printf("e_phnum : %d\n",e.e_phnum);
-  printf("e_entry : %d\n",*(uint32_t *)(&e.e_entry+1));
   printf("--------------------------ehdr end--------------------------\n");
 }
 
@@ -44,7 +43,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     show_phdr(phdr);    
   }
   printf("\n%s\n",ehdr.e_ident);
-  return 0;
+  return ehdr.e_entry;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
