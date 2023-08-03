@@ -10,6 +10,7 @@
 #endif
 
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
+size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 
 void show_ehdr(Elf64_Ehdr e){
   printf("--------------------------ehdr info-------------------------\n");
@@ -31,6 +32,27 @@ void show_phdr(Elf64_Phdr p){
   printf("--------------------------phdr end--------------------------\n");
 }
 
+void load_phdr(Elf64_Phdr p){
+  if(p.p_type == PT_LOAD){
+    uint64_t size = p.p_filesz;
+    uint64_t remain = size;
+    u_char   buf[5000];
+    while(remain > 0)
+    {
+      if(remain > 5000){
+        ramdisk_read(buf,p.p_offset + size - remain, 5000);
+        memcpy((void *)(p.p_vaddr + size - remain), buf, 5000);
+        remain -= 5000;
+      }
+      else {
+        ramdisk_read(buf,p.p_offset + size - remain, remain);
+        memcpy((void *)(p.p_vaddr + size - remain), buf, remain);  
+        remain = 0;      
+      }
+    }
+  }
+}
+
 static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("1111\n");
   Elf64_Ehdr ehdr;
@@ -40,7 +62,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   show_ehdr(ehdr);
   for(u_int8_t i = 0; i < ehdr.e_phnum; i++){
     ramdisk_read(&phdr, ehdr.e_phoff + i * sizeof(Elf64_Phdr), sizeof(Elf64_Phdr));
-    show_phdr(phdr);    
+    load_phdr(phdr);
+    show_phdr(phdr);
   }
   printf("\n%s\n",ehdr.e_ident);
   return ehdr.e_entry;
