@@ -36,7 +36,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf64_Ehdr ehdr;
   Elf64_Phdr phdr;
   ramdisk_read(&ehdr, 0, sizeof(Elf64_Ehdr));
-  printf("hh:%d\n", *(uint32_t *)ehdr.e_ident);
+  printf("hh:%d\n", *((uint32_t *)ehdr.e_ident+1));
   assert(*(uint64_t *)ehdr.e_ident == 0x7f454c4602010100);
   show_ehdr(ehdr);
   for(u_int8_t i = 0; i < ehdr.e_phnum; i++){
