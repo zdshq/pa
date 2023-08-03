@@ -36,8 +36,10 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf64_Phdr phdr;
   ramdisk_read(&ehdr, 0, sizeof(Elf64_Ehdr));
   show_ehdr(ehdr);
-  ramdisk_read(&phdr, ehdr.e_phoff, sizeof(Elf64_Phdr));
-  show_phdr(phdr);
+  for(u_int8_t i = 0; i < ehdr.e_phnum; i++){
+    ramdisk_read(&phdr, ehdr.e_phoff + i * sizeof(Elf64_Phdr), sizeof(Elf64_Phdr));
+    show_phdr(phdr);    
+  }
   printf("\n%s\n",ehdr.e_ident);
   return 0;
 }
