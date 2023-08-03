@@ -20,6 +20,7 @@ void show_ehdr(Elf64_Ehdr e){
 
 void show_phdr(Elf64_Phdr p){
   printf("--------------------------phdr info-------------------------\n");
+  printf("p_type : %d\t",(uint32_t)p.p_type);
   printf("p_offset : %d\t",(uint32_t)p.p_offset);
   printf("p_vaddr : %d\t",(uint32_t)p.p_vaddr);
   printf("p_paddr : %d\n",(uint32_t)p.p_paddr);
