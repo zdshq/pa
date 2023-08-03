@@ -15,7 +15,7 @@ void show_ehdr(Elf64_Ehdr e){
   printf("--------------------------ehdr info-------------------------\n");
   printf("e_phoff : %d\n",(uint32_t)e.e_phoff);
   printf("e_phnum : %d\n",e.e_phnum);
-  printf("e_entry : %d\n",(uint32_t)e.e_entry);
+  printf("e_entry : %d\n",*(uint32_t *)(&e.e_entry+4));
   printf("--------------------------ehdr end--------------------------\n");
 }
 
