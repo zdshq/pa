@@ -15,6 +15,7 @@ void show_ehdr(Elf64_Ehdr e){
   printf("--------------------------ehdr info-------------------------\n");
   printf("e_phoff : %d\n",(uint32_t)e.e_phoff);
   printf("e_phnum : %d\n",e.e_phnum);
+  printf("e_entry : %d\n",(uint32_t)e.e_entry);
   printf("--------------------------ehdr end--------------------------\n");
 }
 
@@ -36,8 +37,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf64_Ehdr ehdr;
   Elf64_Phdr phdr;
   ramdisk_read(&ehdr, 0, sizeof(Elf64_Ehdr));
-  printf("hh:%d\n", *((uint32_t *)ehdr.e_ident+1));
-  assert(*(uint64_t *)ehdr.e_ident == 0x00010102464c457f);
+  assert(*(uint64_t *)ehdr.e_ident == 0x10102464c457f);
   show_ehdr(ehdr);
   for(u_int8_t i = 0; i < ehdr.e_phnum; i++){
     ramdisk_read(&phdr, ehdr.e_phoff + i * sizeof(Elf64_Phdr), sizeof(Elf64_Phdr));
