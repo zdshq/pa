@@ -50,6 +50,7 @@ void load_phdr(Elf64_Phdr p){
         remain = 0;      
       }
     }
+    memset((void *)(p.p_vaddr + size), 0, p.p_memsz - p.p_filesz);
   }
 }
 
