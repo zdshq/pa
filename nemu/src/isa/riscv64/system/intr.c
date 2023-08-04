@@ -31,7 +31,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   #ifdef CONFIG_ETRACE_COND
     char buf1[100];
     sprintf(buf1, "pc:0x%lx\t a7:%ld a0:%ld a1:%ld a2:%ld\n ", epc, cpu.gpr[17], cpu.gpr[10], cpu.gpr[11], cpu.gpr[11]);
-    log_sys_write("%s",buf);
+    log_sys_write("%s",buf1);
   #endif  
   return cpu.csr[mtvec];
 }
