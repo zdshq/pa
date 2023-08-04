@@ -78,15 +78,15 @@ void do_syscall(Context* c) {
 #ifdef STRACE
     printf("SYS_gettimeofday a1:%d,a2:%d,a3:%d\n", a[1], a[2], a[3]);
 #endif
-    {
+    
       // printf("hhhaaa\n");
       struct timeval* tv = (struct timeval*)a[1];
       //struct timezone* tz = (struct timezone*)a[2]; // 没有设置时区
       uint64_t us = io_read(AM_TIMER_UPTIME).us;
       tv->tv_sec = us / 1000000;
       tv->tv_usec = us % 1000000;
-    }
-    c->GPRx = 0;
+    
+    c->GPRx = tv->tv_sec * 1000 + tv->tv_usec / 1000;
     break;
   case SYS_execve:
 #ifdef STRACE
