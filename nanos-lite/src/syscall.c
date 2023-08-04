@@ -36,7 +36,7 @@ void do_syscall(Context* c) {
 #endif
     // c->GPRx = fs_write(a[1], (void*)a[2], a[3]);
     for(int i = 0; i < a[3]; i++)
-      putch(*(char *)(a[2]+1));
+      putch(*(char *)(a[2]+i));
     break;
   case SYS_brk:
 #ifdef STRACE
