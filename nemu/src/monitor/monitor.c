@@ -21,6 +21,7 @@
 void init_rand();
 void init_log(const char *log_file);
 void init_mem_log(const char *mem_file);
+void init_sys_log(const char *strace_file);
 void init_mem();
 void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
@@ -54,6 +55,7 @@ static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static char *dtrace_file = NULL;
 static char *etrace_file = NULL;
+static char *strace_file = NULL;
 static int difftest_port = 1234;
 t_func_info func_info[100];
 int64_t func_index = 0;
@@ -93,10 +95,11 @@ static int parse_args(int argc, char *argv[]) {
     {"func"      , required_argument, NULL, 'f'},
     {"device"      , required_argument, NULL, 'v'},
     {"exce"      , required_argument, NULL, 'x'},
+    {"system"      , required_argument, NULL, 's'},
     {0          , 0                , NULL,  0 },
   };
   int o;
-  while ( (o = getopt_long(argc, argv, "-bhl:d:p:m:e:v:x:", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-bhl:d:p:m:e:v:x:s:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
@@ -107,6 +110,7 @@ static int parse_args(int argc, char *argv[]) {
       case 'f': func_file = optarg; break;
       case 'v': dtrace_file = optarg; break;
       case 'x': etrace_file = optarg; break;
+      case 's': strace_file = optarg; break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
@@ -143,6 +147,7 @@ void init_monitor(int argc, char *argv[]) {
 
   IFDEF(CONFIG_ETRACE_COND, init_exce_log(etrace_file));
 
+  IFDEF(CONFIG_STRACE_COND, init_sys_log(strace_file));
   /* Initialize elf infomation*/
   init_elf(elf_file, func_file);
 

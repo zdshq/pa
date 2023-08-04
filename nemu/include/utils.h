@@ -67,6 +67,14 @@ uint64_t get_time();
   } while (0) \
 )
 
+#define log_sys_write(...) IFDEF(CONFIG_TARGET_NATIVE_ELF, \
+  do { \
+    extern FILE *sys_fp; \
+    fprintf(sys_fp, __VA_ARGS__); \
+    fflush(sys_fp); \
+  } while (0) \
+)
+
 #define log_dev_write(...) IFDEF(CONFIG_TARGET_NATIVE_ELF, \
   do { \
     extern FILE *device_fp; \

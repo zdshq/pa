@@ -28,6 +28,8 @@ override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
 # override ARGS += --mem=$(BUILD_DIR)/nemu-mem.txt
 override ARGS += $(ARGS_DIFF)
 
+override ARGS += -s=$(BUILD_DIR)/nemu-sys.txt
+
 # Command to execute NEMU
 IMG ?=
 NEMU_EXEC := $(BINARY) $(ARGS) $(IMG)

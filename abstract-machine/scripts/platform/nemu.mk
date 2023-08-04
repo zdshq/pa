@@ -17,6 +17,7 @@ NEMUFLAGS += -v $(IMAGE)-dev.txt
 NEMUFLAGS += -m $(IMAGE)-mem.txt
 NEMUFLAGS += -x $(IMAGE)-exec.txt
 NEMUFLAGS += -e $(IMAGE).elf
+NEMUFLAGS += -s $(IMAGE)-sys.txt
 
 CFLAGS += -DMAINARGS=\"$(mainargs)\"
 CFLAGS += -I$(AM_HOME)/am/src/platform/nemu/include

@@ -178,6 +178,11 @@ config ETRACE_COND
   bool "Enable DTRACE_COND"
   default n
 
+  config STRACE_COND
+  depends on TRACE
+  bool "Enable STRACE_COND"
+  default n
+
 choice
   prompt "Reference design"
   default DIFFTEST_REF_SPIKE if ISA_riscv64 || ISA_riscv32

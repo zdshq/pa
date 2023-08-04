@@ -28,6 +28,11 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   cpu.csr[mcause] = NO;
   cpu.csr[mstatus] |= 0x1800;
   printf("\nmstatus : 0x%lx\tpc : 0x%lx\n",cpu.csr[mstatus], cpu.pc);
+  #ifdef CONFIG_ETRACE_COND
+    char buf1[100];
+    sprintf(buf1, "pc:0x%lx\t a7:%ld a0:%ld a1:%ld a2:%ld\n ", epc, cpu.gpr[17], cpu.gpr[10], cpu.gpr[11], cpu.gpr[11]);
+    log_sys_write("%s",buf);
+  #endif  
   return cpu.csr[mtvec];
 }
 
