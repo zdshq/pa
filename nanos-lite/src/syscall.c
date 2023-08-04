@@ -80,16 +80,16 @@ void do_syscall(Context* c) {
 #endif
     
     printf("hhhaaa\n");
-    struct timeval* tv = (struct timeval*)a[1];
+    // struct timeval* tv = (struct timeval*)a[1];
     printf("hhhaaa\n");
       //struct timezone* tz = (struct timezone*)a[2]; // 没有设置时区
     uint64_t us = io_read(AM_TIMER_UPTIME).us;
     printf("hhhaaa\n");
-    tv->tv_sec = us / 1000000;
-    printf("hhhaaa\n");
-    tv->tv_usec = us % 1000000;
-    printf("hhhaaa\n");
-    c->GPRx = tv->tv_sec * 1000 + tv->tv_usec / 1000;
+    // tv->tv_sec = us / 1000000;
+    // printf("hhhaaa\n");
+    // tv->tv_usec = us % 1000000;
+    // printf("hhhaaa\n");
+    c->GPRx = us/1000;
     break;
   case SYS_execve:
 #ifdef STRACE
