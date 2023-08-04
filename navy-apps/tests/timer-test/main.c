@@ -9,6 +9,7 @@ int main() {
   gettimeofday(&tv, NULL);
   now = tv.tv_sec * 1000 + tv.tv_usec / 1000;
   last = now;
+  printf("hhhh\n");
   while (1) {
     gettimeofday(&tv, NULL);
     now = tv.tv_sec * 1000 + tv.tv_usec / 1000;
