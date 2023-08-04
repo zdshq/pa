@@ -28,7 +28,7 @@ void* BMP_Load(const char* filename, int* width, int* height) {
   struct BitmapHeader hdr;
   assert(sizeof(hdr) == 54);
   assert(1 == fread(&hdr, sizeof(struct BitmapHeader), 1, fp));
-
+  printf("BMP_Load1!!\n");
   if (hdr.bitcount != 24) return NULL;
   if (hdr.compression != 0) return NULL;
   int w = hdr.width;
@@ -46,7 +46,7 @@ void* BMP_Load(const char* filename, int* width, int* height) {
       pixels[w * i + j] = (r << 16) | (g << 8) | b;
     }
   }
-
+  printf("BMP_Load2!!\n");
   fclose(fp);
   if (width) *width = w;
   if (height) *height = h;
