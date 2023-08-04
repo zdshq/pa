@@ -84,6 +84,7 @@ void do_syscall(Context* c) {
     printf("hhhaaa\n");
       //struct timezone* tz = (struct timezone*)a[2]; // 没有设置时区
     uint64_t us = io_read(AM_TIMER_UPTIME).us;
+    printf("hhhaaa\n");
     tv->tv_sec = us / 1000000;
     tv->tv_usec = us % 1000000;
     printf("hhhaaa\n");
