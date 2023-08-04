@@ -114,9 +114,9 @@ int fs_open(const char* pathname, int flags, int mode) {
  * @return size_t 已读取的大小
  */
 size_t fs_read(int fd, void* buf, size_t len) {
-  // size_t disk_offset = file_table[fd].disk_offset;
-  // size_t file_size = file_table[fd].size;
-  // size_t open_offset = file_table[fd].open_offset;
+  size_t disk_offset = file_table[fd].disk_offset;
+  size_t file_size = file_table[fd].size;
+  size_t open_offset = file_table[fd].open_offset;
 
   // devices
   if (fd < FD_NUM) {
@@ -124,16 +124,16 @@ size_t fs_read(int fd, void* buf, size_t len) {
   }
   // ramdisk
   else {
-    // size_t read_len = len;
-    // // 若读取的数超出文件大小,读取到文件尾为止,此时 read_len < len
-    // if ((open_offset + len) > file_size) {
-    //   // 读取剩余大小
-    //   read_len = file_size - open_offset + 1;
-    // }
+    size_t read_len = len;
+    // 若读取的数超出文件大小,读取到文件尾为止,此时 read_len < len
+    if ((open_offset + len) > file_size) {
+      // 读取剩余大小
+      read_len = file_size - open_offset + 1;
+    }
 
-    // ramdisk_read(buf, disk_offset + open_offset, read_len);
-    // file_table[fd].open_offset += read_len;
-    // return read_len;
+    ramdisk_read(buf, disk_offset + open_offset, read_len);
+    file_table[fd].open_offset += read_len;
+    return read_len;
   }
   return -1;
 }
@@ -146,8 +146,8 @@ size_t fs_read(int fd, void* buf, size_t len) {
  * @return size_t 已写入大小
  */
 size_t fs_write(int fd, const void* buf, size_t len) {
-  // size_t disk_offset = file_table[fd].disk_offset;
-  // size_t file_size = file_table[fd].size;
+  size_t disk_offset = file_table[fd].disk_offset;
+  size_t file_size = file_table[fd].size;
   size_t open_offset = file_table[fd].open_offset;
   // serial, device type: char
   if (fd < FD_NUM) {
@@ -156,9 +156,9 @@ size_t fs_write(int fd, const void* buf, size_t len) {
   // ramdisk, device type:block
   else if (NULL == file_table[fd].write) { // NULL 表示为普通读写函数
     //不允许新增文件大小
-    // assert((open_offset + len) <= file_size);
-    // file_table[fd].open_offset += len;
-    // return ramdisk_write(buf, disk_offset + open_offset, len);
+    assert((open_offset + len) <= file_size);
+    file_table[fd].open_offset += len;
+    return ramdisk_write(buf, disk_offset + open_offset, len);
   }
 
   return -1;
