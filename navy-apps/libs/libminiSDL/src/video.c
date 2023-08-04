@@ -4,16 +4,120 @@
 #include <string.h>
 #include <stdlib.h>
 
-void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
+/**
+ * @brief https://blog.csdn.net/caimouse/article/details/53482775
+ *
+ * @param src
+ * @param srcrect NULL:全部拷贝
+ * @param dst
+ * @param dstrect NULL:拷贝到 (0,0) 坐标上
+ */
+void SDL_BlitSurface(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+  //printf("SDL_BlitSurface,BitsPerPixel:%d\n", dst->format->BitsPerPixel);
+  // dst 区域选择
+  uint16_t des_x = (dstrect == NULL) ? 0 : dstrect->x;
+  uint16_t des_y = (dstrect == NULL) ? 0 : dstrect->y;
+  uint16_t des_w = dst->w;//未使用
+  uint16_t des_h = dst->h;//未使用
+
+  // src 区域选择
+  uint16_t src_x = (srcrect == NULL) ? 0 : srcrect->x;
+  uint16_t src_y = (srcrect == NULL) ? 0 : srcrect->y;
+  uint16_t src_w = (srcrect == NULL) ? src->w : srcrect->w;
+  uint16_t src_h = (srcrect == NULL) ? src->h : srcrect->h;
+
+  // 不支持超出范围的拷贝
+  assert(src_w <= (des_w - des_x));
+  assert(src_h <= (des_h - des_y));
+  // 像素指针
+  uint32_t* dstbuf32 = (uint32_t*)dst->pixels;
+  uint32_t* srcbuf32 = (uint32_t*)src->pixels;
+  uint8_t* dstbuf8 = (uint8_t*)dst->pixels;
+  uint8_t* srcbuf8 = (uint8_t*)src->pixels;
+
+  // 偏移量 必须使用 uint32_t, uint16_t 不够
+  uint32_t src_offset = src_y * src->w + src_x;
+  uint32_t des_offset = des_y * dst->w + des_x;
+  // printf("des_x:%d,des_y:%d,des_w:%d,des->h:%d\n", des_x, des_y, des_w, des->h);
+  // printf("src_x:%d,src_y:%d,src_w:%d,src_h:%d\n", src_x, src_y, src_w, src_h);
+  // printf("src_offset:%d,des_offset:%d\n", src_offset, des_offset);
+  // printf("src_offset:%d,des_offset:%d\n", src_offset, des_offset);
+  switch (dst->format->BitsPerPixel) {
+  case 8:
+    // 按行复制数据
+    for (size_t i = 0; i < src_h; i++) {
+      // 复制一行
+      for (size_t j = 0; j < src_w; j++) {
+        dstbuf8[des_offset + j] = srcbuf8[src_offset + j];
+      }
+      // 偏移量移动到下一行
+      des_offset += dst->w;
+      src_offset += src->w;
+    }
+    break;
+  case 32:
+    // 按行复制数据
+    for (size_t i = 0; i < src_h; i++) {
+      // 复制一行
+      for (size_t j = 0; j < src_w; j++) {
+        dstbuf32[des_offset + j] = srcbuf32[src_offset + j];
+      }
+      // 偏移量移动到下一行
+      des_offset += dst->w;
+      src_offset += src->w;
+    }
+    break;
+  default:
+    printf("BitsPerPixel:%d\n", dst->format->BitsPerPixel);
+    assert(0);
+    break;
+  }
 }
 
-void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+void SDL_FillRect(SDL_Surface* dst, SDL_Rect* dstrect, uint32_t color) {
+
+  printf("SDL_FillRect,BitsPerPixel:%d\n", dst->format->BitsPerPixel);
+  SDL_Rect rect_temp;
+  // 边界情况处理
+  if (dstrect == NULL) {
+    rect_temp.x = 0;
+    rect_temp.y = 0;
+    rect_temp.w = dst->w;
+    rect_temp.h = dst->h;
+  }
+  else {
+    rect_temp = *dstrect;
+  }
+  uint32_t bufsize = rect_temp.h * rect_temp.w;
+
+  switch (dst->format->BitsPerPixel) {
+  case 32: {
+    uint32_t* pixels32 = (uint32_t*)(dst->pixels + (rect_temp.y * dst->w + rect_temp.x) * 4);
+    for (size_t i = 0; i < bufsize; i++) {
+      *(pixels32++) = (uint32_t)color;
+    }
+    break;
+  }
+  case 8: {
+    uint8_t* pixels8 = (uint8_t*)(dst->pixels + (rect_temp.y * dst->w + rect_temp.x));
+    for (size_t i = 0; i < bufsize; i++) {
+      *(pixels8++) = (uint8_t)color;
+    }
+    break;
+  }
+  default:
+    printf("BitsPerPixel:%d\n", dst->format->BitsPerPixel);
+    assert(0);
+    break;
+  }
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 }
+
+
 
 // APIs below are already implemented.
 
