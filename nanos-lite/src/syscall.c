@@ -85,7 +85,7 @@ void do_syscall(Context* c) {
       uint64_t us = io_read(AM_TIMER_UPTIME).us;
       tv->tv_sec = us / 1000000;
       tv->tv_usec = us % 1000000;
-    
+    printf("hhhaaa\n");
     c->GPRx = tv->tv_sec * 1000 + tv->tv_usec / 1000;
     break;
   case SYS_execve:
