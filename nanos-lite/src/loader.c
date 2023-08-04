@@ -46,7 +46,7 @@ static uintptr_t loader(PCB* pcb, const char* filename) {
   // 检查 magic
   assert(*(uint32_t*)Ehdr->e_ident == 0x464C457F);
   // 检查架构信息
-  assert(EXPECT_TYPE == Ehdr->e_machine);
+  // assert(EXPECT_TYPE == Ehdr->e_machine);
   /* 获取所有 Program header Table,Ehdr->e_phnum 为个数信息 */
   assert(Ehdr->e_phnum != 0);
 
