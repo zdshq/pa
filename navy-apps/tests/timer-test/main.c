@@ -14,7 +14,7 @@ int main() {
     gettimeofday(&tv, NULL);
     now = tv.tv_sec * 1000 + tv.tv_usec / 1000;
     printf("hhhh\n");
-    if (now - last >= 1000) {
+    if (now - last >= 2) {
       last = now;
       printf("timer-test:%d\n", i++);
     }
