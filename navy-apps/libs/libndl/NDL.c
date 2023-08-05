@@ -94,10 +94,14 @@ void NDL_DrawRect(uint32_t* pixels, int x, int y, int w, int h) {
   static int first = 0;
   static int fd;
   if (!first) {
+    printf("11\n");
     fd = open("/dev/fb", O_RDWR);
   }
+  printf("22\n");
   size_t offset = ((size_t)x << 32) | y;
+  printf("offset : %d\n", (int)offset);
   size_t len = ((size_t)w << 32) | h;
+  printf("len : %d\n", (int)len);
   lseek(fd, offset, SEEK_SET);
   write(fd, pixels, len);
 }
