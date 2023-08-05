@@ -25,7 +25,7 @@ void init_proc() {
   Log("Initializing processes...");
 
   // load program here
-  naive_uload(NULL, "/bin/nterm");
+  naive_uload(NULL, "/bin/menu-riscv64");
 }
 
 Context* schedule(Context *prev) {
