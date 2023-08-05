@@ -85,6 +85,7 @@ void NDL_OpenCanvas(int* w, int* h) {
     close(fbctl);
     printf("WIDTH:%d\nHEIGHT:%d\n",6, 6);
   }
+  printf("WIDTH:%d\nHEIGHT:%d\n",6, 6);
 }
 #define WIDTH 400
 #define HEIGHT 300
