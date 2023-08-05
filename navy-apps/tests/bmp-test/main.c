@@ -9,15 +9,15 @@ int main() {
   NDL_Init(0);
   int w = 800, h = 600;
   void *bmp = BMP_Load("/share/pictures/projectn.bmp", &w, &h);
-  // printf("Test ends! Spinning...\n");
+  printf("1\n");
   assert(bmp);
   NDL_OpenCanvas(&w, &h);
-  // printf("Test ends! Spinning...\n");
+  printf("2\n");
   NDL_DrawRect(bmp, 0, 0, w, h);
-  // printf("Test ends! Spinning...\n");
+  printf("3\n");
   free(bmp);
   NDL_Quit();
-  // printf("Test ends! Spinning...\n");
+  printf("4\n");
   while (1);
   return 0;
 }

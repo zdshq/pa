@@ -64,7 +64,7 @@ void NDL_OpenCanvas(int* w, int* h) {
     *h = ndl_h;
   }
   printf("WIDTH:%d\nHEIGHT:%d\n",3, 3);
-  // if (getenv("NWM_APP")) {
+  if (getenv("NWM_APP")) {
     printf("NWM_APP!\n");
     int fbctl = 4;
     fbdev = 5;
@@ -72,19 +72,19 @@ void NDL_OpenCanvas(int* w, int* h) {
     char buf[64];
     int len = sprintf(buf, "%d %d", screen_w, screen_h);
     // let NWM resize the window and create the frame buffer
-    // write(fbctl, buf, len);
+    write(fbctl, buf, len);
     printf("WIDTH:%d\nHEIGHT:%d\n",4, 4);
     while (1) {
       // 3 = evtdev
       int nread = read(3, buf, sizeof(buf) - 1);
       if (nread <= 0) continue;
       buf[nread] = '\0';
-      printf("WIDTH:%d\nHEIGHT:%d\n",5, 5);
+      printf("WIDTH:%d\nHEIGHT:%d\n",5, 4);
       if (strcmp(buf, "mmap ok") == 0) break;
     }
     close(fbctl);
-    printf("WIDTH:%d\nHEIGHT:%d\n",6, 6);
-  // }
+    printf("WIDTH:%d\nHEIGHT:%d\n",4, 4);
+  }
   printf("WIDTH:%d\nHEIGHT:%d\n",6, 6);
 }
 #define WIDTH 400
