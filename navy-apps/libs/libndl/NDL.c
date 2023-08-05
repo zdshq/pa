@@ -72,7 +72,7 @@ void NDL_OpenCanvas(int* w, int* h) {
     char buf[64];
     int len = sprintf(buf, "%d %d", screen_w, screen_h);
     // let NWM resize the window and create the frame buffer
-    write(fbctl, buf, len);
+    // write(fbctl, buf, len);
     printf("WIDTH:%d\nHEIGHT:%d\n",4, 4);
     while (1) {
       // 3 = evtdev
