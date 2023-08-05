@@ -64,7 +64,7 @@ void NDL_OpenCanvas(int* w, int* h) {
     *h = ndl_h;
   }
   printf("WIDTH:%d\nHEIGHT:%d\n",3, 3);
-  if (getenv("NWM_APP")) {
+  // if (getenv("NWM_APP")) {
     printf("NWM_APP!\n");
     int fbctl = 4;
     fbdev = 5;
@@ -84,7 +84,7 @@ void NDL_OpenCanvas(int* w, int* h) {
     }
     close(fbctl);
     printf("WIDTH:%d\nHEIGHT:%d\n",6, 6);
-  }
+  // }
   printf("WIDTH:%d\nHEIGHT:%d\n",6, 6);
 }
 #define WIDTH 400
