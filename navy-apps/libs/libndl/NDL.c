@@ -50,8 +50,9 @@ void NDL_OpenCanvas(int* w, int* h) {
   // 获取屏幕大小
   char dispinfo[32];
   int dispinfo_fd = open("/proc/dispinfo", O_RDONLY);
+  printf("WIDTH:%d\nHEIGHT:%d\n",1, 1);
   read(dispinfo_fd, dispinfo, sizeof(dispinfo));
-
+  printf("WIDTH:%d\nHEIGHT:%d\n",2, 2);
   sscanf(dispinfo, "WIDTH:%d\nHEIGHT:%d\n", &ndl_w, &ndl_h);
   printf("WIDTH:%d\nHEIGHT:%d\n",ndl_w, ndl_h);
   screen_w = ndl_w;
