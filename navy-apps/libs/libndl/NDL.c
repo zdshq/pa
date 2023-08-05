@@ -52,7 +52,7 @@ void NDL_OpenCanvas(int* w, int* h) {
   int dispinfo_fd = open("/proc/dispinfo", O_RDONLY);
   printf("WIDTH:%d\nHEIGHT:%d\n",1, 1);
   read(dispinfo_fd, dispinfo, sizeof(dispinfo));
-  printf("WIDTH:%d\nHEIGHT:%d\n",2, 2);
+  printf("WIDTH:%d\nHEIGHT:%d\n",*w, *h);
   sscanf(dispinfo, "WIDTH:%d\nHEIGHT:%d\n", &ndl_w, &ndl_h);
   printf("WIDTH:%d\nHEIGHT:%d\n",ndl_w, ndl_h);
   screen_w = ndl_w;
@@ -63,7 +63,7 @@ void NDL_OpenCanvas(int* w, int* h) {
     *w = ndl_w;
     *h = ndl_h;
   }
-
+  printf("WIDTH:%d\nHEIGHT:%d\n",3, 3);
   if (getenv("NWM_APP")) {
     printf("NWM_APP!\n");
     int fbctl = 4;
@@ -81,6 +81,7 @@ void NDL_OpenCanvas(int* w, int* h) {
       if (strcmp(buf, "mmap ok") == 0) break;
     }
     close(fbctl);
+    printf("WIDTH:%d\nHEIGHT:%d\n",4, 4);
   }
 }
 #define WIDTH 400

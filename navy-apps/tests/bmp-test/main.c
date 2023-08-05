@@ -7,7 +7,7 @@
 int main() {
   // printf("Test ends! Spinning...\n");
   NDL_Init(0);
-  int w, h;
+  int w = 800, h = 600;
   void *bmp = BMP_Load("/share/pictures/projectn.bmp", &w, &h);
   // printf("Test ends! Spinning...\n");
   assert(bmp);
