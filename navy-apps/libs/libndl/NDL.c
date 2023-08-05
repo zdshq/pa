@@ -12,7 +12,7 @@ static int screen_w = 0, screen_h = 0;
 uint32_t NDL_GetTicks() {
   static struct timeval tv;
   static uint32_t time_ms;
-  printf("hjhhh\n");
+  // printf("hjhhh\n");
   gettimeofday(&tv, NULL);
   time_ms = tv.tv_sec * 1000 + tv.tv_usec / 1000;
   return time_ms;
