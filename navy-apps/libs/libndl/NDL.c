@@ -53,6 +53,7 @@ void NDL_OpenCanvas(int* w, int* h) {
   read(dispinfo_fd, dispinfo, sizeof(dispinfo));
 
   sscanf(dispinfo, "WIDTH:%d\nHEIGHT:%d\n", &ndl_w, &ndl_h);
+  printf("WIDTH:%d\nHEIGHT:%d\n",ndl_w, ndl_h);
   screen_w = ndl_w;
   screen_h = ndl_h;
   close(dispinfo_fd);
