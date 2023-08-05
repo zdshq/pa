@@ -9,6 +9,6 @@ run: app env
 	@LD_PRELOAD=$(NAVY_HOME)/libs/libos/build/native.so $(APP) $(mainargs)
 
 gdb: app env
-	@gdb -ex "set environment LD_PRELOAD $(NAVY_HOME)/libs/libos/build/native.so" --args $(APP) $(mainargs)
+	@LD_PRELOAD=$(NAVY_HOME)/libs/libos/build/native.so gdb --args $(APP) $(mainargs)
 
 .PHONY: env run gdb
