@@ -47,14 +47,14 @@ ARCHIVE  = $(WORK_DIR)/build/$(NAME)-$(ISA).a
 
 ### Add default libraries for ISA != native
 ifneq ($(ISA), native)
-LIBS += libc libos libfixedptc
+LIBS += libc libos
 CFLAGS += -U_FORTIFY_SOURCE  # fix compile error in Newlib on ubuntu
 else
 WL = -Wl,
 endif
 
 ### 32-bit ISA may need compiler-rt to support 64-bit mul/div
-ifneq ($(findstring $(ISA), x86|mips32|riscv32),)
+ifneq ($(findstring $(ISA), x86|mips32|riscv32|loongarch32r),)
 LIBS += compiler-rt
 endif
 
@@ -82,7 +82,7 @@ LD        = $(CROSS_COMPILE)ld
 INC_PATH += $(WORK_DIR)/include $(foreach l,$(LIBS_INC),$(NAVY_HOME)/libs/$(l)/include/)
 INCFLAGS += $(addprefix -I, $(INC_PATH))
 
-CFLAGS   += -Ofast -MMD $(INCFLAGS) -static -D__NAVY__ \
+CFLAGS   += -O2 -MMD $(INCFLAGS) -static -D__NAVY__ \
             -D__ISA__=\"$(ISA)\" -D__ISA_$(shell echo $(ISA) | tr a-z A-Z)__ \
             -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector
 CXXFLAGS +=  $(CFLAGS) -ffreestanding -fno-rtti -fno-exceptions
@@ -121,8 +121,8 @@ libs:
 
 ### Rule (link): objects (`*.o`) and libraries (`*.a`) -> `$(APP)`, the final ELF binary to be packed into application (ld)
 $(APP): $(OBJS) libs
-	@echo + LD "->" $(shell realpath $@ --relative-to .)
-	@$(LD) $(LDFLAGS) -flto -o $@ $(WL)--start-group $(LINKAGE) $(WL)--end-group
+	@echo + LD "->" $(shell realpath $@ --relative-to .) hahah
+	$(LD) $(LDFLAGS) -o $@ $(WL)--start-group $(LINKAGE) $(WL)--end-group
 
 ### Rule (archive): objects (`*.o`) -> `ARCHIVE.a` (ar)
 $(ARCHIVE): $(OBJS) libs
@@ -166,8 +166,8 @@ $(CLEAN_ALL):
 .PHONY: clean-all $(CLEAN_ALL)
 
 ### Build fsimg and ramdisk for Nanos-lite
-APPS =   menu  nslider  nterm busybox pal
-TESTS =   file-test bmp-test 
+APPS =
+TESTS = dummy hello
 
 fsimg: $(addprefix apps/, $(APPS)) $(addprefix tests/, $(TESTS))
 	-for t in $^; do $(MAKE) -s -C $(NAVY_HOME)/$$t install; done

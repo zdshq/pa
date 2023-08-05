@@ -1,4 +1,4 @@
-FCEUX_PATH = $(AM_HOME)/../fceux-am
+FCEUX_PATH = $(AM_HOME)/../fceux
 ifeq ($(wildcard $(FCEUX_PATH)/src/x6502.cpp),)
   $(error Please set $$FCEUX_PATH in the Makefile to a valid path of a FCEUX repo)
 else
