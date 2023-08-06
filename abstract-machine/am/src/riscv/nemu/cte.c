@@ -27,6 +27,7 @@ Context* __am_irq_handle(Context* c) {
     //   printf("%d: %x\n", i, c->gpr[i]);
     // }
     c = user_handler(ev, c);
+    printf("hhh: %d", c->mepc);
     assert(c != NULL);
   }
 
