@@ -34,7 +34,7 @@ void hello_fun(void *arg) {
 void init_proc() {
 
   context_kload(&pcb[0], hello_fun, NULL);
-  context_uload(&pcb[1], "/bin/nterm", pal_argv, pal_envp);
+  context_uload(&pcb[1], "/bin/nterm-riscv64", pal_argv, pal_envp);
   // printf("pcb[0].cp : %d\n", (int32_t)pcb[0].cp->mepc);
   switch_boot_pcb();
 
