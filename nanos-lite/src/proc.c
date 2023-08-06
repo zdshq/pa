@@ -20,7 +20,7 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
-  
+
   context_kload(&pcb[0], hello_fun, NULL);
   switch_boot_pcb();
 
@@ -39,7 +39,7 @@ Context*  schedule(Context* prev) {
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
 
   // then return the new context
-  printf("pcb[0].cp : %d\n", pcb[0].cp);
+  printf("pcb[0].cp : %d\n", (int32_t)pcb[0].cp->mepc);
   return pcb[0].cp;
 
 }
