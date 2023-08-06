@@ -160,7 +160,7 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
     argv_str_len += strlen(argv[argc_i]) + 1; // include '\0'
     Log("argv%d:%s\n", argc_i, argv[argc_i]);
   }
-
+  Log("1\n");
   // refer to above
   int envp_str_len = 0;
   for (size_t envc_i = 0; envc_i < envc; envc_i++) {
@@ -196,7 +196,7 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
 
   // get the position of argv[0]
   char* argv_area_start = str_area_start_align - (envc + argc + 2) * sizeof(uintptr_t);// 2 NULL
-
+  Log("2\n");
   // iterate 
   char** argv_area_itr = (char**)argv_area_start;
 
@@ -208,7 +208,7 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
     str_area_itr += strlen(argv[argc_i]) + 1;
   }
   *(argv_area_itr++) = NULL;
-
+  Log("3\n");
   for (size_t envc_i = 0; envc_i < envc; envc_i++) {
     *(argv_area_itr) = str_area_itr;
     Log("%s", *argv_area_itr);
