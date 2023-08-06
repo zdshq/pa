@@ -199,7 +199,7 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
   Log("2\n");
   // iterate 
   char** argv_area_itr = (char**)argv_area_start;
-
+  Log("3\n");
   str_area_itr = str_area_start;
   for (size_t argc_i = 0; argc_i < argc; argc_i++) {
     Log("3\n");
