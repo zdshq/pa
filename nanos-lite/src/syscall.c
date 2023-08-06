@@ -2,7 +2,8 @@
 #include "syscall.h"
 #include <sys/time.h>
 #include "fs.h"
-// static char* arg_empty[] = { NULL };
+#include "proc.h"
+static char* arg_empty[] = { NULL };
 
 void do_syscall(Context* c) {
   uintptr_t a[4];
@@ -29,9 +30,9 @@ void do_syscall(Context* c) {
 #ifdef STRACE
     printf("SYS_exit\n");
 #endif
-    // context_uload(current, "/bin/nterm", arg_empty, arg_empty);
-    // switch_boot_pcb();
-    // yield();
+    context_uload(current, "/bin/nterm", arg_empty, arg_empty);
+    switch_boot_pcb();
+    yield();
     halt(a[1]);
     break;
   case SYS_write:
@@ -100,9 +101,9 @@ void do_syscall(Context* c) {
       c->GPRx = -2;
     }
     else {
-      // context_uload(current, (char*)a[1], (char**)a[2], (char**)a[3]);
-      // switch_boot_pcb();
-      // yield();
+      context_uload(current, (char*)a[1], (char**)a[2], (char**)a[3]);
+      switch_boot_pcb();
+      yield();
       c->GPRx = 0;
     }
     break;

@@ -1,4 +1,5 @@
 #include <common.h>
+#include <proc.h>
 
 extern void do_syscall(Context* c);
 
@@ -6,7 +7,7 @@ static Context* do_event(Event e, Context* c) {
   switch (e.event) {
   case EVENT_YIELD:
     printf("do_event:EVENT_YIELD\n");
-    // return schedule(c);
+    return schedule(c);
     break;
   case EVENT_IRQ_TIMER:
     return c;

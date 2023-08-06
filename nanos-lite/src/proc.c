@@ -20,14 +20,25 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
+
+  context_kload(&pcb[0], hello_fun, NULL);
   switch_boot_pcb();
 
   Log("Initializing processes...");
 
   // load program here
-  naive_uload(NULL, "/bin/nterm-riscv64");
+  // naive_uload(NULL, "/bin/nterm-riscv64");
 }
 
-Context* schedule(Context *prev) {
-  return NULL;
+Context* schedule(Context* prev) {
+  // save the context pointer
+  current->cp = prev;
+
+  // always select pcb[0] as the new process
+  // current = &pcb[0];
+  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+
+  // then return the new context
+  return current->cp;
+
 }
