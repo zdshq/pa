@@ -22,7 +22,7 @@ void hello_fun(void *arg) {
 void init_proc() {
 
   context_kload(&pcb[0], hello_fun, NULL);
-  printf("pcb[0].cp : %d\n", hello_fun);
+  // printf("pcb[0].cp : %d\n", (int32_t)hello_fun);
   switch_boot_pcb();
 
   Log("Initializing processes...");
@@ -39,6 +39,6 @@ current->cp = prev;
 current = &pcb[0];
 
 // then return the new context
-return current->cp;
+return pcb[0].cp;
 
 }
