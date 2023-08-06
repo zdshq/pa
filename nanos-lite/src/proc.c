@@ -30,7 +30,7 @@ void init_proc() {
   // naive_uload(NULL, "/bin/nterm-riscv64");
 }
 
-Context* schedule(Context* prev) {
+Context*  schedule(Context* prev) {
   // save the context pointer
   current->cp = prev;
 
@@ -39,6 +39,6 @@ Context* schedule(Context* prev) {
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
 
   // then return the new context
-  return current->cp;
+  return pcb[0].cp;
 
 }
