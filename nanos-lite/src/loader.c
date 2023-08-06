@@ -202,6 +202,7 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
 
   str_area_itr = str_area_start;
   for (size_t argc_i = 0; argc_i < argc; argc_i++) {
+    Log("3\n");
     *(argv_area_itr) = str_area_itr; // point to a string
     Log("%s", *argv_area_itr);
     argv_area_itr++; // move to next
