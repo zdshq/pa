@@ -1,7 +1,6 @@
 #include <NDL.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <assert.h>
 static char sdlerrbuf[1024];
 
 int SDL_Init(uint32_t flags) {

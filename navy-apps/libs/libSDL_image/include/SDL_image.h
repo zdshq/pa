@@ -1,7 +1,7 @@
 #ifndef __SDL_IMAGE_H__
 #define __SDL_IMAGE_H__
 
-#include <SDL.h>
+#include </home/zsx/ics2022/navy-apps/libs/libminiSDL/include/SDL.h>
 
 #ifdef __cplusplus
 extern "C" {

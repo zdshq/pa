@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "/home/zsx/ics2022/navy-apps/libs/libfixedptc/include/fixedptc.h"
+#include "fixedptc.h"
 
 
 
@@ -144,7 +144,7 @@ void SDL_UpdateRect(SDL_Surface* s, int x, int y, int w, int h) {
     for (int i = 0;i < h;i++) {
       for (int j = 0;j < w;j++) {
         /* 转换为 NDL 色彩格式 */
-        SDL_Color color32;
+        SDL_Color2 color32;
         color32.a = s->format->palette->colors[s->pixels[src_offset + j]].a;
         color32.b = s->format->palette->colors[s->pixels[src_offset + j]].b;
         color32.g = s->format->palette->colors[s->pixels[src_offset + j]].g;

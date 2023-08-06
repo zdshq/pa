@@ -12,7 +12,6 @@ static int screen_w = 0, screen_h = 0;
 uint32_t NDL_GetTicks() {
   static struct timeval tv;
   static uint32_t time_ms;
-  // printf("hjhhh\n");
   gettimeofday(&tv, NULL);
   time_ms = tv.tv_sec * 1000 + tv.tv_usec / 1000;
   return time_ms;
@@ -50,9 +49,8 @@ void NDL_OpenCanvas(int* w, int* h) {
   // 获取屏幕大小
   char dispinfo[32];
   int dispinfo_fd = open("/proc/dispinfo", O_RDONLY);
-  printf("WIDTH:%d\nHEIGHT:%d\n",1, 1);
   read(dispinfo_fd, dispinfo, sizeof(dispinfo));
-  printf("WIDTH:%d\nHEIGHT:%d\n",*w, *h);
+  printf("WIDTH:%d\nHEIGHT:%d\n",ndl_w, ndl_h);
   sscanf(dispinfo, "WIDTH:%d\nHEIGHT:%d\n", &ndl_w, &ndl_h);
   printf("WIDTH:%d\nHEIGHT:%d\n",ndl_w, ndl_h);
   screen_w = ndl_w;
@@ -63,7 +61,7 @@ void NDL_OpenCanvas(int* w, int* h) {
     *w = ndl_w;
     *h = ndl_h;
   }
-  printf("WIDTH:%d\nHEIGHT:%d\n",3, 3);
+
   if (getenv("NWM_APP")) {
     printf("NWM_APP!\n");
     int fbctl = 4;
@@ -73,19 +71,15 @@ void NDL_OpenCanvas(int* w, int* h) {
     int len = sprintf(buf, "%d %d", screen_w, screen_h);
     // let NWM resize the window and create the frame buffer
     write(fbctl, buf, len);
-    printf("WIDTH:%d\nHEIGHT:%d\n",4, 4);
     while (1) {
       // 3 = evtdev
       int nread = read(3, buf, sizeof(buf) - 1);
       if (nread <= 0) continue;
       buf[nread] = '\0';
-      printf("WIDTH:%d\nHEIGHT:%d\n",5, 4);
       if (strcmp(buf, "mmap ok") == 0) break;
     }
     close(fbctl);
-    printf("WIDTH:%d\nHEIGHT:%d\n",4, 4);
   }
-  printf("WIDTH:%d\nHEIGHT:%d\n",6, 6);
 }
 #define WIDTH 400
 #define HEIGHT 300
@@ -94,16 +88,11 @@ void NDL_DrawRect(uint32_t* pixels, int x, int y, int w, int h) {
   static int first = 0;
   static int fd;
   if (!first) {
-    printf("11\n");
     fd = open("/dev/fb", O_RDWR);
   }
-  printf("22\n");
   size_t offset = ((size_t)x << 32) | y;
-  printf("offset : %d\n", (int)offset);
   size_t len = ((size_t)w << 32) | h;
-  printf("len : %d\n", (int)len);
   lseek(fd, offset, SEEK_SET);
-  printf("len : %d\n", (int)len);
   write(fd, pixels, len);
 }
 

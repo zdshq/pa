@@ -195,10 +195,6 @@
 #define __IEEE_LITTLE_ENDIAN
 #endif
 
-#ifdef __loongarch32r
-#define __IEEE_LITTLE_ENDIAN
-#endif
-
 #ifdef __i960__
 #define __IEEE_LITTLE_ENDIAN
 #endif

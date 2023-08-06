@@ -1,7 +1,7 @@
 #include <NDL.h>
 #include <SDL.h>
 #include <string.h>
-#include <assert.h>
+
 #define keyname(k) #k,
 
 static const char* keyname[] = {
@@ -28,7 +28,7 @@ int SDL_PollEvent(SDL_Event* ev) {
   char kb_name[20];
   // prase NDL events, <kd/ku> <keyname> 
   sscanf(ndl_event, "%s %s", kb_state, kb_name);
-  printf(ndl_event, "%s %s \n", kb_state, kb_name);
+  // printf(ndl_event, "%s %s \n", kb_state, kb_name);
   // pack SDL_event form NDL events
   ev->type = (!strcmp(kb_state, "kd")) ? SDL_KEYDOWN : SDL_KEYUP;
   ev->key.keysym.sym = SDLK_NONE;
@@ -59,14 +59,14 @@ int SDL_WaitEvent(SDL_Event* event) {
   char kb_name[20];
   // prase NDL events, <kd/ku> <keyname> 
   sscanf(ndl_event, "%s %s", kb_state, kb_name);
-  printf(ndl_event, "%s %s \n", kb_state, kb_name);
+  //printf(ndl_event, "%s %s \n", kb_state, kb_name);
   // pack SDL_event form NDL events
   event->type = (!strcmp(kb_state, "kd")) ? SDL_KEYDOWN : SDL_KEYUP;
   event->key.keysym.sym = SDLK_NONE;
   // get sdl keyname
   for (size_t i = 0; i < 83; i++) {
     if (!strcmp(kb_name, keyname[i])) {
-      printf("match key:%s\n", keyname[i]);
+      //printf("match key:%s\n", keyname[i]);
       event->key.keysym.sym = i;
       keystate[i] = (!strcmp(kb_state, "kd")) ? 1 : 0;
       break;
