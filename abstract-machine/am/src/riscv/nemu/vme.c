@@ -1,6 +1,7 @@
 #include <am.h>
 #include <nemu.h>
 #include <klib.h>
+#include <assert.h>
 
 static AddrSpace kas = {};
 static void* (*pgalloc_usr)(int) = NULL;
@@ -67,6 +68,21 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
+  assert(va == pa);
+  flex_addr *va1 = va;
+  pte_t *pte = va1->ppn1*4 + as->ptr;
+  pte->prevent = 1;
+  pte->read = prot & 1;
+  pte->write = (prot>>1) & 1;
+  for(pte_t *pde = as->ptr + 1024*4; pde < as->ptr + 1024*4*1024; pde++){
+    if(pde->prevent == 0){
+      pte->phy = (uint32_t)pde >> 12;
+      pde->read = prot & 1;
+      pde->write = (prot>>1) & 1;
+      pde->prevent = 1;
+      pde->phy = (uint32_t)pa >> 12;
+    }
+  }
 }
 
 Context* ucontext(AddrSpace* as, Area kstack, void* entry) {

@@ -39,6 +39,34 @@ typedef struct {
   void *ptr;
 } AddrSpace;
 
+typedef union
+{
+  uint32_t val;
+  struct 
+  {
+    uint32_t read : 1;
+    uint32_t write : 1;
+    uint32_t prevent : 1;
+    uint32_t : 7;
+    uint32_t phy : 20;
+  };
+}pte_t;
+
+typedef union 
+{
+  uint32_t val;
+  struct 
+  {
+    uint32_t offset : 12;
+    uint32_t ppn0 : 10;
+    uint32_t ppn1 : 10;
+  };
+}flex_addr;
+
+
+
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
