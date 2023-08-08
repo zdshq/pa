@@ -25,7 +25,7 @@ typedef struct {
 }t_func_info;
 
 enum {
-  mtvec, mepc, mstatus, mcause,
+  mtvec, mepc, mstatus, mcause, satp,
   csr_end
 };
 typedef struct {

@@ -34,16 +34,6 @@ static void restart() {
   cpu.gpr[0] = 0;
 }
 
-int isa_mmu_check(vaddr_t vaddr, int len, int type) {
-    uint32_t *pdir = (uint32_t *)(cpu.csr[4] << 12); // 获得页表基地址
-    uint32_t *pte = pdir + ((uintptr_t)vaddr >> 22) * 4; // 获得一级页表的物理地址
-    uint32_t *pde = (uint32_t *)((uintptr_t)(*pte) >> 12);
-
-    if ((*pde >> 12) == ((uintptr_t)vaddr >> 12)) {
-        // 在这里进行你需要处理的逻辑
-    }
-    return 0;
-}
 
 void init_isa() {
   /* Load built-in image. */
