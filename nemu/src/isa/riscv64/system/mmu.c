@@ -39,7 +39,6 @@ int isa_mmu_check(vaddr_t vaddr, int len, int type) {
     else{
       return MMU_TRANSLATE;
     }
-    return 0;
 }
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
