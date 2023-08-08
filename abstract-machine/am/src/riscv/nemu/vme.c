@@ -67,10 +67,10 @@ void __am_switch(Context *c) {
     set_satp(c->pdir);
   }
 }
-
+pte_t *pde;
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   // assert(va == pa);
-  static pte_t *pde = as->ptr + 1024*4;
+  pde = as->ptr + 1024*4;
   flex_addr *va1 = va;
   pte_t *pte = va1->ppn1*4 + as->ptr;
   pte->prevent = 1;
