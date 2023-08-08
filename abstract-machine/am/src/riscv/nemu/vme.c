@@ -70,12 +70,13 @@ void __am_switch(Context *c) {
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   // assert(va == pa);
+  static pte_t *pde = as->ptr + 1024*4;
   flex_addr *va1 = va;
   pte_t *pte = va1->ppn1*4 + as->ptr;
   pte->prevent = 1;
   pte->read = prot & 1;
   pte->write = (prot>>1) & 1;
-  for(pte_t *pde = as->ptr + 1024*4; (uintptr_t)pde < (uintptr_t)as->ptr + 1024*4*1024; pde++){
+  for(; (uintptr_t)pde < (uintptr_t)as->ptr + 1024*4*1024; pde++){
     if(pde->prevent == 0){
       printf("pde->prevent : %p\n", va);
       pte->phy = (uintptr_t)pde >> 12;
