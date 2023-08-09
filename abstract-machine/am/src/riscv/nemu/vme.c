@@ -78,7 +78,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   pte->write = (prot>>1) & 1;
   for(; (uintptr_t)pde < (uintptr_t)as->ptr + 1024*4*1024; pde++){
     if(pde->prevent == 0){
-      // printf("pde->prevent : %p\n", va);
+      printf("pde->prevent : %p\n", va);
       pte->phy = (uintptr_t)pde >> 12;
       pde->read = prot & 1;
       pde->write = (prot>>1) & 1;
@@ -94,7 +94,7 @@ Context* ucontext(AddrSpace* as, Area kstack, void* entry) {
   printf("kstack.end:%p,kstack.start:%p,size:%d\n", kstack.end, kstack.start, kstack.end - kstack.start);
 
   Context* p = (Context*)(kstack.end - sizeof(Context));
-  
+
   memset(p, 0, sizeof(Context));
 
   printf("Context size:%d\n", (kstack.end - (void*)p));
