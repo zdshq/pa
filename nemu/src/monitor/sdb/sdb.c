@@ -137,7 +137,7 @@ static int cmd_s(char *args){
   // FILE *fd1 = fopen(filename, "rw");
   assert(fd != NULL);
   printf("1122\r\n");
-  fwrite(pmem, CONFIG_MSIZE/2, 1, fd);
+  fwrite(pmem, CONFIG_MSIZE, 1, fd);
   printf("1122\r\n");
   fwrite(vmem, 300*400, 1, fd);
   fwrite(&cpu, sizeof(CPU_state), 1, fd);
@@ -146,7 +146,17 @@ static int cmd_s(char *args){
 }
 
 static int cmd_l(char *args){
-  // bool e;
+  char filename[100] = "/home/zsx/ics2022/nemu/quickshot/1";
+  // strcat(filename, args);
+  FILE *fd = fopen(filename, "r");
+  // FILE *fd1 = fopen(filename, "rw");
+  assert(fd != NULL);
+  printf("1122\r\n");
+  assert(fread(pmem, CONFIG_MSIZE, 1, fd));
+  printf("1122\r\n");
+  assert(fread(vmem, 300*400, 1, fd));
+  assert(fread(&cpu, sizeof(CPU_state), 1, fd));
+  fclose(fd);
   return 1;
 }
 static struct {
