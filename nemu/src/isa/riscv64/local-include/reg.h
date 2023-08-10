@@ -30,6 +30,7 @@ static inline int check_csr_idx(int idx) {
   case 0x341: return 1;break; // mepc
   case 0x300: return 2;break; // mstatus
   case 0x342: return 3;break; // mcause
+  case 0x384: return 4;break; // satp
   default:  panic("csr error, addr 0x%x", idx); break;
   }
 }
