@@ -22,7 +22,9 @@
 */
 int isa_mmu_check(vaddr_t vaddr, int len, int type) {
     uint32_t *pdir = (uint32_t *)(cpu.csr[4] << 12); // 获得页表基地址
+    // paddr_read(pdir)
     if(pdir == NULL){
+      printf("dddsssaaa\n");
       return MMU_FAIL;
     }
     uint32_t *pte = pdir + ((uintptr_t)vaddr >> 22) * 4; // 获得一级页表的物理地址
