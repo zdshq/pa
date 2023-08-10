@@ -148,7 +148,7 @@ static int cmd_s(char *args){
 static int cmd_l(char *args){
   char filename[100] = "/home/zsx/ics2022/nemu/quickshot/1";
   // strcat(filename, args);
-  FILE *fd = fopen(filename, "r");
+  FILE *fd = fopen(filename, "rb");
   // FILE *fd1 = fopen(filename, "rw");
   assert(fd != NULL);
   printf("1122\r\n");
