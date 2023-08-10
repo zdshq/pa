@@ -37,4 +37,6 @@ void free_wp(int No);
 void show_watchpoint();
 WP *get_watchpoint_head(void);
 
+void save_quickshot(FILE * fd);
+
 #endif

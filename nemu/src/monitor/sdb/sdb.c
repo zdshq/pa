@@ -120,8 +120,27 @@ static int cmd_d(char *args){
   return 0;
 }
 
+extern void *vmem;
+extern uint8_t pmem[CONFIG_MSIZE];
+void save_quickshot(FILE * fd){
+  fwrite(pmem, CONFIG_MSIZE, 1, fd);
+  fwrite(vmem, 300*400, 1, fd);
+  fwrite(&cpu, sizeof(CPU_state), 1, fd);
+}
 
+static int cmd_s(char *args){
+  char filename[100] = "/home/zsx/ics2022/nemu/quickshot/";
+  strcat(filename, args);
+  FILE *fd = fopen(filename, "rw");
+  save_quickshot(fd);
+  fclose(fd);
+  return 1;
+}
 
+static int cmd_l(char *args){
+  // bool e;
+  return 1;
+}
 static struct {
   const char *name;
   const char *description;
@@ -137,7 +156,9 @@ static struct {
   {"info", "show program status", cmd_info},
   {"p", "caculate the expr", cmd_p},
   {"w", "watch variable", cmd_w},
-  {"d", "delete watchpoint", cmd_d}
+  {"d", "delete watchpoint", cmd_d},
+  {"s", "save quicksort", cmd_s},
+  {"l", "load quicksort", cmd_l},
 
 };
 
