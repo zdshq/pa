@@ -122,19 +122,23 @@ static int cmd_d(char *args){
 
 extern void *vmem;
 extern uint8_t pmem[CONFIG_MSIZE];
-void save_quickshot(FILE * fd){
-  printf("1122\r\n");
-  fwrite(pmem, CONFIG_MSIZE/2, 1, fd);
-  printf("1122\r\n");
-  fwrite(vmem, 300*400, 1, fd);
-  fwrite(&cpu, sizeof(CPU_state), 1, fd);
-}
+// void save_quickshot(FILE * fd){
+//   printf("1122\r\n");
+//   fwrite(pmem, CONFIG_MSIZE/2, 1, fd);
+//   printf("1122\r\n");
+//   fwrite(vmem, 300*400, 1, fd);
+//   fwrite(&cpu, sizeof(CPU_state), 1, fd);
+// }
 
 static int cmd_s(char *args){
   char filename[100] = "/home/zsx/ics2022/nemu/quickshot/";
   strcat(filename, args);
   FILE *fd = fopen(filename, "rw");
-  save_quickshot(fd);
+  printf("1122\r\n");
+  fwrite(pmem, CONFIG_MSIZE/2, 1, fd);
+  printf("1122\r\n");
+  fwrite(vmem, 300*400, 1, fd);
+  fwrite(&cpu, sizeof(CPU_state), 1, fd);
   fclose(fd);
   return 1;
 }
