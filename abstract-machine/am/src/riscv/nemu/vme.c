@@ -77,8 +77,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   int pte_idx = (va_num >> 12) & 0x3FF;
 
   // Get the PDE and PTE pointers
-  pte_t *pde = as->ptr + pde_idx;
-  pte_t *pte = as->ptr + (pde_idx << 10) + pte_idx;
+  pte_t *pde = as->ptr + pde_idx * 4;
+  pte_t *pte = as->ptr + (pde_idx << 10) + pte_idx * 4;
 
   // Set PTE attributes
   pte->prevent = 1;
