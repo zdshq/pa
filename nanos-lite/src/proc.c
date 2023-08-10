@@ -11,10 +11,10 @@ char* pal_argv[] = {
 };
 
 char* pal_envp[] = {
-  // "home=pwd",
-  // "ARCH=riscv",
-  // "ARCH=riscv1",
-  // "ARCH=riscv2",
+  "home=pwd",
+  "ARCH=riscv",
+  "ARCH=riscv1",
+  "ARCH=riscv2",
 NULL
 };
 
@@ -34,7 +34,7 @@ void hello_fun(void *arg) {
 void init_proc() {
 
   // context_kload(&pcb[0], hello_fun, NULL);
-  context_uload(&pcb[0], "/bin/bird", pal_argv, pal_envp);
+  context_uload(&pcb[0], "/bin/pal", pal_argv, pal_envp);
   // printf("pcb[0].cp : %d\n", (int32_t)pcb[0].cp->mepc);
   switch_boot_pcb();
 
