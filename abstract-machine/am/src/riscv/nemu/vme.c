@@ -68,26 +68,33 @@ void __am_switch(Context *c) {
   }
 }
 pte_t *pde;
+
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  // assert(va == pa);
-  pde = as->ptr + 1024*4;
-  flex_addr *va1 = va;
-  pte_t *pte = va1->ppn1*4 + as->ptr;
+  // Calculate the index for the PDE and PTE
+  uintptr_t va_num = (uintptr_t)va;
+  uintptr_t pa_num = (uintptr_t)pa;
+  int pde_idx = va_num >> 22;
+  int pte_idx = (va_num >> 12) & 0x3FF;
+
+  // Get the PDE and PTE pointers
+  pte_t *pde = as->ptr + pde_idx;
+  pte_t *pte = as->ptr + (pde_idx << 10) + pte_idx;
+
+  // Set PTE attributes
   pte->prevent = 1;
   pte->read = prot & 1;
-  pte->write = (prot>>1) & 1;
-  for(; (uintptr_t)pde < (uintptr_t)as->ptr + 1024*4*1024; pde++){
-    printf("pde->prevent : %p\n", va);
-    if(pde->prevent == 0){
-      pte->phy = (uintptr_t)pde >> 12;
-      pde->read = prot & 1;
-      pde->write = (prot>>1) & 1;
-      pde->prevent = 1;
-      pde->phy = (uintptr_t)pa >> 12;
-      break;
-    }
+  pte->write = (prot >> 1) & 1;
+  pte->phy = pa_num >> 12;
+
+  // Set PDE attributes if not already set
+  if (!pde->prevent) {
+    pde->prevent = 1;
+    pde->read = prot & 1;
+    pde->write = (prot >> 1) & 1;
+    pde->phy = (uintptr_t)pte >> 12;
   }
 }
+
 
 Context* ucontext(AddrSpace* as, Area kstack, void* entry) {
 
