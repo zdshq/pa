@@ -133,7 +133,8 @@ extern uint8_t pmem[CONFIG_MSIZE];
 static int cmd_s(char *args){
   char filename[100] = "/home/zsx/ics2022/nemu/quickshot/1";
   // strcat(filename, args);
-  FILE *fd = fopen(filename, "rw");
+  FILE *fd = fopen(filename, "w");
+  // FILE *fd1 = fopen(filename, "rw");
   assert(fd != NULL);
   printf("1122\r\n");
   fwrite(pmem, CONFIG_MSIZE/2, 1, fd);
