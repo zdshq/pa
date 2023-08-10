@@ -152,7 +152,7 @@ static int cmd_l(char *args){
   // FILE *fd1 = fopen(filename, "rw");
   assert(fd != NULL);
   printf("1122\r\n");
-  printf("123: %ld\n",fread(pmem, 100, 100, fd));
+  printf("123: %ld\n",fread(pmem, CONFIG_MSIZE, 1, fd));
   printf("1122\r\n");
   assert(fread(vmem, 300*400, 1, fd));
   assert(fread(&cpu, sizeof(CPU_state), 1, fd));
