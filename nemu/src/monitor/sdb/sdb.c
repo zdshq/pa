@@ -124,7 +124,7 @@ extern void *vmem;
 extern uint8_t pmem[CONFIG_MSIZE];
 void save_quickshot(FILE * fd){
   printf("1122\r\n");
-  fwrite(pmem, CONFIG_MSIZE, 1, fd);
+  fwrite(pmem, CONFIG_MSIZE/2, 1, fd);
   fwrite(vmem, 300*400, 1, fd);
   fwrite(&cpu, sizeof(CPU_state), 1, fd);
 }
