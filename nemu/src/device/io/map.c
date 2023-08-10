@@ -32,8 +32,10 @@ uint8_t* new_space(int size) {
   return p;
 }
 
-static void check_bound(IOMap *map, paddr_t addr) {
+static bool check_bound(IOMap *map, paddr_t addr) {
+
   if (map == NULL) {
+    return false;
     Assert(map != NULL, "address (" FMT_PADDR ") is out of bound at pc = " FMT_WORD, addr, cpu.pc);
   } else {
     Assert(addr <= map->high && addr >= map->low,
@@ -54,7 +56,9 @@ void init_map() {
 
 word_t map_read(paddr_t addr, int len, IOMap *map) {
   assert(len >= 1 && len <= 8);
-  check_bound(map, addr);
+  if(check_bound(map, addr) == false){
+    return 0;
+  }
   paddr_t offset = addr - map->low;
   invoke_callback(map->callback, offset, len, false); // prepare data to read
   word_t ret = host_read(map->space + offset, len);
