@@ -11,10 +11,10 @@ char* pal_argv[] = {
 };
 
 char* pal_envp[] = {
-  "home=pwd",
-  "ARCH=riscv",
-  "ARCH=riscv1",
-  "ARCH=riscv2",
+  // "home=pwd",
+  // "ARCH=riscv",
+  // "ARCH=riscv1",
+  // "ARCH=riscv2",
 NULL
 };
 
