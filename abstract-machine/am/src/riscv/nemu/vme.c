@@ -78,7 +78,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 
   // Get the PDE and PTE pointers
   pte_t *pde = as->ptr + pde_idx * 4;
-  pte_t *pte = as->ptr + (pde_idx << 10) + pte_idx * 4;
+  pte_t *pte = as->ptr + (pde_idx << 10) * 4 + pte_idx * 4;
 
   // Set PTE attributes
   pte->prevent = 1;
@@ -91,7 +91,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     pde->prevent = 1;
     pde->read = prot & 1;
     pde->write = (prot >> 1) & 1;
-    pde->phy = (uintptr_t)pte >> 12;
+    pde->phy = (uintptr_t)pa_num >> 12;
   }
 }
 
