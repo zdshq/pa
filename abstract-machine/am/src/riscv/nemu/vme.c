@@ -77,8 +77,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   pte->read = prot & 1;
   pte->write = (prot>>1) & 1;
   for(; (uintptr_t)pde < (uintptr_t)as->ptr + 1024*4*1024; pde++){
+    printf("pde->prevent : %p\n", va);
     if(pde->prevent == 0){
-      printf("pde->prevent : %p\n", va);
       pte->phy = (uintptr_t)pde >> 12;
       pde->read = prot & 1;
       pde->write = (prot>>1) & 1;
