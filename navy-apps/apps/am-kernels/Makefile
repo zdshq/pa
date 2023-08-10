@@ -13,6 +13,7 @@ ALL_PATH = $(foreach app,$(ALL),$(call APP_PATH,$(app)))
 ifeq ($(findstring $(MAKECMDGOALS),clean|clean-all|html),)
 libam:
 	$(MAKE) -C $(NAVY_HOME)/libs/libam archive
+	# $(ALL_PATH)
 else
 libam: ;
 endif
