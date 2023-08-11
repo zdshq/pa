@@ -33,16 +33,16 @@ int isa_mmu_check(vaddr_t vaddr, int len, int type) {
     uint32_t pte_index = vaddr >> 12 & 0x3ff;
     uint32_t pde = paddr_read(pdir + pde_index * 4, 4); // 获得一级页表的物理地址
     uint32_t pte = paddr_read(pdir + (pde_index << 10) * 4 + pte_index * 4, 4);
-    if(!(pde & (1 << 2)) && !(pte & (1 << 2)))
+    if((pde & (1 << 2)) || (pte & (1 << 2)))
     {
-      // printf("22 vaddr : %lx\n", vaddr);
+      printf("22 vaddr : %lx\n", vaddr);
       return MMU_FAIL;
     }
     // if()
     // if(vaddr < 0x80000000)
-      printf("vaddr : %lx\n", vaddr);
+      // printf("vaddr : %lx\n", vaddr);
     if ((pte >> 12) == (vaddr >> 12)) {
-      // printf("33\n");
+      printf("33\n");
         return MMU_DIRECT;
     }
     else{
