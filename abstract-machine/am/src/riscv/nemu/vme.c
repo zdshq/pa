@@ -51,7 +51,7 @@ void protect(AddrSpace *as) {
   as->area = USER_SPACE;
   as->pgsize = PGSIZE;
   // map kernel space
-  memcpy(updir, kas.ptr, PGSIZE);
+  memcpy(updir, kas.ptr, PGSIZE*PGSIZE);
 }
 
 void unprotect(AddrSpace *as) {
@@ -66,7 +66,7 @@ void __am_switch(Context *c) {
     set_satp(c->pdir);
   }
 }
-pte_t *pde;
+
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   // Calculate the index for the PDE and PTE

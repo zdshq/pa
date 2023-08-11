@@ -56,16 +56,19 @@ static uintptr_t loader(PCB* pcb, const char* filename) {
   fs_lseek(fd, Ehdr->e_phoff, 0);
   fs_read(fd, (void*)Phdr, sizeof(Elf_Phdr) * Ehdr->e_phnum);
 
-  /* 加载进内存,空闲空间需要清零 */
-  for (int i = 0; i < Ehdr->e_phnum; i++) {
-
-    if (Phdr[i].p_type == PT_LOAD) {
+  for(int i = 0; i < Ehdr->e_phnum; i++){
+    if(Phdr[i].p_type == PT_LOAD){
       fs_lseek(fd, Phdr[i].p_offset, 0);
-      fs_read(fd, (void*)Phdr[i].p_vaddr, Phdr[i].p_filesz);
-      // 清理未使用空间 !!!! 血的教训,清理空间的长度为 (p_memsz - p_filesz + 1),少一个byte都不行,不然 free 会报错
+      for(int j = 0; j < Phdr[i].p_memsz + PGSIZE; j += PGSIZE){
+        void * pa = new_page(1);
+        map(&(pcb->as), (void*)Phdr[i].p_vaddr + j, pa, 0);
+        fs_read(fd, (void*)Phdr[i].p_vaddr+j, PGSIZE);
+      }
       memset((char*)(Phdr[i].p_vaddr + Phdr[i].p_filesz), 0, Phdr[i].p_memsz - Phdr[i].p_filesz + 1);
+      // fs_close(fd);
     }
   }
+
 
   Log("Ehdr->e_entry:%p\n", (void*)Ehdr->e_entry);
 
@@ -135,11 +138,16 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
 
   // get user stack end position
   // we use GPRx to transfer stack end parameter
+  protect(&(pcb_p->as));
   char* ustack_start = (char*)new_page(8);
   char* ustack_end = (char*)(ustack_start + PGSIZE * 8);
-
+  for(int i = 8; i > 0; i--){
+    map(&(pcb_p->as), pcb_p->as.area.end - i * PGSIZE, ustack_start + (8 - i) * PGSIZE, 0);
+  }
+  ustack_start = pcb_p->as.area.end - 8 * PGSIZE;
+  ustack_end = pcb_p->as.area.end;
   Log("ustack_end: %p\n", ustack_end);
-
+  assert(0);
   // get count of argv and envp
   int argc = 0;
   int envc = 0;
