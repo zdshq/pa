@@ -147,7 +147,7 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
   ustack_start = pcb_p->as.area.end - 8 * PGSIZE;
   ustack_end = pcb_p->as.area.end;
   Log("ustack_end: %p\n", ustack_end);
-  assert(0);
+  // assert(0);
   // get count of argv and envp
   int argc = 0;
   int envc = 0;
