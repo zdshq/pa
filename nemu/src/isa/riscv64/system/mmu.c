@@ -39,7 +39,7 @@ int isa_mmu_check(vaddr_t vaddr, int len, int type) {
       return MMU_FAIL;
     }
     // if()
-    printf("vaddr : %lx pte : %x\n", vaddr, (pte >> 12));
+    // printf("vaddr : %lx pte : %x\n", vaddr, (pte >> 12));
     if ((pte >> 12) == (vaddr >> 12)) {
       // printf("33\n");
         return MMU_DIRECT;
