@@ -53,6 +53,7 @@ int isa_mmu_check(vaddr_t vaddr, int len, int type) {
 }
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
+  printf("aaaa vaddr : %lx\n", vaddr);
     uint32_t *pdir = (uint32_t *)(cpu.csr[4] << 12); // 获得页表基地址
     if(pdir == NULL){
       return MMU_FAIL;
