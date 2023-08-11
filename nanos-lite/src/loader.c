@@ -229,8 +229,7 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
 
 
   uintptr_t entry = loader(pcb_p, filename);
-  pcb_p->cp = ucontext(&pcb_p->as, RANGE(pcb_p->stack, pcb_p->stack + STACK_SIZE), (void*)entry);
-
+  pcb_p->cp = ucontext(&pcb_p->as, RANGE(pcb_p->stack, pcb_p->stack + STACK_SIZE), (void *)entry);
 
   pcb_p->cp->GPRx = (uintptr_t)argc_area_start;
 
