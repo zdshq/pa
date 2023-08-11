@@ -144,7 +144,6 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
   char* ustack_end = (char*)(ustack_start + PGSIZE * 8);
   for(int i = 8; i > 0; i--){
     map(&(pcb_p->as), pcb_p->as.area.end - i * PGSIZE, ustack_start + (8 - i) * PGSIZE, 0);
-    // assert(0);
   }
   ustack_start = pcb_p->as.area.end - 8 * PGSIZE;
   ustack_end = pcb_p->as.area.end;

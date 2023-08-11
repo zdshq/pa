@@ -95,6 +95,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     printf("pde : %p\t pte : %p\n", pde, pte);
     printf("%p\n", pte->val);
     printf("%p\n", pte->phy);
+
+    printf("vaddr %p\n", va);
   }
 }
 
