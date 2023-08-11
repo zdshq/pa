@@ -26,6 +26,7 @@ int isa_mmu_check(vaddr_t vaddr, int len, int type) {
   // assert(a == 0);
     uint32_t pdir = (uint32_t)(cpu.csr[4] << 12); // 获得页表基地址
     if(pdir == 0){
+      printf("11\n");
       return MMU_FAIL;
     }
     uint32_t pde_index = vaddr >> 22;
@@ -34,14 +35,17 @@ int isa_mmu_check(vaddr_t vaddr, int len, int type) {
     uint32_t pte = paddr_read(pdir + (pde_index << 10) * 4 + pte_index * 4, 4);
     if(pde & (1 << 2) && pte & (1 << 2))
     {
+      printf("22\n");
       return MMU_FAIL;
     }
     // if()
     printf("vaddr : %lx pte : %x\n", vaddr, (pte >> 12));
     if ((pte >> 12) == (vaddr >> 12)) {
+      printf("33\n");
         return MMU_DIRECT;
     }
     else{
+      printf("44\n");
       return MMU_TRANSLATE;
     }
     return 0;
