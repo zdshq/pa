@@ -29,9 +29,9 @@ int isa_mmu_check(vaddr_t vaddr, int len, int type) {
     uint64_t pde_index = 0;
     // uint32_t pte_index = vaddr >> 12 & 0x3ff;
     uint64_t pde = pdir + pde_index * 4; // 获得一级页表的物理地址
-    pde = paddr_read(pde, 8);
+    pde = paddr_read(pde, 4);
     // uint32_t pte = pde >> 12 + 4 * pte_index;
-    printf("pde : %x\n", pdir);
+    printf("pde : %x\n", pde);
     // if((((pte) >> 2))  == NULL){
     //   return MMU_FAIL;
     // }
