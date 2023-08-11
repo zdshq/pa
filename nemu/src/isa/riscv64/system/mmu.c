@@ -23,6 +23,7 @@
 */
 int isa_mmu_check(vaddr_t vaddr, int len, int type) {
   static int a = 0;
+  vaddr = 0x80000000;
   assert(a == 0);
     uint32_t pdir = (uint32_t)(cpu.csr[4] << 12); // 获得页表基地址
     if(pdir == 0){
