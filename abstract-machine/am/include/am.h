@@ -44,11 +44,11 @@ typedef union
   uint32_t val;
   struct 
   {
-    uint32_t phy : 20;
     uint32_t read : 1;
     uint32_t write : 1;
     uint32_t present : 1;
-    uint32_t : 7;
+    uint32_t : 9;
+    uint32_t phy : 20;
   };
 }pte_t;
 
