@@ -39,7 +39,7 @@ int isa_mmu_check(vaddr_t vaddr, int len, int type) {
       return MMU_FAIL;
     }
     // if()
-    if(vaddr < 0x80000000)
+    // if(vaddr < 0x80000000)
       printf("vaddr : %lx\n", vaddr);
     if ((pte >> 12) == (vaddr >> 12)) {
       // printf("33\n");
