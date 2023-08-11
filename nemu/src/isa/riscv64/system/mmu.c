@@ -30,9 +30,8 @@ int isa_mmu_check(vaddr_t vaddr, int len, int type) {
     }
     uint32_t pde_index = vaddr >> 22;
     uint32_t pte_index = vaddr >> 12 & 0x3ff;
-    uint32_t pde = paddr_read(pdir + pde_index*4, 4); // 获得一级页表的物理地址
-    uint32_t pte = pde >> 12 + 4 * pte_index;
-    pte = paddr_read(pte, 4);
+    uint32_t pde = paddr_read(pdir + pde_index * 4, 4); // 获得一级页表的物理地址
+    uint32_t pte = paddr_read(pdir + (pde_index << 10) * 4 + pte_index * 4, 4);
     // if()
     printf("pde : %x\n", pte);
     // a+=1;

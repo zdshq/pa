@@ -39,8 +39,6 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
       map(&kas, va, va, 0);
     }
   }
-  uint32_t * a = kas.ptr;
-  *a = 32;
   set_satp(kas.ptr);
   vme_enable = 1;
 
@@ -82,20 +80,17 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   pte_t *pte = as->ptr + (pde_idx << 10) * 4 + pte_idx * 4;
 
   // Set PTE attributes
-  pte->prevent = 1;
+  pte->present = 1;
   pte->read = prot & 1;
   pte->write = (prot >> 1) & 1;
   pte->phy = pa_num >> 12;
 
   // Set PDE attributes if not already set
-  if (!pde->prevent) {
-    pde->prevent = 1;
+  if (!pde->present) {
+    pde->present = 1;
     pde->read = prot & 1;
     pde->write = (prot >> 1) & 1;
     pde->phy = (uintptr_t)pa_num >> 12;
-    uint32_t * a = as->ptr;
-    *a = 32;
-    printf("pde a : %p\n", *(uint32_t *)(as->ptr));
   }
 }
 
