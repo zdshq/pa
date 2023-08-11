@@ -92,7 +92,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     pde->read = prot & 1;
     pde->write = (prot >> 1) & 1;
     pde->phy = (uintptr_t)pa_num >> 12;
-    printf("satp : %d\n", as->ptr);
+    printf("satp : %x\n", as->ptr);
   }
   
 }
