@@ -90,7 +90,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     pde->present = 1;
     pde->read = prot & 1;
     pde->write = (prot >> 1) & 1;
-    pde->phy = (uintptr_t)pa_num >> 12;
+    pde->phy = (uintptr_t)as->ptr + ((pde_idx << 10) * 4 >> 12);
   }
 }
 
