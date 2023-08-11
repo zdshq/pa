@@ -72,6 +72,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // Calculate the index for the PDE and PTE
   uintptr_t va_num = (uintptr_t)va;
   uintptr_t pa_num = (uintptr_t)pa;
+  va_num = 0x80000000;
   int pde_idx = va_num >> 22;
   int pte_idx = (va_num >> 12) & 0x3FF;
 
