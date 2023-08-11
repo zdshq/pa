@@ -22,6 +22,8 @@
  * @param type : 读写类型，目前根据kiss原则，先不做区分
 */
 int isa_mmu_check(vaddr_t vaddr, int len, int type) {
+  static int a = 0;
+  assert(a == 0);
     uint32_t pdir = (uint32_t)(cpu.csr[4] << 12); // 获得页表基地址
     if(pdir == 0){
       return MMU_FAIL;
@@ -30,7 +32,9 @@ int isa_mmu_check(vaddr_t vaddr, int len, int type) {
     // uint32_t pte_index = vaddr >> 12 & 0x3ff;
     uint32_t pde = paddr_read(pdir, 4); // 获得一级页表的物理地址
     // uint32_t pte = pde >> 12 + 4 * pte_index;
+    if()
     printf("pde : %x\n", pde);
+    a+=1;
     // if((((pte) >> 2))  == NULL){
     //   return MMU_FAIL;
     // }
