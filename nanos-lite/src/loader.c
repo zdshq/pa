@@ -139,9 +139,13 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
   // get user stack end position
   // we use GPRx to transfer stack end parameter
   protect(&(pcb_p->as));
+  Log("11\n");
   asm volatile("csrw satp, %0" : : "r"(((uintptr_t)&(pcb_p->as) >> 12)));
+  Log("12\n");
   char* ustack_start = (char*)new_page(8);
+  Log("13\n");
   char* ustack_end = (char*)(ustack_start + PGSIZE * 8);
+  Log("14\n");
   for(int i = 8; i > 0; i--){
     map(&(pcb_p->as), pcb_p->as.area.end - i * PGSIZE, ustack_start + (8 - i) * PGSIZE, 0);
   }
