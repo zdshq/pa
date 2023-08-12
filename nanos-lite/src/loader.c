@@ -141,7 +141,8 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
   protect(&(pcb_p->as));
   // assert(0);
   Log("11\n");
-  printf("pcb->as:%p\n", pcb_p);
+  printf("pcb:%p\n", pcb_p);
+  printf("pcb->as:%p\n", &(pcb_p->as));
   assert(0);
   asm volatile("csrw satp, %0" : : "r"(((uintptr_t)&(pcb_p->as))));
   Log("12\n");
