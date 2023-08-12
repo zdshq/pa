@@ -48,7 +48,7 @@ int isa_mmu_check(vaddr_t vaddr, int len, int type) {
     }
     else{
       printf("44\n");
-      printf("22 pte: %x vaddr : %lx\n", pde, vaddr);
+      // printf("22 pte: %x vaddr : %lx\n", pde, vaddr);
       return MMU_TRANSLATE;
     }
     return 0;
