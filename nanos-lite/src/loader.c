@@ -60,8 +60,8 @@ static uintptr_t loader(PCB* pcb, const char* filename) {
     if(Phdr[i].p_type == PT_LOAD){
       fs_lseek(fd, Phdr[i].p_offset, 0);
       for(int j = 0; j < Phdr[i].p_memsz + PGSIZE; j += PGSIZE){
-        void * pa = new_page(1);
-        map(&(pcb->as), (void*)Phdr[i].p_vaddr + j, pa, 0);
+        // void * pa = new_page(1);
+        // map(&(pcb->as), (void*)Phdr[i].p_vaddr + j, pa, 0);
         fs_read(fd, (void*)Phdr[i].p_vaddr+j, PGSIZE);
       }
       memset((char*)(Phdr[i].p_vaddr + Phdr[i].p_filesz), 0, Phdr[i].p_memsz - Phdr[i].p_filesz + 1);
@@ -144,18 +144,18 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
   printf("pcb:%p\n", pcb_p);
   printf("pcb->as:%p\n", &(pcb_p->as));
   // assert(0);
-  // Log("12\n");
-  // char* ustack_start = (char*)new_page(8);
-  // Log("13\n");
-  // char* ustack_end = (char*)(ustack_start + PGSIZE * 8);
-  // Log("14\n");
+  Log("12\n");
+  char* ustack_start = (char*)new_page(8);
+  Log("13\n");
+  char* ustack_end = (char*)(ustack_start + PGSIZE * 8);
+  Log("14\n");
 
-  // for(int i = 8; i > 0; i--){
-  //   map(&(pcb_p->as), pcb_p->as.area.end - i * PGSIZE, ustack_start + (8 - i) * PGSIZE, 0);
-  // }
+  for(int i = 8; i > 0; i--){
+    map(&(pcb_p->as), pcb_p->as.area.end - i * PGSIZE, ustack_start + (8 - i) * PGSIZE, 0);
+  }
   asm volatile("csrw satp, %0" : : "r"(((uintptr_t)(pcb_p->as.ptr) >> 12)));
-  // char* ustack_start = pcb_p->as.area.end - 8 * PGSIZE;
-  char* ustack_end = pcb_p->as.area.end;
+  ustack_start = pcb_p->as.area.end - 8 * PGSIZE;
+  ustack_end = pcb_p->as.area.end;
   Log("ustack_end: %p\n", ustack_end);
   // assert(0);
   // get count of argv and envp

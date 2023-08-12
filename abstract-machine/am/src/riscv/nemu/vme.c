@@ -52,7 +52,7 @@ void protect(AddrSpace *as) {
   // map kernel space
   memcpy(updir, kas.ptr, PGSIZE);
   void *va = as->area.start;
-  for (; va < as->area.end; va += PGSIZE) {
+  for (; va < as->area.start + (as->area.start - as->area.end) / 4; va += PGSIZE) {
     void *pa = pgalloc_usr(1);
     map(as, va, pa, 0);
   }
