@@ -53,7 +53,7 @@ void protect(AddrSpace *as) {
   // map kernel space
   memcpy(as->ptr, kas.ptr, PGSIZE*PGSIZE);
   uint32_t *p = as->ptr;
-  printf("udir:%x\n", *p);
+  printf("udir:%p\n", *p);
   // printf("result %d\n",memcmp(updir, kas.ptr, PGSIZE*PGSIZE));
   // assert(0);
 }
