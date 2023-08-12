@@ -34,7 +34,7 @@ void hello_fun(void *arg) {
 void init_proc() {
 
   context_kload(&pcb[0], hello_fun, NULL);
-  // context_uload(&pcb[0], "/bin/nterm", pal_argv, pal_envp);
+  context_uload(&pcb[1], "/bin/nterm", pal_argv, pal_envp);
   // printf("pcb[0].cp : %d\n", (int32_t)pcb[0].cp->mepc);
   switch_boot_pcb();
 
@@ -50,7 +50,7 @@ Context*  schedule(Context* prev) {
 
   // always select pcb[0] as the new process
   // current = &pcb[0];
-  current = &pcb[0];
+  current = current == &pcb[0] ? &pcb[1] : &pcb[0];
 
   // then return the new context
   // printf("pcb[0].cp : %d\n", (int32_t)pcb[0].cp->mepc);

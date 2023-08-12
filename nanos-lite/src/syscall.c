@@ -24,7 +24,7 @@ void do_syscall(Context* c) {
 #ifdef STRACE
     printf("SYS_yield\n");
 #endif
-    // yield();c->GPRx = 0;
+    yield();c->GPRx = 0;
     break;
   case SYS_exit:
 #ifdef STRACE
