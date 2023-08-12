@@ -32,7 +32,7 @@ void free_page(void *p)
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk)
 {
-  Log("123 mm_brk()");
+  printf("123 mm_brk()");
   return 0;
 }
 
