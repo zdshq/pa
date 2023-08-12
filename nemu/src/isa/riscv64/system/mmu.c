@@ -55,24 +55,15 @@ int isa_mmu_check(vaddr_t vaddr, int len, int type) {
 }
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
-  printf("aaaa vaddr : %lx\n", vaddr);
-    uint32_t *pdir = (uint32_t *)(cpu.csr[4] << 12); // 获得页表基地址
-    if(pdir == NULL){
-      return MMU_FAIL;
-    }
-    uint32_t *pte = pdir + ((uintptr_t)vaddr >> 22) * 4; // 获得一级页表的物理地址
-    if(pte == NULL){
-      return MMU_FAIL;
-    }
-    uint32_t *pde = (uint32_t *)((uintptr_t)(*pte) >> 12);
-    if(pde == NULL){
-      return MMU_FAIL;
-    }
-    if ((*pde >> 12) == ((uintptr_t)vaddr >> 12)) {
-        return MMU_DIRECT;
-    }
-    else{
-      return MMU_TRANSLATE;
-    }
-    return ((*pde) & (~0xfff)) + (vaddr & 0xfff);
+  uint32_t pdir = (uint32_t)(cpu.csr[4] << 12); // 获得页表基地址
+  if(pdir == 0){
+      // printf("11\n");
+    return MMU_FAIL;
+  }
+  uint32_t pde_index = vaddr >> 22;
+  uint32_t pte_index = vaddr >> 12 & 0x3ff;
+  uint32_t pde = paddr_read(pdir + pde_index * 4, 4) & (~0xfff); // 获得一级页表的物理地址
+  uint32_t pte = paddr_read(pde + pte_index * 4, 4) & (~0xfff);
+  printf("translate : %x", pte + (vaddr & 0xfff));
+  return pte + (vaddr & 0xfff);
 }
