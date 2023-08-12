@@ -34,6 +34,7 @@ void hello_fun(void *arg) {
 void init_proc() {
 
   context_uload(&pcb[0], "/bin/timer-test", pal_argv, pal_envp);
+  Log("wuyu");
   context_uload(&pcb[1], "/bin/nterm", pal_argv, pal_envp);
   // printf("pcb[0].cp : %d\n", (int32_t)pcb[0].cp->mepc);
   switch_boot_pcb();
