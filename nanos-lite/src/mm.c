@@ -17,9 +17,9 @@ void *new_page(size_t nr_page)
 static void *pg_alloc(int n)
 {
   void *mem = new_page(n);
-  Log("1?\n");
-  // memset(mem, 0, n * PGSIZE);
-  Log("2?\n");
+  // Log("1?\n");
+  // // memset(mem, 0, n * PGSIZE);
+  // Log("2?\n");
   return mem;
 }
 #endif
