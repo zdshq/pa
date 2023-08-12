@@ -15,7 +15,8 @@ static Area segments[] = {      // Kernel memory mappings
 #define USER_SPACE RANGE(0x40000000, 0x80000000)
 
 static inline void set_satp(void *pdir) {
-  asm volatile("csrw satp, %0" : : "r"(((uintptr_t)pdir)));
+  uintptr_t mode = 1ul << (__riscv_xlen - 1);
+  asm volatile("csrw satp, %0" : : "r"(mode | ((uintptr_t)pdir >> 12)));
 }
 
 static inline uintptr_t get_satp() {
@@ -38,8 +39,6 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
       map(&kas, va, va, 0);
     }
   }
-  uint32_t *p = kas.ptr;
-  *p = 0x11;
   set_satp(kas.ptr);
   vme_enable = 1;
 
@@ -47,16 +46,12 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
 }
 
 void protect(AddrSpace *as) {
-  as->ptr = pgalloc_usr(PGSIZE);
+  PTE *updir = (PTE*)(pgalloc_usr(PGSIZE));
+  as->ptr = updir;
   as->area = USER_SPACE;
   as->pgsize = PGSIZE;
   // map kernel space
-  memcpy(as->ptr, kas.ptr, PGSIZE*PGSIZE);
-  uint32_t *p = as->ptr;
-  printf("udir:%p\n", *p);
-  printf("udir:%p\n", *p);
-  // printf("result %d\n",memcmp(updir, kas.ptr, PGSIZE*PGSIZE));
-  // assert(0);
+  memcpy(updir, kas.ptr, PGSIZE*PGSIZE);
 }
 
 void unprotect(AddrSpace *as) {
@@ -96,7 +91,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     pde->present = 1;
     pde->read = prot & 1;
     pde->write = (prot >> 1) & 1;
-    pde->phy = (uintptr_t)as->ptr + ((pde_idx << 10) * 4 >> 12);
+    pde->phy = (((uintptr_t)as->ptr)>>12) + pde_idx;
     printf("pde : %p\t pte : %p\n", pde, pte);
     printf("%p\n", pte->val);
     printf("%p\n", pte->phy);
