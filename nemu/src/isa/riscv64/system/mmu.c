@@ -35,7 +35,7 @@ word_t isa_mmu_check(vaddr_t vaddr, int len, int type) {
     uint32_t pte = paddr_read(pde + pte_index * 4, 4);
     if((pte & (1 << 2)) != 4)
     {
-      // printf("22 pde: %x pte: %x vaddr : %lx\n", pde, pte, vaddr);
+      printf("22 pde: %x pte: %x vaddr : %lx\n", pde, pte, vaddr);
       assert(0);
       return MMU_FAIL;
     }
