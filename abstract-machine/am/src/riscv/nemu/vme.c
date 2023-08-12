@@ -85,7 +85,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   pte->read = prot & 1;
   pte->write = (prot >> 1) & 1;
   pte->phy = pa_num >> 12;
-
+  printf("vaddr %p\n", va);
   // Set PDE attributes if not already set
   if (!pde->present) {
     pde->present = 1;
