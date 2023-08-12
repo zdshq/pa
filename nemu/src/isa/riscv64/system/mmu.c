@@ -64,6 +64,6 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uint32_t pte_index = vaddr >> 12 & 0x3ff;
   uint32_t pde = paddr_read(pdir + pde_index * 4, 4) & (~0xfff); // 获得一级页表的物理地址
   uint32_t pte = paddr_read(pde + pte_index * 4, 4) & (~0xfff);
-  printf("vaddr : %lx \t pte : %x\ttranslate : %x", vaddr, pte, (uint32_t)0xfff);
+  printf("vaddr : %lx \t pte : %x\ttranslate : %lx\n", vaddr, pte, pte + (vaddr & 0xfff);
   return pte + (vaddr & 0xfff);
 }
