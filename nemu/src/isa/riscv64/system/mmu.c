@@ -24,7 +24,7 @@
 int isa_mmu_check(vaddr_t vaddr, int len, int type) {
   // static int a = 0;
   // assert(a == 0);
-    uint32_t pdir = (uint32_t)(cpu.csr[4] << 12); // 获得页表基地址
+    uint32_t pdir = (uint32_t)(cpu.csr[4]); // 获得页表基地址
     if(pdir == 0){
       // printf("11\n");
       return MMU_FAIL;
