@@ -94,7 +94,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     pde->phy = ((uintptr_t)as->ptr + (pde_idx << 10) * 4) >> 12;
     printf("pde : %p\t pte : %p\n", pde, pte);
     printf("%p\n", pde->val);
-    printf("%p\n", pde->phy);
+    printf("%p\n", pte->val);
 
     printf("vaddr %p\n", va);
   }
