@@ -38,6 +38,8 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
       map(&kas, va, va, 0);
     }
   }
+  uint32_t *p = kas.ptr;
+  *p = 32;
   set_satp(kas.ptr);
   vme_enable = 1;
 
