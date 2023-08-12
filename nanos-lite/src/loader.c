@@ -59,7 +59,7 @@ static uintptr_t loader(PCB* pcb, const char* filename) {
   for(int i = 0; i < Ehdr->e_phnum; i++){
     if(Phdr[i].p_type == PT_LOAD){
       fs_lseek(fd, Phdr[i].p_offset, 0);
-      for(int j = 0; j < Phdr[i].p_memsz + PGSIZE + 1; j += PGSIZE){
+      for(int j = 0; j < Phdr[i].p_memsz + PGSIZE*2; j += PGSIZE){
         void * pa = new_page(1);
         map(&(pcb->as), (void*)Phdr[i].p_vaddr + j, pa, 0);
         fs_read(fd, (void*)Phdr[i].p_vaddr+j, PGSIZE);
