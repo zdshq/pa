@@ -141,7 +141,7 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
   protect(&(pcb_p->as));
   Log("11\n");
   printf("pcb->as:%p\n", &(pcb_p->as));
-  asm volatile("csrw satp, %0" : : "r"(((uintptr_t)&(pcb_p->as) >> 12)));
+  asm volatile("csrw satp, %0" : : "r"(((uintptr_t)&(pcb_p->as))));
   Log("12\n");
   char* ustack_start = (char*)new_page(8);
   Log("13\n");
