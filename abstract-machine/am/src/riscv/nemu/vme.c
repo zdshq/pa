@@ -46,13 +46,14 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
 
 void protect(AddrSpace *as) {
   PTE *updir = (PTE*)(pgalloc_usr(PGSIZE));
+  
   as->ptr = updir;
   as->area = USER_SPACE;
   as->pgsize = PGSIZE;
   // map kernel space
   memcpy(updir, kas.ptr, PGSIZE);
   void *va = as->area.start;
-  for (; va < as->area.start + (as->area.end - as->area.start) / 8; va += PGSIZE) {
+  for (; va < as->area.start + (as->area.end - as->area.start) / 16; va += PGSIZE) {
     void *pa = pgalloc_usr(1);
     map(as, va, pa, 0);
   }
