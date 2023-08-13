@@ -62,13 +62,13 @@ void protect(AddrSpace *as) {
   if(m == 2){
       printf("hahahaerwer\t\n");
   }
-  int i = 0;
+  // int i = 0;
   void *va = as->area.start;
   for (; va < as->area.start + (as->area.end - as->area.start) / 8; va += PGSIZE) {
-    if(m == 2){
-      i++;
-      printf("hahahaerwer\t i : %d\n", i);
-    }
+    // if(m == 2){
+    //   i++;
+    //   printf("hahahaerwer\t i : %d\n", i);
+    // }
     void *pa = pgalloc_usr(1);
     map(as, va, pa, 0);
   }
