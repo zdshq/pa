@@ -71,6 +71,7 @@ void protect(AddrSpace *as) {
     void *pa = pgalloc_usr(1);
     map(as, va, pa, 0);
   }
+  set_satp(updir);
 }
 
 void unprotect(AddrSpace *as) {
