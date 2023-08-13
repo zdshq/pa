@@ -34,7 +34,7 @@ Context* __am_irq_handle(Context* c) {
     printf("hhh: 111111\n");
     assert(c != NULL);
     printf("hhh: 222222\n");
-    __am_switch(c);
+    // __am_switch(c);
     printf("hhh: 333333\n");
   }
   printf("new value : %p\n ",c->gpr[2]);
