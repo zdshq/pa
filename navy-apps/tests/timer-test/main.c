@@ -31,6 +31,7 @@ int main() {
       printf("timer-test:%d\n", i++);
     }
   }
+  yield();
   return 0;
 
 }
