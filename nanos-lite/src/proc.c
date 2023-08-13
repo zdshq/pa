@@ -33,9 +33,9 @@ void hello_fun(void *arg) {
 
 void init_proc() {
 
-  context_uload(&pcb[0], "/bin/menu", pal_argv, pal_envp);
+  context_uload(&pcb[1], "/bin/menu", pal_argv, pal_envp);
   Log("wuyu");
-  context_kload(&pcb[1], hello_fun, NULL);
+  context_kload(&pcb[0], hello_fun, NULL);
   // printf("pcb[0].cp : %d\n", (int32_t)pcb[0].cp->mepc);
   switch_boot_pcb();
 
