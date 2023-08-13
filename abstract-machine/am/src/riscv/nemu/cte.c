@@ -7,7 +7,7 @@ void __am_switch(Context *c);
 void __am_get_cur_as(Context *c);
 Context* __am_irq_handle(Context* c) {
   //printf("__am_irq_handle code:%d\n", c->mcause);
-  __am_get_cur_as(c);
+  // __am_get_cur_as(c);
     
   if (user_handler) {
     Event ev = { 0 };
