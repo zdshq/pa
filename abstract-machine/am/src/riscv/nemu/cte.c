@@ -29,6 +29,7 @@ Context* __am_irq_handle(Context* c) {
     // for (size_t i = 0; i < 32; i++) {
     //   printf("%d: %x\n", i, c->gpr[i]);
     // }
+    printf("old value : %p\n ",c->gpr[2]);
     c = user_handler(ev, c);
     printf("hhh: 111111\n");
     assert(c != NULL);
@@ -36,7 +37,7 @@ Context* __am_irq_handle(Context* c) {
     __am_switch(c);
     printf("hhh: 333333\n");
   }
-
+  printf("new value : %p\n ",c->gpr[2]);
   return c;
 }
 
