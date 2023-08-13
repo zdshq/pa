@@ -57,6 +57,7 @@ void protect(AddrSpace *as) {
   if(m == 2){
       printf("hahahaerwer\t\n");
   }
+  set_satp(kas.ptr);
   memcpy(updir, kas.ptr, PGSIZE);
   if(m == 2){
       printf("hahahaerwer\t\n");
