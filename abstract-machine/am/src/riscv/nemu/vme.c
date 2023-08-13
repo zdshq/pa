@@ -54,7 +54,13 @@ void protect(AddrSpace *as) {
   as->area = USER_SPACE;
   as->pgsize = PGSIZE;
   // map kernel space
+  if(m == 2){
+      printf("hahahaerwer\t\n");
+  }
   memcpy(updir, kas.ptr, PGSIZE);
+  if(m == 2){
+      printf("hahahaerwer\t\n");
+  }
   int i = 0;
   void *va = as->area.start;
   for (; va < as->area.start + (as->area.end - as->area.start) / 8; va += PGSIZE) {
