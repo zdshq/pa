@@ -57,7 +57,6 @@ void protect(AddrSpace *as) {
   if(m == 2){
       printf("hahahaerwer\t\n");
   }
-  set_satp(kas.ptr);
   memcpy(updir, kas.ptr, PGSIZE);
   if(m == 2){
       printf("hahahaerwer\t\n");
@@ -75,6 +74,7 @@ void protect(AddrSpace *as) {
 }
 
 void unprotect(AddrSpace *as) {
+  set_satp(kas.ptr);
 }
 
 void __am_get_cur_as(Context *c) {
