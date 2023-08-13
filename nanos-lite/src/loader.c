@@ -268,4 +268,5 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
   }
   Log("argv_str_len:%d,envp_str_len%d\n", argv_str_len, envp_str_len);
   
+  // unprotect(&(pcb_p->as));
 }
