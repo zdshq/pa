@@ -31,13 +31,13 @@ Context* __am_irq_handle(Context* c) {
     // }
     printf("old value : %p\n ",c->gpr[2]);
     c = user_handler(ev, c);
-    printf("hhh: 111111\n");
+    // printf("hhh: 111111\n");
     assert(c != NULL);
-    printf("hhh: 222222\n");
+    // printf("hhh: 222222\n");
     // __am_switch(c);
-    printf("hhh: 333333\n");
+    // printf("hhh: 333333\n");
   }
-  printf("new value : %p\n ",c->gpr[2]);
+  // printf("new value : %p\n ",c->gpr[2]);
   return c;
 }
 
