@@ -47,6 +47,9 @@ int m = 0;
 void protect(AddrSpace *as) {
   PTE *updir = (PTE*)(pgalloc_usr(PGSIZE));
   m++;
+  if(m == 2){
+      printf("hahahaerwer\t\n");
+  }
   as->ptr = updir;
   as->area = USER_SPACE;
   as->pgsize = PGSIZE;
@@ -55,10 +58,10 @@ void protect(AddrSpace *as) {
   int i = 0;
   void *va = as->area.start;
   for (; va < as->area.start + (as->area.end - as->area.start) / 8; va += PGSIZE) {
-  if(m == 2){
-    i++;
-    printf("hahahaerwer\t i : %d\n", i);
-  }
+    if(m == 2){
+      i++;
+      printf("hahahaerwer\t i : %d\n", i);
+    }
     void *pa = pgalloc_usr(1);
     map(as, va, pa, 0);
   }
