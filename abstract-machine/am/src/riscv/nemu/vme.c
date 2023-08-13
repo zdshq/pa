@@ -43,10 +43,13 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
 
   return true;
 }
-
+int m = 0;
 void protect(AddrSpace *as) {
   PTE *updir = (PTE*)(pgalloc_usr(PGSIZE));
-  
+  m++;
+  if(m == 2){
+    printf("hahahaerwer\n");
+  }
   as->ptr = updir;
   as->area = USER_SPACE;
   as->pgsize = PGSIZE;
