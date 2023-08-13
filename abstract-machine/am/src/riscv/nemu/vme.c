@@ -64,7 +64,7 @@ void protect(AddrSpace *as) {
   }
   // int i = 0;
   void *va = as->area.start;
-  for (; va < as->area.start + (as->area.end - as->area.start) / 8; va += PGSIZE) {
+  for (; va < as->area.start + (as->area.end - as->area.start) / 4; va += PGSIZE) {
     // if(m == 2){
     //   i++;
     //   printf("hahahaerwer\t i : %d\n", i);
