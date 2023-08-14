@@ -17,5 +17,5 @@
 
 void dev_raise_intr() {
     cpu.INTR = true;
-    printf("hhhdddwww\n");
+    // printf("hhhdddwww\n");
 }
