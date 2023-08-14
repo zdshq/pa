@@ -33,7 +33,7 @@ size_t serial_write(const void* buf, size_t offset, size_t len) {
  * @return size_t 0:无按键事件 1:有按键事件
  */
 size_t events_read(void* buf, size_t offset, size_t len) {
-  // yield();
+  yield();
   assert(len > 10);
   AM_INPUT_KEYBRD_T kb = io_read(AM_INPUT_KEYBRD);
   if (kb.keydown) {
