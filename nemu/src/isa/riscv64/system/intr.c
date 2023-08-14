@@ -36,12 +36,12 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   return cpu.csr[mtvec];
 }
 
-// #define IRQ_TIMER 0x8000000000000007  // for riscv64
+#define IRQ_TIMER 0x8000000000000007  // for riscv64
 
-// word_t isa_query_intr() {
-//   if ( ??? ) {
-//     cpu.INTR = false;
-//     return IRQ_TIMER;
-//   }
-//   return INTR_EMPTY;
-// }
+word_t isa_query_intr() {
+  if ( cpu.INTR ) {
+    cpu.INTR = false;
+    return IRQ_TIMER;
+  }
+  return INTR_EMPTY;
+}
