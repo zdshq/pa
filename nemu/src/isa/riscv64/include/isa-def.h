@@ -32,6 +32,7 @@ typedef struct {
   word_t gpr[32];
   vaddr_t pc; 
   word_t csr[csr_end];
+  bool INTR;
 } riscv64_CPU_state;
 
 // decode
