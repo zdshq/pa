@@ -10,7 +10,7 @@ static Context* do_event(Event e, Context* c) {
     return schedule(c);
     break;
   case EVENT_IRQ_TIMER:
-    return c;
+    return time_schedule(c);
   case EVENT_SYSCALL:
     //printf("do_event:EVENT_SYSCALL\n");
     do_syscall(c);

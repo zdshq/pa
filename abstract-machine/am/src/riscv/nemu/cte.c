@@ -50,7 +50,7 @@ extern void __am_asm_trap(void);
 bool cte_init(Context*(*handler)(Event, Context*)) {
   // initialize exception entry
   asm volatile("csrw mtvec, %0" : : "r"(__am_asm_trap));
-  // asm volatile("csrw mstatus, %0" : : "r"(0xa00001800));
+  asm volatile("csrw mstatus, %0" : : "r"(0xa00001888));
   // register event handler
   user_handler = handler;
 
@@ -68,10 +68,10 @@ Context* kcontext(Area kstack, void (*entry)(void*), void* arg) {
 
   printf("entry:%p\n", entry);
   p->mepc = (uintptr_t)entry;   // mret 后，进入 entry
-  p->gpr[10] = (uintptr_t)arg; // a0 传惨,暂定为一个字符串
+  p->gpr[10] = (uintptr_t)arg; // a0 传参,暂定为一个字符串
 
 
-  p->mstatus = 0xa00001800; // for difftest
+  p->mstatus = 0xa00001888; // for difftest  和 设置mie和mpie
 
   return p;
 }

@@ -86,7 +86,6 @@ void naive_uload(PCB* pcb, const char* filename) {
 
 
 void context_kload(PCB* pcb_p, void (*entry)(void*), void* arg) {
-
   pcb_p->cp = kcontext(RANGE(pcb_p->stack, pcb_p->stack + STACK_SIZE), entry, arg);
 }
 
@@ -251,7 +250,6 @@ void context_uload(PCB* pcb_p, const char* filename, char* const argv[], char* c
   pcb_p->cp = ucontext(&pcb_p->as, RANGE(pcb_p->stack, pcb_p->stack + STACK_SIZE), (void *)entry);
 
   pcb_p->cp->GPRx = (uintptr_t)argc_area_start;
-
 
 
   // for check

@@ -3,6 +3,7 @@
 #define MAX_NR_PROC 4
 
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
+uint8_t time[4] = {1,10};
 static PCB pcb_boot = {};
 PCB *current = NULL;
 
@@ -56,5 +57,19 @@ Context*  schedule(Context* prev) {
   // then return the new context
   // printf("pcb[0].cp : %d\n", (int32_t)pcb[0].cp->mepc);
   return current->cp;
-
+}
+uint8_t task_time = 255,time_index;
+Context*  time_schedule(Context* prev) {
+  if(task_time == 255){
+    time_index = 0;
+    task_time = time[0];
+    return schedule(prev);
+  }
+  else if(task_time == 0){
+    time_index %= 2;
+    task_time = time[time_index];
+    return schedule(prev);
+  }
+  task_time--;
+  return prev;
 }

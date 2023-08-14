@@ -139,7 +139,7 @@ Context* ucontext(AddrSpace* as, Area kstack, void* entry) {
 
   p->mepc = (uintptr_t)entry;   // mret 后，进入 entry
 
-  p->mstatus = 0xa00001800; // for difftest
+  p->mstatus = 0xa00001888; // for difftest
 
   return p;
 }

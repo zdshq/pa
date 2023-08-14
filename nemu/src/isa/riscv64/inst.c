@@ -38,7 +38,7 @@ enum {
 static word_t immI(uint32_t i) { return SEXT(BITS(i, 31, 20), 12); }
 static word_t immU(uint32_t i) { return SEXT(BITS(i, 31, 12), 20) << 12; }
 static word_t immS(uint32_t i) { return (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); }
-/* add by leesum */
+
 static word_t immB(uint32_t i) {
   return (SEXT(
     BITS(i, 31, 31), 1) << 12 |
@@ -76,7 +76,6 @@ static void decode_operand(Decode* s, word_t* dest, word_t* src1, word_t* src2, 
   case TYPE_I: src1R(rs1);     src2I(immI(i)); break;
   case TYPE_U: src1I(immU(i)); break;
   case TYPE_S: destI(immS(i)); src1R(rs1); src2R(rs2); break;
-    /* add by leesum */
   case TYPE_J: src1I(immJ(i));break;
   case TYPE_R: src1R(rs1); src2R(rs2); break;
   case TYPE_B: destI(immB(i));src1R(rs1); src2R(rs2); break;
@@ -181,7 +180,7 @@ static int decode_exec(Decode* s) {
   INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs, I, word_t t = csr(src2); csr(src2) = t | src1; R(dest) = t);
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, I, word_t t = csr(src2); csr(src2) = src1; R(dest) = t);
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, I, s->dnpc = isa_raise_intr(11, s->pc)); //  trap 操作 
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret, R, s->dnpc = csrmepc;csrmstatus &= (~0x1800)); //软件实现 +4 操作,区分异常和中断
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret, R, s->dnpc = csrmepc;csrmstatus &= (~0x1800); bool mpie = (csrmstatus >> 7) & 1; csrmstatus |= (mpie << 3); csrmstatus &= (~(1 << 7))); //软件实现 +4 操作,区分异常和中断
 
   INSTPAT("0000000 00000 00000 001 00000 00011 11", fencei , I, );     // nop
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
